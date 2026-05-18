@@ -16,6 +16,8 @@ interface Loan {
   id: number;
   client: string;
   phone: string;
+  address: string;
+  rut: string;
   principal: number;
   total: number;
   daily: number;
@@ -29,6 +31,8 @@ interface Loan {
 interface FormState {
   client: string;
   phone: string;
+  address: string;
+  rut: string;
   principal: string;
   days: string;
 }
@@ -52,28 +56,49 @@ function fmt(n: number) {
 let _id = 1;
 const uid = () => _id++;
 
-const STYLE = `
+const DARK = `
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0d0d0f;--card:#16161a;--card2:#1e1e24;--border:#2a2a35;--accent:#f0c040;--accent2:#e07b30;--danger:#e04040;--ok:#40c080;--text:#f0eee8;--muted:#888;--radius:14px;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+:root{--bg:#0d0d0f;--card:#16161a;--card2:#1e1e24;--border:#2a2a35;--accent:#f0c040;--danger:#e04040;--ok:#40c080;--text:#f0eee8;--muted:#888;--radius:14px;--menu-bg:#1e1e24;}
+`;
+
+const LIGHT = `
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f4f4f8;--card:#ffffff;--card2:#f0f0f5;--border:#ddd;--accent:#e6a800;--danger:#e04040;--ok:#28a060;--text:#111;--muted:#666;--radius:14px;--menu-bg:#fff;}
+`;
+
+const COMMON_STYLE = `
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;transition:background .3s,color .3s}
 .app{max-width:900px;margin:0 auto;padding:24px 16px 80px}
-.header{display:flex;align-items:center;gap:14px;margin-bottom:32px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.header-left{display:flex;align-items:center;gap:14px}
 .logo{width:44px;height:44px;background:var(--accent);border-radius:10px;display:grid;place-items:center;font-size:22px}
 .brand{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
 .brand span{color:var(--accent)}
-.tabs{display:flex;gap:6px;margin-bottom:28px;background:var(--card);padding:6px;border-radius:12px}
+.header-right{display:flex;align-items:center;gap:10px}
+.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:10px;display:grid;place-items:center;cursor:pointer;font-size:18px}
+.menu-overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.4)}
+.menu-panel{position:fixed;top:0;right:0;height:100%;width:260px;background:var(--menu-bg);border-left:1px solid var(--border);z-index:51;padding:24px 20px;display:flex;flex-direction:column;gap:16px}
+.menu-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px}
+.menu-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--card2);border-radius:10px;border:1px solid var(--border);font-size:14px;font-weight:500}
+.menu-close{align-self:flex-end;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;margin-bottom:8px}
+.toggle{width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:.2s}
+.toggle.on{background:var(--accent)}
+.toggle-dot{position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+.toggle.on .toggle-dot{left:23px}
+.tabs{display:flex;gap:6px;margin-bottom:28px;background:var(--card);padding:6px;border-radius:12px;border:1px solid var(--border)}
 .tab{flex:1;padding:10px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;transition:.2s}
 .tab.active{background:var(--accent);color:#000;font-weight:700}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
 .card-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:16px;color:var(--accent)}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.field input,.field select{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:.2s}
-.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,192,64,.12)}
+.field input{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:.2s}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,192,64,.12)}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
 .btn-primary{background:var(--accent);color:#000}
-.btn-ok{background:var(--ok);color:#000}
+.btn-ok{background:var(--ok);color:#fff}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
 .btn-sm{padding:7px 13px;font-size:12px;border-radius:7px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -98,35 +123,38 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .stat-val.yellow{color:var(--accent)}
 .actions-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
 .pay-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card2);border-radius:9px;margin-bottom:6px;font-size:13px}
-.pay-row .pay-date{color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
+.pay-date{color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px;overflow-y:auto}
 .voucher{background:#fff;color:#111;border-radius:16px;max-width:380px;width:100%;overflow:hidden;font-family:'DM Mono',monospace}
-.voucher-header{background:#111;color:var(--accent);padding:20px 24px;text-align:center}
-.voucher-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.5px}
+.voucher-header{background:#111;color:#f0c040;padding:20px 24px;text-align:center}
+.voucher-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800}
 .voucher-sub{font-size:11px;color:#888;margin-top:2px}
 .voucher-body{padding:20px 24px}
 .v-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #ddd;font-size:13px}
-.v-row:last-child{border-bottom:none}
 .v-label{color:#555;font-weight:500}
 .v-val{font-weight:700;text-align:right}
-.v-total{background:#111;color:var(--accent);margin:16px 0 0;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;font-size:15px}
+.v-total{background:#111;color:#f0c040;margin:16px 0 0;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;font-size:15px}
 .voucher-footer{background:#f5f5f5;padding:14px 24px;text-align:center;font-size:11px;color:#888;border-top:2px dashed #ddd}
+.voucher-btns{display:flex;gap:8px;padding:14px 16px;background:#f5f5f5;border-top:1px solid #e0e0e0}
 .no-data{text-align:center;padding:40px;color:var(--muted);font-size:14px}
 .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
 @media(max-width:480px){.summary-grid{grid-template-columns:1fr 1fr}}
 .summary-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
-.summary-card .s-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
-.summary-card .s-lbl{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ok);color:#000;padding:10px 22px;border-radius:30px;font-weight:700;font-size:14px;z-index:200;animation:fadeup .3s ease}
+.s-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+.s-lbl{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 22px;border-radius:30px;font-weight:700;font-size:14px;z-index:200;animation:fadeup .3s ease}
 @keyframes fadeup{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 8px;font-weight:700;border-bottom:1px solid var(--border);padding-bottom:6px}
 `;
 
 export default function App() {
-  const [tab, setTab]     = useState("loans");
-  const [loans, setLoans] = useState<Loan[]>([]);
-  const [form, setForm]   = useState<FormState>({ client:"", phone:"", principal:"", days:"30" });
+  const [tab, setTab]       = useState("loans");
+  const [loans, setLoans]   = useState<Loan[]>([]);
+  const [darkMode, setDarkMode] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [form, setForm]     = useState<FormState>({ client:"", phone:"", address:"", rut:"", principal:"", days:"30" });
   const [voucher, setVoucher] = useState<{loan:Loan, payment:Payment}|null>(null);
-  const [toast, setToast] = useState<string|null>(null);
+  const [toast, setToast]   = useState<string|null>(null);
   const [payAmt, setPayAmt] = useState<Record<number,string>>({});
 
   function showToast(msg: string) {
@@ -135,20 +163,20 @@ export default function App() {
   }
 
   function createLoan() {
-    const { client, phone, principal, days } = form;
-    if (!client || !principal || !days) return showToast("Completa todos los campos");
+    const { client, phone, address, rut, principal, days } = form;
+    if (!client || !principal || !days) return showToast("Completa nombre, monto y plazo");
     const p = parseInt(principal.replace(/\D/g,""),10);
     const d = parseInt(days,10);
     if (!p || !d) return showToast("Monto y plazo deben ser números");
     const { total, daily } = calcLoan(p, d);
     const loan: Loan = {
-      id: uid(), client, phone,
+      id: uid(), client, phone, address, rut,
       principal: p, total, daily, days: d,
       paid: 0, payments: [],
       createdAt: today(), createdTime: nowTime(),
     };
     setLoans(prev => [loan, ...prev]);
-    setForm({ client:"", phone:"", principal:"", days:"30" });
+    setForm({ client:"", phone:"", address:"", rut:"", principal:"", days:"30" });
     showToast("Préstamo creado ✓");
     setTab("loans");
   }
@@ -179,20 +207,56 @@ export default function App() {
     return "al día";
   }
 
-  const totalPrestado = loans.reduce((s,l) => s + l.principal, 0);
-  const enMora        = loans.filter(l => loanStatus(l) === "mora").length;
+  const totalPrestado  = loans.reduce((s,l) => s + l.principal, 0);
+  const totalPorCobrar = loans.reduce((s,l) => s + (l.total - l.paid), 0);
+  const enMora         = loans.filter(l => loanStatus(l) === "mora").length;
 
   return (
     <>
-      <style>{STYLE}</style>
+      <style>{(darkMode ? DARK : LIGHT) + COMMON_STYLE}</style>
+
+      {menuOpen && (
+        <>
+          <div className="menu-overlay" onClick={()=>setMenuOpen(false)} />
+          <div className="menu-panel">
+            <button className="menu-close" onClick={()=>setMenuOpen(false)}>✕</button>
+            <div className="menu-title">⚙️ Ajustes</div>
+            <div className="menu-item">
+              <span>{darkMode ? "🌙 Modo oscuro" : "☀️ Modo claro"}</span>
+              <div className={`toggle ${darkMode?"on":""}`} onClick={()=>setDarkMode(d=>!d)}>
+                <div className="toggle-dot" />
+              </div>
+            </div>
+            <div className="menu-item">
+              <span>👤 Usuario</span>
+              <span style={{fontSize:12,color:"var(--muted)"}}>Sin sesión</span>
+            </div>
+            <div className="menu-item" style={{opacity:.5}}>
+              <span>🔐 Iniciar sesión</span>
+              <span style={{fontSize:11,color:"var(--muted)"}}>Próximamente</span>
+            </div>
+            <div style={{marginTop:"auto",fontSize:11,color:"var(--muted)",textAlign:"center"}}>
+              PrestaFast v1.1 • Supabase coming soon
+            </div>
+          </div>
+        </>
+      )}
+
       <div className="app">
         <div className="header">
-          <div className="logo">💸</div>
-          <div>
-            <div className="brand">Presta<span>Fast</span></div>
-            <div style={{fontSize:12,color:"var(--muted)"}}>Sistema de préstamos diarios</div>
+          <div className="header-left">
+            <div className="logo">💸</div>
+            <div>
+              <div className="brand">Presta<span>Fast</span></div>
+              <div style={{fontSize:12,color:"var(--muted)"}}>Sistema de préstamos diarios</div>
+            </div>
+          </div>
+          <div className="header-right">
+            <button className="icon-btn" onClick={()=>setDarkMode(d=>!d)}>{darkMode?"☀️":"🌙"}</button>
+            <button className="icon-btn" onClick={()=>setMenuOpen(true)}>☰</button>
           </div>
         </div>
+
         <div className="summary-grid">
           <div className="summary-card">
             <div className="s-num" style={{color:"var(--accent)"}}>{loans.length}</div>
@@ -203,39 +267,49 @@ export default function App() {
             <div className="s-lbl">Capital</div>
           </div>
           <div className="summary-card">
-            <div className="s-num" style={{color: enMora ? "var(--danger)" : "var(--ok)"}}>{enMora}</div>
+            <div className="s-num" style={{color:enMora?"var(--danger)":"var(--ok)"}}>{enMora}</div>
             <div className="s-lbl">En mora</div>
           </div>
         </div>
+
         <div className="tabs">
           <button className={`tab ${tab==="loans"?"active":""}`} onClick={()=>setTab("loans")}>📋 Préstamos</button>
           <button className={`tab ${tab==="new"?"active":""}`}   onClick={()=>setTab("new")}>➕ Nuevo</button>
         </div>
+
         {tab === "new" && (
           <div className="card">
             <div className="card-title">Registrar nuevo préstamo</div>
+            <div className="section-label">Datos del cliente</div>
             <div className="grid2">
               <div className="field">
-                <label>Nombre del cliente</label>
-                <input placeholder="Ej. Juan García" value={form.client}
-                  onChange={e=>setForm(f=>({...f,client:e.target.value}))} />
+                <label>Nombre completo *</label>
+                <input placeholder="Juan García" value={form.client} onChange={e=>setForm(f=>({...f,client:e.target.value}))} />
               </div>
               <div className="field">
-                <label>Teléfono</label>
-                <input placeholder="300 000 0000" value={form.phone}
-                  onChange={e=>setForm(f=>({...f,phone:e.target.value}))} />
+                <label>RUT / Cédula</label>
+                <input placeholder="12.345.678-9" value={form.rut} onChange={e=>setForm(f=>({...f,rut:e.target.value}))} />
               </div>
             </div>
             <div className="grid2">
               <div className="field">
-                <label>Monto prestado ($)</label>
-                <input placeholder="300000" value={form.principal}
-                  onChange={e=>setForm(f=>({...f,principal:e.target.value}))} />
+                <label>Teléfono</label>
+                <input placeholder="+56 9 1234 5678" value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))} />
               </div>
               <div className="field">
-                <label>Plazo (días)</label>
-                <input type="number" min="1" value={form.days}
-                  onChange={e=>setForm(f=>({...f,days:e.target.value}))} />
+                <label>Dirección</label>
+                <input placeholder="Calle 123, Ciudad" value={form.address} onChange={e=>setForm(f=>({...f,address:e.target.value}))} />
+              </div>
+            </div>
+            <div className="section-label">Condiciones del préstamo</div>
+            <div className="grid2">
+              <div className="field">
+                <label>Monto prestado ($) *</label>
+                <input placeholder="300000" value={form.principal} onChange={e=>setForm(f=>({...f,principal:e.target.value}))} />
+              </div>
+              <div className="field">
+                <label>Plazo (días) *</label>
+                <input type="number" min="1" value={form.days} onChange={e=>setForm(f=>({...f,days:e.target.value}))} />
               </div>
             </div>
             {form.principal && form.days && (() => {
@@ -244,22 +318,26 @@ export default function App() {
               if (!p) return null;
               const { total, daily } = calcLoan(p,d);
               return (
-                <div style={{background:"var(--card2)",borderRadius:10,padding:"12px 16px",marginBottom:16,fontSize:13}}>
-                  <span style={{color:"var(--muted)"}}>Devolución total: </span>
-                  <strong style={{color:"var(--accent)"}}>$ {fmt(total)}</strong>
-                  <span style={{color:"var(--muted)",marginLeft:16}}>Cuota diaria: </span>
-                  <strong style={{color:"var(--ok)"}}>$ {fmt(daily)}</strong>
+                <div style={{background:"var(--card2)",borderRadius:10,padding:"14px 16px",marginBottom:16,fontSize:13,display:"flex",flexWrap:"wrap" as const,gap:16}}>
+                  <span><span style={{color:"var(--muted)"}}>Total a devolver: </span><strong style={{color:"var(--accent)"}}>$ {fmt(total)}</strong></span>
+                  <span><span style={{color:"var(--muted)"}}>Cuota diaria: </span><strong style={{color:"var(--ok)"}}>$ {fmt(daily)}</strong></span>
+                  <span><span style={{color:"var(--muted)"}}>Interés: </span><strong>20%</strong></span>
                 </div>
               );
             })()}
             <button className="btn btn-primary" onClick={createLoan}>Crear préstamo →</button>
           </div>
         )}
+
         {tab === "loans" && (
           <>
-            {loans.length === 0 && (
-              <div className="no-data">Sin préstamos registrados.<br/>Crea uno en la pestaña ➕ Nuevo.</div>
+            {totalPorCobrar > 0 && (
+              <div style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,padding:"12px 16px",marginBottom:16,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <span style={{fontSize:13,color:"var(--muted)"}}>Total por cobrar</span>
+                <span style={{fontFamily:"DM Mono,monospace",fontWeight:700,color:"var(--danger)",fontSize:16}}>$ {fmt(totalPorCobrar)}</span>
+              </div>
             )}
+            {loans.length === 0 && <div className="no-data">Sin préstamos registrados.<br/>Crea uno en la pestaña ➕ Nuevo.</div>}
             {loans.map(loan => {
               const pct    = Math.min(100, Math.round(loan.paid / loan.total * 100));
               const status = loanStatus(loan);
@@ -270,15 +348,18 @@ export default function App() {
                   <div className="loan-header">
                     <div>
                       <div className="client-name">{loan.client}</div>
-                      <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>{loan.phone} • Desde {loan.createdAt}</div>
+                      <div style={{fontSize:12,color:"var(--muted)",marginTop:2}}>
+                        {loan.rut && <span>{loan.rut} • </span>}
+                        {loan.phone && <span>{loan.phone} • </span>}
+                        Desde {loan.createdAt}
+                      </div>
+                      {loan.address && <div style={{fontSize:11,color:"var(--muted)",marginTop:2}}>📍 {loan.address}</div>}
                     </div>
                     <span className={`badge ${status==="pagado"?"badge-ok":status==="mora"?"badge-danger":"badge-warn"}`}>
                       {status==="pagado"?"✓ Pagado":status==="mora"?"⚠ Mora":"● Al día"}
                     </span>
                   </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill" style={{width:`${pct}%`}} />
-                  </div>
+                  <div className="progress-bar"><div className="progress-fill" style={{width:`${pct}%`}} /></div>
                   <div style={{fontSize:11,color:"var(--muted)",textAlign:"right"}}>{pct}% pagado</div>
                   <div className="stats-row">
                     <div className="stat"><div className="stat-label">Prestado</div><div className="stat-val">$ {fmt(loan.principal)}</div></div>
@@ -287,7 +368,7 @@ export default function App() {
                     <div className="stat"><div className="stat-label">Saldo</div><div className="stat-val red">$ {fmt(loan.total - loan.paid)}</div></div>
                     <div className="stat"><div className="stat-label">Cuota diaria</div><div className="stat-val">$ {fmt(loan.daily)}</div></div>
                     {late > 0 && <div className="stat"><div className="stat-label">Cuotas vencidas</div><div className="stat-val red">{late}</div></div>}
-                    {penalty > 0 && <div className="stat"><div className="stat-label">Multa (10%)</div><div className="stat-val red">$ {fmt(penalty)}</div></div>}
+                    {penalty > 0 && <div className="stat"><div className="stat-label">Multa 10%</div><div className="stat-val red">$ {fmt(penalty)}</div></div>}
                   </div>
                   {status !== "pagado" && (
                     <div className="actions-row">
@@ -302,14 +383,14 @@ export default function App() {
                   )}
                   {loan.payments.length > 0 && (
                     <div style={{marginTop:14}}>
-                      <div style={{fontSize:11,color:"var(--muted)",marginBottom:7,textTransform:"uppercase",letterSpacing:".5px"}}>Historial de pagos</div>
+                      <div style={{fontSize:11,color:"var(--muted)",marginBottom:7,textTransform:"uppercase" as const,letterSpacing:".5px"}}>Historial de pagos</div>
                       {loan.payments.map((p) => (
                         <div key={p.id} className="pay-row">
                           <div>
                             <span style={{fontWeight:600}}>$ {fmt(p.amount)}</span>
                             {p.penalty > 0 && <span style={{color:"var(--danger)",fontSize:11,marginLeft:8}}>+$ {fmt(p.penalty)} multa</span>}
                           </div>
-                          <div style={{textAlign:"right"}}>
+                          <div style={{textAlign:"right" as const}}>
                             <div>{p.date}</div>
                             <div className="pay-date">{p.time}</div>
                             <button className="btn btn-ghost btn-sm" style={{marginTop:4,fontSize:11}} onClick={()=>setVoucher({loan, payment:p})}>
@@ -326,16 +407,40 @@ export default function App() {
           </>
         )}
       </div>
+
       {voucher && <VoucherModal data={voucher} onClose={()=>setVoucher(null)} />}
       {toast && <div className="toast">{toast}</div>}
     </>
   );
 }
 
-function VoucherModal({ data, onClose }: { data: {loan:Loan, payment:Payment}, onClose: ()=>void }) {
+function VoucherModal({ data, onClose }: { data:{loan:Loan,payment:Payment}, onClose:()=>void }) {
   const { loan, payment } = data;
   const saldo = loan.total - loan.paid;
   const pct   = Math.min(100, Math.round(loan.paid / loan.total * 100));
+
+  function shareWhatsApp() {
+    const msg = encodeURIComponent(
+`💸 *PrestaFast - Comprobante de Pago*
+━━━━━━━━━━━━━━━━━━━━
+🧾 Recibo N° ${String(payment.id).padStart(5,"0")}
+📅 ${payment.date} ${payment.time}
+━━━━━━━━━━━━━━━━━━━━
+👤 Cliente: ${loan.client}${loan.rut?`\n🪪 RUT: ${loan.rut}`:""}${loan.phone?`\n📱 Tel: ${loan.phone}`:""}
+━━━━━━━━━━━━━━━━━━━━
+💰 Capital: $${Number(loan.principal).toLocaleString("es-CO")}
+📋 Total a devolver: $${Number(loan.total).toLocaleString("es-CO")}
+📆 Cuota diaria: $${Number(loan.daily).toLocaleString("es-CO")}
+━━━━━━━━━━━━━━━━━━━━
+✅ Pago de hoy: $${Number(payment.amount).toLocaleString("es-CO")}${payment.penalty>0?`\n⚠️ Multa: $${Number(payment.penalty).toLocaleString("es-CO")}`:""}
+💵 Total pagado: $${Number(loan.paid).toLocaleString("es-CO")}
+🔴 Saldo pendiente: $${Number(saldo).toLocaleString("es-CO")}
+━━━━━━━━━━━━━━━━━━━━
+Progreso: ${pct}% pagado ✓`
+    );
+    window.open(`https://wa.me/?text=${msg}`,"_blank");
+  }
+
   return (
     <div className="overlay" onClick={onClose}>
       <div onClick={(e)=>e.stopPropagation()}>
@@ -345,31 +450,28 @@ function VoucherModal({ data, onClose }: { data: {loan:Loan, payment:Payment}, o
             <div className="voucher-sub">Comprobante de pago</div>
           </div>
           <div className="voucher-body">
-            <div style={{textAlign:"center",marginBottom:16}}>
+            <div style={{textAlign:"center" as const,marginBottom:16}}>
               <div style={{fontSize:11,color:"#888"}}>RECIBO N° {String(payment.id).padStart(5,"0")}</div>
               <div style={{fontSize:12,color:"#444",marginTop:2}}>{payment.date} — {payment.time}</div>
             </div>
             <div className="v-row"><span className="v-label">Cliente</span><span className="v-val">{loan.client}</span></div>
-            <div className="v-row"><span className="v-label">Teléfono</span><span className="v-val">{loan.phone || "—"}</span></div>
+            {loan.rut && <div className="v-row"><span className="v-label">RUT</span><span className="v-val">{loan.rut}</span></div>}
+            {loan.phone && <div className="v-row"><span className="v-label">Teléfono</span><span className="v-val">{loan.phone}</span></div>}
+            {loan.address && <div className="v-row"><span className="v-label">Dirección</span><span className="v-val" style={{maxWidth:180,textAlign:"right" as const}}>{loan.address}</span></div>}
             <div className="v-row"><span className="v-label">Fecha inicio</span><span className="v-val">{loan.createdAt}</span></div>
             <div className="v-row"><span className="v-label">Capital prestado</span><span className="v-val">$ {fmt(loan.principal)}</span></div>
             <div className="v-row"><span className="v-label">Total a devolver</span><span className="v-val">$ {fmt(loan.total)}</span></div>
             <div className="v-row"><span className="v-label">Cuota diaria</span><span className="v-val">$ {fmt(loan.daily)}</span></div>
             <div className="v-row"><span className="v-label">Cuotas vencidas</span>
-              <span className="v-val" style={{color: payment.lateCount>=4?"#e04040":"#111"}}>{payment.lateCount}</span>
+              <span className="v-val" style={{color:payment.lateCount>=4?"#e04040":"#111"}}>{payment.lateCount}</span>
             </div>
-            {payment.penalty > 0 && (
-              <div className="v-row"><span className="v-label">Multa (10%)</span><span className="v-val" style={{color:"#e04040"}}>$ {fmt(payment.penalty)}</span></div>
-            )}
+            {payment.penalty > 0 && <div className="v-row"><span className="v-label">Multa (10%)</span><span className="v-val" style={{color:"#e04040"}}>$ {fmt(payment.penalty)}</span></div>}
             <div className="v-row"><span className="v-label">Pago registrado</span><span className="v-val" style={{color:"#40c080",fontWeight:800}}>$ {fmt(payment.amount)}</span></div>
             <div className="v-row"><span className="v-label">Total pagado</span><span className="v-val">$ {fmt(loan.paid)}</span></div>
-            <div className="v-total">
-              <span>Saldo pendiente</span>
-              <span style={{fontWeight:800}}>$ {fmt(saldo)}</span>
-            </div>
+            <div className="v-total"><span>Saldo pendiente</span><span style={{fontWeight:800}}>$ {fmt(saldo)}</span></div>
             <div style={{marginTop:14}}>
               <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#888",marginBottom:5}}>
-                <span>Progreso del préstamo</span><span>{pct}%</span>
+                <span>Progreso</span><span>{pct}%</span>
               </div>
               <div style={{height:8,background:"#eee",borderRadius:4,overflow:"hidden"}}>
                 <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,#40c080,#f0c040)",borderRadius:4}} />
@@ -377,16 +479,17 @@ function VoucherModal({ data, onClose }: { data: {loan:Loan, payment:Payment}, o
             </div>
           </div>
           <div className="voucher-footer">
-            <div>Este comprobante es válido como constancia de pago.</div>
-            <div style={{marginTop:4}}>PrestaFast • {today()}</div>
+            Este comprobante es válido como constancia de pago.<br/>
+            <span style={{display:"block",marginTop:4}}>PrestaFast • {today()}</span>
           </div>
-          <div style={{display:"flex",gap:10,padding:"14px 20px",background:"#f5f5f5",borderTop:"1px solid #e0e0e0"}}>
-            <button onClick={onClose}
-              style={{flex:1,padding:"12px",background:"#222",color:"#fff",border:"none",borderRadius:10,fontFamily:"DM Sans,sans-serif",fontWeight:700,fontSize:15,cursor:"pointer"}}>
+          <div className="voucher-btns">
+            <button onClick={onClose} style={{flex:1,padding:"11px 6px",background:"#222",color:"#fff",border:"none",borderRadius:10,fontFamily:"DM Sans,sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}}>
               ← Volver
             </button>
-            <button onClick={()=>window.print()}
-              style={{flex:1,padding:"12px",background:"#f0c040",color:"#000",border:"none",borderRadius:10,fontFamily:"DM Sans,sans-serif",fontWeight:700,fontSize:15,cursor:"pointer"}}>
+            <button onClick={shareWhatsApp} style={{flex:1,padding:"11px 6px",background:"#25D366",color:"#fff",border:"none",borderRadius:10,fontFamily:"DM Sans,sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}}>
+              📲 WhatsApp
+            </button>
+            <button onClick={()=>window.print()} style={{flex:1,padding:"11px 6px",background:"#f0c040",color:"#000",border:"none",borderRadius:10,fontFamily:"DM Sans,sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}}>
               🖨 Imprimir
             </button>
           </div>
