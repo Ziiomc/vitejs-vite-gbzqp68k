@@ -13,25 +13,27 @@ const memStore  = { loans: [] };
 // ══════════════════════════════════════════════════════════════════
 // LEADERBOARD via window.storage (shared)
 // ══════════════════════════════════════════════════════════════════
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ws = () => (window as any).storage;
+
 async function getLeaderboard() {
   try {
-    const r = await window.storage.get("leaderboard_v2", true);
+    const r = await ws().get("leaderboard_v2", true);
     return r ? JSON.parse(r.value) : [];
   } catch { return []; }
 }
-async function saveScore(name, score, ip) {
+async function saveScore(name: string, score: number, ip: string) {
   try {
     const board = await getLeaderboard();
-    // Update or insert entry for this IP
-    const idx = board.findIndex(e => e.ip === ip);
+    const idx = board.findIndex((e: any) => e.ip === ip);
     if (idx >= 0) {
       if (score > board[idx].score) { board[idx] = { name, score, ip, date: todayStr() }; }
     } else {
       board.push({ name, score, ip, date: todayStr() });
     }
-    board.sort((a,b) => b.score - a.score);
+    board.sort((a: any, b: any) => b.score - a.score);
     const top = board.slice(0, 15);
-    await window.storage.set("leaderboard_v2", JSON.stringify(top), true);
+    await ws().set("leaderboard_v2", JSON.stringify(top), true);
     return top;
   } catch { return []; }
 }
@@ -913,7 +915,7 @@ export default function App() {
       const parts=loan.createdAt.split("/");
       const d=new Date(parseInt(parts[2],10),parseInt(parts[1],10)-1,parseInt(parts[0],10));
       const today=new Date(); today.setHours(0,0,0,0);
-      const daysPassed=Math.floor((today-d)/(1000*60*60*24));
+      const daysPassed=Math.floor((today.getTime()-d.getTime())/(1000*60*60*24));
       const expected=Math.min(daysPassed,loan.days)*loan.daily;
       const diff=expected-loan.paid;
       return diff>0?Math.floor(diff/loan.daily):0;
