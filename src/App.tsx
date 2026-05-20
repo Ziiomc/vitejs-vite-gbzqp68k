@@ -1,40 +1,35 @@
-```tsx
 import { useState, useEffect, useRef, useCallback } from "react";
 
-declare global {
-  interface Window {
-    storage: {
-      get: (key: string, shared?: boolean) => Promise<{ value: string } | null>;
-      set: (key: string, value: string, shared?: boolean) => Promise<void>;
-    };
-  }
-}
-
+// ── Config ─────────────────────────────────────────────────────────────────
 const ADMIN_KEY = "2020";
 const USER_KEY  = "1234";
-const calcLoan  = (p: number, d: number) => ({ total: Math.round(p * 1.2), daily: Math.round(p * 1.2 / d) });
+const calcLoan  = (p, d) => ({ total: Math.round(p * 1.2), daily: Math.round(p * 1.2 / d) });
 const todayStr  = () => new Date().toLocaleDateString("es-CL",{day:"2-digit",month:"2-digit",year:"numeric"});
 const nowTime   = () => new Date().toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
-const fmt       = (n: number) => Number(n).toLocaleString("es-CL");
+const fmt       = (n) => Number(n).toLocaleString("es-CL");
 const uid       = () => crypto.randomUUID();
-const memStore  = { loans: [] as any[] };
+const memStore  = { loans: [] };
 
+// ══════════════════════════════════════════════════════════════════
+// LEADERBOARD via window.storage (shared)
+// ══════════════════════════════════════════════════════════════════
 async function getLeaderboard() {
   try {
     const r = await window.storage.get("leaderboard_v2", true);
     return r ? JSON.parse(r.value) : [];
   } catch { return []; }
 }
-async function saveScore(name: string, score: number, ip: string) {
+async function saveScore(name, score, ip) {
   try {
     const board = await getLeaderboard();
-    const idx = board.findIndex((e: any) => e.ip === ip);
+    // Update or insert entry for this IP
+    const idx = board.findIndex(e => e.ip === ip);
     if (idx >= 0) {
       if (score > board[idx].score) { board[idx] = { name, score, ip, date: todayStr() }; }
     } else {
       board.push({ name, score, ip, date: todayStr() });
     }
-    board.sort((a: any, b: any) => b.score - a.score);
+    board.sort((a,b) => b.score - a.score);
     const top = board.slice(0, 15);
     await window.storage.set("leaderboard_v2", JSON.stringify(top), true);
     return top;
@@ -48,27 +43,31 @@ async function getMyIP() {
   } catch { return "local_" + Math.random().toString(36).slice(2,8); }
 }
 
-function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode: () => void }) {
-  const canvasRef   = useRef<HTMLCanvasElement>(null);
-  const rafRef      = useRef<number>(null!);
+// ══════════════════════════════════════════════════════════════════
+// SPACE GAME — Galaxia Perdida (5 niveles + BOSS)
+// ══════════════════════════════════════════════════════════════════
+function SpaceGame({ onExit, onSecretCode }) {
+  const canvasRef   = useRef(null);
+  const rafRef      = useRef(null);
   const touchRef    = useRef({ left:false, right:false, fire:false });
-  const restartFnRef= useRef<(() => void)>(null!);
+  const restartFnRef= useRef(null);
   const onExitRef   = useRef(onExit);
   const onSecCodeRef= useRef(onSecretCode);
   useEffect(()=>{ onExitRef.current=onExit; },[onExit]);
   useEffect(()=>{ onSecCodeRef.current=onSecretCode; },[onSecretCode]);
 
-  const [endState,    setEndState]    = useState<any>(null);
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [endState,    setEndState]    = useState(null); // null | {win,score,isBoss}
+  const [leaderboard, setLeaderboard] = useState([]);
   const [nameInput,   setNameInput]   = useState("");
   const [scoreSaved,  setScoreSaved]  = useState(false);
   const [myIp,        setMyIp]        = useState("unknown");
   const [showBoard,   setShowBoard]   = useState(false);
 
-  const CW: number = Math.min(480, window.innerWidth - 16);
-  const CH: number = Math.round(CW * 520/480);
-  const SC: number = CW / 480;
+  const CW = Math.min(480, window.innerWidth - 16);
+  const CH = Math.round(CW * 520/480);
+  const SC = CW / 480;
 
+  // Load leaderboard + IP on mount
   useEffect(()=>{
     getLeaderboard().then(setLeaderboard);
     getMyIP().then(setMyIp);
@@ -83,13 +82,12 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
     canvas.width  = CW;
     canvas.height = CH;
 
-    const S: any = {
+    // ── STATE ──
+    const S = {
       player: { x: CW/2-18*SC, y: CH-60*SC, w:36*SC, h:24*SC },
       bullets:[], aliens:[], bombs:[], particles:[], stars:[], bossLasers:[],
       boss: null,
@@ -101,11 +99,13 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       _endReported: false,
     };
 
+    // Stars
     for(let i=0;i<70;i++)
       S.stars.push({ x:Math.random()*CW, y:Math.random()*CH,
         s:Math.random()*2*SC+0.5, sp:Math.random()*0.4+0.1 });
 
-    const spawnAliens = (lv: number) => {
+    // ── SPAWN ALIENS (levels 1–5) ──
+    const spawnAliens = (lv) => {
       S.aliens=[];
       const rows=Math.min(2+lv, 5);
       const cols=Math.min(5+lv, 10);
@@ -119,6 +119,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
     };
     spawnAliens(1);
 
+    // ── SPAWN BOSS (level 6) ──
     const spawnBoss = () => {
       S.bossPhase = true;
       S.bullets=[]; S.bombs=[];
@@ -128,7 +129,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         w: 120*SC, h: 60*SC,
         hp: 80, maxHp: 80,
         dir: 1, speed: 1.2*SC,
-        phase: 1,
+        phase: 1, // 1=normal, 2=enraged (<50% hp)
         shootTimer: 0,
         laserTimer: 0,
         laserActive: false,
@@ -156,7 +157,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
     };
     restartFnRef.current = restartGame;
 
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeyDown = e => {
       S.keys[e.code]=true;
       if(e.code==="Space"||e.code==="ArrowUp") e.preventDefault();
       S.secretBuffer.push(e.code);
@@ -166,13 +167,14 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       if(e.code==="Escape") onExitRef.current?.();
       if((e.code==="Enter"||e.code==="Space")&&(S.gameOver||S.win)) restartGame();
     };
-    const onKeyUp = (e: KeyboardEvent) => { S.keys[e.code]=false; };
+    const onKeyUp = e => { S.keys[e.code]=false; };
     window.addEventListener("keydown",onKeyDown);
     window.addEventListener("keyup",onKeyUp);
 
-    const px = (n: number) => Math.round(n);
+    const px = n => Math.round(n);
 
-    const drawShip = (x: number, y: number, color: string) => {
+    // ── DRAW SHIP ──
+    const drawShip = (x,y,color) => {
       const s=SC;
       ctx.fillStyle=color;
       ctx.fillRect(px(x+14*s),px(y),px(8*s),px(4*s));
@@ -186,7 +188,8 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       ctx.fillRect(px(x+26*s),px(y+20*s),px(6*s),px(4*s));
     };
 
-    const drawAlien = (ax: number, ay: number, type: number, hp: number, tick: number) => {
+    // ── DRAW ALIEN ──
+    const drawAlien = (ax,ay,type,hp,tick) => {
       const t=Math.floor(tick/16)%2;
       const colors=["#ff5050","#f0c040","#40ffaa"];
       ctx.fillStyle=colors[type]+(hp===1&&type>0?"88":"ff");
@@ -218,12 +221,14 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       ctx.fillRect(px(ax+16*s),px(ay+6*s),px(4*s),px(4*s));
     };
 
-    const drawBoss = (b: any, tick: number) => {
+    // ── DRAW BOSS ──
+    const drawBoss = (b, tick) => {
       const s=SC, enraged=b.hp<b.maxHp*0.5;
       const pulse=0.7+0.3*Math.sin(tick*0.1);
       const bcolor=enraged?"#ff2020":"#e040ff";
       const bcolor2=enraged?"#ff8000":"#8000ff";
 
+      // Shield glow
       if(b.shielded){
         ctx.save();
         ctx.globalAlpha=0.3+0.2*Math.sin(tick*0.2);
@@ -235,24 +240,29 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         ctx.restore();
       }
 
+      // Body
       ctx.fillStyle=bcolor;
       ctx.fillRect(px(b.x+20*s),px(b.y),px(80*s),px(12*s));
       ctx.fillRect(px(b.x+10*s),px(b.y+12*s),px(100*s),px(12*s));
       ctx.fillRect(px(b.x),px(b.y+24*s),px(120*s),px(20*s));
       ctx.fillRect(px(b.x+10*s),px(b.y+44*s),px(100*s),px(12*s));
+      // Wings
       ctx.fillStyle=bcolor2;
       ctx.fillRect(px(b.x-30*s),px(b.y+20*s),px(40*s),px(10*s));
       ctx.fillRect(px(b.x+110*s),px(b.y+20*s),px(40*s),px(10*s));
       ctx.fillRect(px(b.x-20*s),px(b.y+30*s),px(20*s),px(8*s));
       ctx.fillRect(px(b.x+120*s),px(b.y+30*s),px(20*s),px(8*s));
+      // Core
       ctx.fillStyle=enraged?`rgba(255,${Math.floor(100*pulse)},0,1)`:`rgba(${Math.floor(200*pulse)},0,255,1)`;
       ctx.fillRect(px(b.x+50*s),px(b.y+20*s),px(20*s),px(20*s));
+      // Eyes
       ctx.fillStyle="#fff";
       ctx.fillRect(px(b.x+30*s),px(b.y+28*s),px(12*s),px(8*s));
       ctx.fillRect(px(b.x+78*s),px(b.y+28*s),px(12*s),px(8*s));
       ctx.fillStyle=enraged?"#ff0":"#f0f";
       ctx.fillRect(px(b.x+34*s),px(b.y+30*s),px(6*s),px(5*s));
       ctx.fillRect(px(b.x+82*s),px(b.y+30*s),px(6*s),px(5*s));
+      // Cannons
       ctx.fillStyle="#555";
       ctx.fillRect(px(b.x+18*s),px(b.y+50*s),px(8*s),px(14*s));
       ctx.fillRect(px(b.x+94*s),px(b.y+50*s),px(8*s),px(14*s));
@@ -260,6 +270,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         ctx.fillRect(px(b.x+55*s),px(b.y+58*s),px(10*s),px(14*s));
       }
 
+      // HP bar
       const bw=140*s, bx=b.x+(b.w-bw)/2, by=b.y-16*s;
       ctx.fillStyle="#ffffff22"; ctx.fillRect(px(bx),px(by),px(bw),px(7*s));
       const hpPct=b.hp/b.maxHp;
@@ -269,6 +280,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       ctx.fillStyle="#fff"; ctx.textAlign="center";
       ctx.fillText(`JEFE FINAL  ${b.hp}/${b.maxHp}`,px(b.x+b.w/2),px(by-4*s));
 
+      // Laser beam
       if(b.laserActive){
         const lx=b.laserX;
         ctx.save();
@@ -286,7 +298,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       }
     };
 
-    const spawnParticles = (x: number, y: number, color: string, n: number = 8) => {
+    const spawnParticles = (x,y,color,n=8) => {
       for(let i=0;i<n;i++)
         S.particles.push({
           x,y,color,
@@ -295,12 +307,14 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         });
     };
 
+    // ── MAIN LOOP ──
     const loop = () => {
       rafRef.current=requestAnimationFrame(loop);
       ctx.fillStyle="#03030f";
       ctx.fillRect(0,0,CW,CH);
 
-      S.stars.forEach((st: any)=>{
+      // Stars
+      S.stars.forEach(st=>{
         ctx.fillStyle=`rgba(255,255,255,${0.4+0.4*Math.sin(S.tick*0.05+st.x)})`;
         ctx.fillRect(px(st.x),px(st.y),Math.ceil(st.s),Math.ceil(st.s));
         st.y=(st.y+st.sp)%CH;
@@ -318,6 +332,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       S.tick++;
       S._endReported=false;
 
+      // ── PLAYER CONTROLS ──
       const TR=touchRef.current, spd=4*SC;
       if((S.keys["ArrowLeft"]||TR.left)&&S.player.x>4)              S.player.x-=spd;
       if((S.keys["ArrowRight"]||TR.right)&&S.player.x<CW-S.player.w-4) S.player.x+=spd;
@@ -331,10 +346,12 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         S.shootCooldown=10;
       }
 
+      // ── BOSS PHASE ──
       if(S.bossPhase && S.boss){
         const b=S.boss;
         const enraged=b.hp<b.maxHp*0.5;
 
+        // Movement
         b.swoopTimer--;
         if(b.swoopTimer<=0){
           b.swoopDir = (Math.random()-0.5)*2;
@@ -344,6 +361,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         if(b.x<10*SC||b.x>CW-b.w-10*SC) b.dir*=-1;
         b.y = (30 + Math.sin(S.tick*0.015)*12)*SC;
 
+        // Shield toggle (every 300 ticks in enraged)
         if(enraged){
           b.shieldTimer--;
           if(b.shieldTimer<=0){
@@ -352,10 +370,12 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
           }
         }
 
+        // Shoot bombs
         b.shootTimer--;
         if(b.shootTimer<=0){
           const rate = enraged ? 35 : 60;
           b.shootTimer = rate;
+          // Triple spread
           const bx=b.x+b.w/2;
           const by=b.y+b.h;
           S.bombs.push({x:bx-2*SC,y:by,w:5*SC,h:10*SC,vx:0,vy:4.5*SC,type:"normal"});
@@ -365,6 +385,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
             S.bombs.push({x:b.x+18*SC,y:by,w:5*SC,h:10*SC,vx:-1*SC,vy:5*SC,type:"spread"});
             S.bombs.push({x:b.x+94*SC,y:by,w:5*SC,h:10*SC,vx:1*SC,vy:5*SC,type:"spread"});
           }
+          // Homing
           if(S.tick%200===0){
             const dx=S.player.x-bx, dy=S.player.y-by;
             const dist=Math.sqrt(dx*dx+dy*dy)||1;
@@ -372,6 +393,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
           }
         }
 
+        // Laser
         b.laserTimer--;
         if(b.laserTimer<=0){
           const cooldown=enraged?120:200;
@@ -384,8 +406,10 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         }
         if(b.laserActive){
           b.laserDuration--;
+          // laser drifts toward player
           b.laserX+=(S.player.x+S.player.w/2-b.laserX)*0.04;
           if(b.laserDuration<=0) b.laserActive=false;
+          // laser hits player
           const lx=b.laserX, px2=S.player.x, py2=S.player.y;
           if(lx>px2&&lx<px2+S.player.w&&b.laserDuration>0&&b.laserDuration%10===0){
             S.lives--;
@@ -394,7 +418,8 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
           }
         }
 
-        S.bullets.forEach((bul: any)=>{
+        // Bullet-boss collision
+        S.bullets.forEach(bul=>{
           if(bul.dead||!bul.fromPlayer) return;
           if(b.shielded) return;
           if(bul.x<b.x+b.w&&bul.x+bul.w>b.x&&bul.y<b.y+b.h&&bul.y+bul.h>b.y){
@@ -409,12 +434,14 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
             }
           }
         });
-        S.bullets=S.bullets.filter((b: any)=>!b.dead);
+        S.bullets=S.bullets.filter(b=>!b.dead);
 
-        S.bombs.forEach((bm: any)=>{ bm.x+=bm.vx; bm.y+=bm.vy; });
-        S.bombs=S.bombs.filter((bm: any)=>bm.y<CH+20&&bm.x>-20&&bm.x<CW+20);
+        // Bombs update
+        S.bombs.forEach(bm=>{ bm.x+=bm.vx; bm.y+=bm.vy; });
+        S.bombs=S.bombs.filter(bm=>bm.y<CH+20&&bm.x>-20&&bm.x<CW+20);
 
-        S.bombs.forEach((bm: any)=>{
+        // Bomb-player collision
+        S.bombs.forEach(bm=>{
           if(bm.hit) return;
           const p=S.player;
           if(bm.x<p.x+p.w&&bm.x+bm.w>p.x&&bm.y<p.y+p.h&&bm.y+bm.h>p.y){
@@ -424,10 +451,11 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
             if(S.lives<=0) S.gameOver=true;
           }
         });
-        S.bombs=S.bombs.filter((bm: any)=>!bm.hit);
+        S.bombs=S.bombs.filter(bm=>!bm.hit);
 
-        S.particles=S.particles.filter((p: any)=>p.life>0);
-        S.particles.forEach((p: any)=>{
+        // Particles
+        S.particles=S.particles.filter(p=>p.life>0);
+        S.particles.forEach(p=>{
           p.x+=p.vx; p.y+=p.vy; p.vy+=0.12; p.life--;
           ctx.globalAlpha=p.life/p.maxLife;
           ctx.fillStyle=p.color;
@@ -435,15 +463,19 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         });
         ctx.globalAlpha=1;
 
+        // Draw boss
         drawBoss(b, S.tick);
+        // Draw bullets
         ctx.fillStyle="#40ffff";
-        S.bullets.forEach((bul: any)=>ctx.fillRect(px(bul.x),px(bul.y),Math.ceil(bul.w),Math.ceil(bul.h)));
-        S.bombs.forEach((bm: any)=>{
+        S.bullets.forEach(bul=>ctx.fillRect(px(bul.x),px(bul.y),Math.ceil(bul.w),Math.ceil(bul.h)));
+        // Draw bombs
+        S.bombs.forEach(bm=>{
           ctx.fillStyle=bm.type==="homing"?"#ff40ff":"#ff8030";
           ctx.fillRect(px(bm.x),px(bm.y),Math.ceil(bm.w),Math.ceil(bm.h));
         });
         drawShip(S.player.x,S.player.y,"#60c0ff");
 
+        // HUD
         ctx.font=`bold ${Math.round(12*SC)}px monospace`;
         ctx.fillStyle="#f0c040"; ctx.textAlign="left";
         ctx.fillText(`SCORE ${S.score}`,8*SC,16*SC);
@@ -454,11 +486,12 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         return;
       }
 
-      const alive=S.aliens.filter((a: any)=>a.alive);
+      // ── NORMAL LEVELS 1–5 ──
+      const alive=S.aliens.filter(a=>a.alive);
       const speed=(0.5+S.level*0.3)*SC;
       let edge=false;
-      alive.forEach((a: any)=>{a.x+=speed*S.alienDir; if(a.x>CW-a.w-4||a.x<4) edge=true;});
-      if(edge){ S.alienDir*=-1; alive.forEach((a: any)=>{a.y+=12*SC;}); }
+      alive.forEach(a=>{a.x+=speed*S.alienDir; if(a.x>CW-a.w-4||a.x<4) edge=true;});
+      if(edge){ S.alienDir*=-1; alive.forEach(a=>{a.y+=12*SC;}); }
 
       const bombRate=Math.max(28-S.level*3,10);
       if(S.tick%bombRate===0&&alive.length>0){
@@ -471,14 +504,15 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         S.bombs.push({x:a.x+a.w/2,y:a.y+a.h,w:5*SC,h:5*SC,vx:(dx/dist)*2.5*SC,vy:(dy/dist)*2.5*SC,type:"homing"});
       }
 
-      S.bullets.forEach((b: any)=>b.y-=9*SC);
-      S.bullets=S.bullets.filter((b: any)=>b.y>-20);
-      S.bombs.forEach((bm: any)=>{bm.x+=bm.vx; bm.y+=bm.vy;});
-      S.bombs=S.bombs.filter((bm: any)=>bm.y<CH+20);
+      S.bullets.forEach(b=>b.y-=9*SC);
+      S.bullets=S.bullets.filter(b=>b.y>-20);
+      S.bombs.forEach(bm=>{bm.x+=bm.vx; bm.y+=bm.vy;});
+      S.bombs=S.bombs.filter(bm=>bm.y<CH+20);
 
-      S.bullets.forEach((bul: any)=>{
+      // Bullet-alien
+      S.bullets.forEach(bul=>{
         if(bul.dead) return;
-        S.aliens.forEach((a: any)=>{
+        S.aliens.forEach(a=>{
           if(!a.alive||bul.dead) return;
           if(bul.x<a.x+a.w&&bul.x+bul.w>a.x&&bul.y<a.y+a.h&&bul.y+bul.h>a.y){
             a.hp--; bul.dead=true;
@@ -487,9 +521,10 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
           }
         });
       });
-      S.bullets=S.bullets.filter((b: any)=>!b.dead);
+      S.bullets=S.bullets.filter(b=>!b.dead);
 
-      S.bombs.forEach((bm: any)=>{
+      // Bomb-player
+      S.bombs.forEach(bm=>{
         if(bm.hit) return;
         const p=S.player;
         if(bm.x<p.x+p.w&&bm.x+bm.w>p.x&&bm.y<p.y+p.h&&bm.y+bm.h>p.y){
@@ -499,22 +534,26 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
           if(S.lives<=0) S.gameOver=true;
         }
       });
-      S.bombs=S.bombs.filter((bm: any)=>!bm.hit);
+      S.bombs=S.bombs.filter(bm=>!bm.hit);
 
-      alive.forEach((a: any)=>{ if(a.y+a.h>CH-30*SC) S.gameOver=true; });
+      // Aliens reach bottom
+      alive.forEach(a=>{ if(a.y+a.h>CH-30*SC) S.gameOver=true; });
 
+      // Level clear
       if(alive.length===0){
         S.level++;
         S.bullets=[]; S.bombs=[];
         if(S.level>5){
+          // Trigger boss!
           spawnBoss();
         } else {
           spawnAliens(S.level);
         }
       }
 
-      S.particles=S.particles.filter((p: any)=>p.life>0);
-      S.particles.forEach((p: any)=>{
+      // Particles
+      S.particles=S.particles.filter(p=>p.life>0);
+      S.particles.forEach(p=>{
         p.x+=p.vx; p.y+=p.vy; p.vy+=0.15; p.life--;
         ctx.globalAlpha=p.life/p.maxLife;
         ctx.fillStyle=p.color;
@@ -522,15 +561,17 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       });
       ctx.globalAlpha=1;
 
-      S.aliens.forEach((a: any)=>{ if(a.alive) drawAlien(a.x,a.y,a.type,a.hp,S.tick); });
+      // Draw
+      S.aliens.forEach(a=>{ if(a.alive) drawAlien(a.x,a.y,a.type,a.hp,S.tick); });
       ctx.fillStyle="#40ffff";
-      S.bullets.forEach((bul: any)=>ctx.fillRect(px(bul.x),px(bul.y),Math.ceil(bul.w),Math.ceil(bul.h)));
-      S.bombs.forEach((bm: any)=>{
+      S.bullets.forEach(bul=>ctx.fillRect(px(bul.x),px(bul.y),Math.ceil(bul.w),Math.ceil(bul.h)));
+      S.bombs.forEach(bm=>{
         ctx.fillStyle=bm.type==="homing"?"#ff40ff":"#ff8030";
         ctx.fillRect(px(bm.x),px(bm.y),Math.ceil(bm.w),Math.ceil(bm.h));
       });
       drawShip(S.player.x,S.player.y,"#60c0ff");
 
+      // HUD
       ctx.font=`bold ${Math.round(12*SC)}px monospace`;
       ctx.fillStyle="#f0c040"; ctx.textAlign="left";
       ctx.fillText(`SCORE ${S.score}`,8*SC,16*SC);
@@ -538,6 +579,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
       ctx.textAlign="right"; ctx.fillStyle="#ff6060";
       ctx.fillText("♥".repeat(Math.max(0,S.lives))+"♡".repeat(Math.max(0,3-S.lives)),CW-8*SC,16*SC);
 
+      // Alien bar
       const totalA=S.aliens.length, aliveA=alive.length;
       ctx.fillStyle="#ffffff11"; ctx.fillRect(16*SC,CH-10*SC,CW-32*SC,4*SC);
       ctx.fillStyle="#ff5050";   ctx.fillRect(16*SC,CH-10*SC,(CW-32*SC)*(aliveA/Math.max(totalA,1)),4*SC);
@@ -552,7 +594,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
-  const setTouch=(key: string, val: boolean)=>{ touchRef.current[key as keyof typeof touchRef.current]=val; };
+  const setTouch=(key,val)=>{ touchRef.current[key]=val; };
   const doRestart=()=>{ restartFnRef.current?.(); };
 
   return (
@@ -576,6 +618,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
             boxShadow:"0 0 40px #f0c04018",maxWidth:"100%",display:"block"}}
         />
 
+        {/* End overlay */}
         {endState && (
           <div style={{
             position:"absolute",inset:0,background:"rgba(0,0,0,0.88)",
@@ -595,6 +638,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
               PUNTAJE: {endState.score.toLocaleString()}
             </div>
 
+            {/* Score save */}
             {!scoreSaved ? (
               <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,marginBottom:12,width:"80%"}}>
                 <div style={{fontFamily:"monospace",fontSize:10,color:"#888",letterSpacing:1}}>GUARDAR PUNTAJE</div>
@@ -618,6 +662,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
               <div style={{fontFamily:"monospace",fontSize:11,color:"#40ff80",marginBottom:8}}>✓ PUNTAJE GUARDADO</div>
             )}
 
+            {/* Leaderboard toggle */}
             <button onClick={()=>setShowBoard(b=>!b)} style={{
               fontFamily:"monospace",fontSize:10,padding:"5px 14px",
               background:"transparent",color:"#888",border:"1px solid #333",
@@ -638,7 +683,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
                 {leaderboard.length===0 && (
                   <div style={{fontFamily:"monospace",fontSize:9,color:"#444",textAlign:"center"}}>Sin registros aún</div>
                 )}
-                {leaderboard.map((e: any,i: number)=>(
+                {leaderboard.map((e,i)=>(
                   <div key={i} style={{
                     display:"flex",gap:8,fontFamily:"monospace",fontSize:10,
                     padding:"3px 0",borderBottom:"1px solid #1a1a22",
@@ -669,6 +714,7 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
         )}
       </div>
 
+      {/* Touch controls */}
       {!endState && (
         <div style={{display:"flex",gap:16,marginTop:10,alignItems:"center"}}>
           <button onPointerDown={()=>setTouch("left",true)} onPointerUp={()=>setTouch("left",false)} onPointerLeave={()=>setTouch("left",false)} style={touchBtnStyle}>◀</button>
@@ -692,34 +738,37 @@ function SpaceGame({ onExit, onSecretCode }: { onExit: () => void; onSecretCode:
   );
 }
 
-const touchBtnStyle: React.CSSProperties = {
+const touchBtnStyle={
   width:56,height:56,borderRadius:10,border:"2px solid #2a2a2a",
   background:"#ffffff0a",color:"#ffffff55",fontSize:18,
   cursor:"pointer",fontFamily:"monospace",display:"flex",
   alignItems:"center",justifyContent:"center",touchAction:"none",
 };
 
+// ══════════════════════════════════════════════════════════════════
+// MAIN APP
+// ══════════════════════════════════════════════════════════════════
 export default function App() {
   const [screen,  setScreen]  = useState("galaxia");
   const [theme,   setTheme]   = useState("dark");
-  const [role,    setRole]    = useState<string | null>(null);
-  const [selRole, setSelRole] = useState<string | null>(null);
+  const [role,    setRole]    = useState(null);
+  const [selRole, setSelRole] = useState(null);
   const [pin,     setPin]     = useState("");
   const [pinErr,  setPinErr]  = useState("");
-  const [loans,   setLoans]   = useState<any[]>(()=>memStore.loans);
+  const [loans,   setLoans]   = useState(()=>memStore.loans);
   const [tab,     setTab]     = useState("loans");
   const [form,    setForm]    = useState({client:"",phone:"",address:"",rut:"",principal:"",days:"30"});
-  const [voucher, setVoucher] = useState<any>(null);
-  const [toast,   setToast]   = useState<any>(null);
-  const [payAmt,  setPayAmt]  = useState<{[key:string]:string}>({});
-  const [expanded,setExpanded]= useState<string|null>(null);
+  const [voucher, setVoucher] = useState(null);
+  const [toast,   setToast]   = useState(null);
+  const [payAmt,  setPayAmt]  = useState({});
+  const [expanded,setExpanded]= useState(null);
   const [search,  setSearch]  = useState("");
 
   useEffect(()=>{ memStore.loans=loans; },[loans]);
 
-  const showToast=(msg: string,type: string="ok")=>{ setToast({msg,type}); setTimeout(()=>setToast(null),2800); };
+  const showToast=(msg,type="ok")=>{ setToast({msg,type}); setTimeout(()=>setToast(null),2800); };
 
-  const T: any = {
+  const T={
     dark:{bg:"#09090f",card:"#111118",card2:"#18181f",border:"#252530",
       accent:"#f0c040",danger:"#e84040",ok:"#38c878",text:"#f0ede6",muted:"#666",input:"#0e0e16"},
     light:{bg:"#f0eff8",card:"#ffffff",card2:"#f7f6ff",border:"#e0dff0",
@@ -830,12 +879,15 @@ export default function App() {
     .empty-icon{font-size:40px;margin-bottom:10px;opacity:0.4;}
   `;
 
+  // ── LOGIC ──
   const handleLogin = () => {
     if(!selRole) return setPinErr("Selecciona un rol");
     const correct = selRole==="admin" ? ADMIN_KEY : USER_KEY;
     if(pin===correct){
+      // ✅ PIN CORRECTO → entra a la app
       setRole(selRole); setPinErr(""); setPin(""); setScreen("app");
     } else {
+      // ❌ PIN INCORRECTO → cierra modal, inicia juego
       setPin(""); setSelRole(null); setPinErr("");
       setScreen("galaxia");
     }
@@ -856,25 +908,25 @@ export default function App() {
     setTab("loans"); showToast("Préstamo creado ✓");
   };
 
-  const calcOverdue=(loan: any)=>{
+  const calcOverdue=(loan)=>{
     try{
       const parts=loan.createdAt.split("/");
       const d=new Date(parseInt(parts[2],10),parseInt(parts[1],10)-1,parseInt(parts[0],10));
       const today=new Date(); today.setHours(0,0,0,0);
-      const daysPassed=Math.floor((today.getTime()-d.getTime())/(1000*60*60*24));
+      const daysPassed=Math.floor((today-d)/(1000*60*60*24));
       const expected=Math.min(daysPassed,loan.days)*loan.daily;
       const diff=expected-loan.paid;
       return diff>0?Math.floor(diff/loan.daily):0;
     }catch{return 0;}
   };
 
-  const loanStatus=(loan: any)=>{
+  const loanStatus=(loan)=>{
     if(loan.paid>=loan.total) return "pagado";
     if(calcOverdue(loan)>=4) return "mora";
     return "al día";
   };
 
-  const registerPayment=(loan: any)=>{
+  const registerPayment=(loan)=>{
     const amount=parseInt(((payAmt[loan.id]||"")).replace(/\D/g,""),10);
     if(!amount||amount<=0) return showToast("Monto inválido","err");
     const late=calcOverdue(loan);
@@ -886,7 +938,7 @@ export default function App() {
     setVoucher({loan:updated,payment});
   };
 
-  const deleteLoan=(id: string)=>{
+  const deleteLoan=(id)=>{
     if(!confirm("¿Eliminar este préstamo?")) return;
     setLoans(prev=>prev.filter(l=>l.id!==id));
     showToast("Eliminado");
@@ -994,7 +1046,7 @@ export default function App() {
                 <div className="empty"><div className="empty-icon">💸</div>
                 <div>{search?"Sin resultados":"No hay préstamos"}</div></div>
               )}
-              {filtered.map((loan: any)=>{
+              {filtered.map(loan=>{
                 const st=loanStatus(loan), pct=Math.min(100,Math.round(loan.paid/loan.total*100));
                 const open=expanded===loan.id;
                 return(
@@ -1023,7 +1075,7 @@ export default function App() {
                           ...(loan.rut?[["RUT",loan.rut]]:[]),
                           ...(loan.address?[["Dirección",loan.address]]:[]),
                           ["Agente",loan.agente]
-                        ].map(([l,v]: any[])=>(
+                        ].map(([l,v])=>(
                           <div key={l} className="detail-row">
                             <span className="detail-lbl">{l}</span>
                             <span className="detail-val" style={l==="Restante"?{color:T.danger}:{}}>{v}</span>
@@ -1041,7 +1093,7 @@ export default function App() {
                         {loan.payments.length>0&&(
                           <div className="pay-history">
                             <div className="pay-history-title">Historial</div>
-                            {loan.payments.map((p: any)=>(
+                            {loan.payments.map(p=>(
                               <div key={p.id} className="pay-item">
                                 <div className="pay-dot"/>
                                 <span className="pay-meta">{p.date} {p.time}</span>
@@ -1071,10 +1123,10 @@ export default function App() {
                 <div className="form-grid">
                   {[["client","Nombre *","text","Juan Pérez"],["phone","Teléfono","tel","+56 9..."],
                     ["rut","RUT","text","12.345.678-9"],["address","Dirección","text","Calle y número"]
-                  ].map(([k,lb,tp,ph]: any[])=>(
+                  ].map(([k,lb,tp,ph])=>(
                     <div key={k} className="field">
                       <label>{lb}</label>
-                      <input type={tp} placeholder={ph} value={(form as any)[k]}
+                      <input type={tp} placeholder={ph} value={form[k]}
                         onChange={e=>setForm(f=>({...f,[k]:e.target.value}))}/>
                     </div>
                   ))}
@@ -1098,7 +1150,7 @@ export default function App() {
                 <div className="form-preview">
                   {[["Total a cobrar",`$${fmt(preview.total)}`],["Cuota diaria",`$${fmt(preview.daily)}`],
                     ["Interés 20%",`$${fmt(preview.total-previewP)}`],[`Plazo`,`${previewD}d`]
-                  ].map(([l,v]: any[])=>(
+                  ].map(([l,v])=>(
                     <div key={l} className="preview-item"><div className="lbl">{l}</div><div className="val">{v}</div></div>
                   ))}
                 </div>
@@ -1119,7 +1171,7 @@ export default function App() {
               ["Fecha",`${voucher.payment.date} ${voucher.payment.time}`],
               ["Cuota diaria",`$${fmt(voucher.loan.daily)}`],
               ["Restante",`$${fmt(voucher.loan.total-voucher.loan.paid)}`]
-            ].map(([l,v]: any[])=>(
+            ].map(([l,v])=>(
               <div key={l} className="voucher-row"><span className="lbl">{l}</span><span className="val">{v}</span></div>
             ))}
             <div className="voucher-row" style={{marginTop:10,paddingTop:10,borderTop:`1px solid ${T.border}`}}>
@@ -1139,4 +1191,3 @@ export default function App() {
     </>
   );
 }
-```
