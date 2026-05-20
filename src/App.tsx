@@ -1,5 +1,3 @@
-¡Claro! Aquí tienes el código completo corregido. Solo copia y pega todo en tu archivo App.tsx:
-
 ```tsx
 import { useState, useEffect, useRef, useCallback } from "react";
 
