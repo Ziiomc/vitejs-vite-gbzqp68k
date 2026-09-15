@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111925">
+  <meta name="description" content="ProFolio · Market Map, Open Tour, oportunidades Off-Market y estrategia inmobiliaria en un solo ecosistema.">
+  <title>ProFolio · Market Intelligence</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="https://ruta-las-llaves-aickqgx5z-ignacio-s-ziio.vercel.app/styles.css">
+  <link rel="stylesheet" href="./premium.css">
+</head>
+<body>
+<div id="app" class="profolio-premium">
+  <aside class="sidebar">
+    <a class="wordmark" href="/" aria-label="ProFolio inicio">
+      <span class="brand-lockup"><strong><em>Pro</em>Folio</strong><small>REAL ESTATE · HIGHER RETURNS.</small></span>
+    </a>
+
+    <nav class="premium-nav" aria-label="Navegación principal">
+      <button class="nav-item active" id="navExplore"><span class="nav-glyph">⌂</span><span>Inicio</span></button>
+      <button class="nav-item" data-premium-action="map"><span class="nav-glyph">▧</span><span>Mapa de Mercado</span></button>
+      <button class="nav-item" data-premium-action="properties"><span class="nav-glyph">⌑</span><span>Propiedades</span></button>
+      <button class="nav-item" id="navTour"><span class="nav-glyph">⌂</span><span>Open Tour</span><b id="navTourCount">0</b></button>
+      <button class="nav-item" data-premium-action="offmarket"><span class="nav-glyph">◇</span><span>Off-Market</span></button>
+      <button class="nav-item" id="navVideos"><span class="nav-glyph">▷</span><span>Video Open House</span></button>
+      <button class="nav-item" data-premium-action="assistant"><span class="nav-glyph">✦</span><span>Asistente IA</span></button>
+      <button class="nav-item" data-premium-action="analysis"><span class="nav-glyph">▥</span><span>Análisis de Zona</span></button>
+      <button class="nav-item" data-premium-action="favorites"><span class="nav-glyph">♡</span><span>Mis Favoritos</span></button>
+      <button class="nav-item" data-premium-action="reports"><span class="nav-glyph">▥</span><span>Reportes</span></button>
+      <button class="nav-item" id="navPortfolio"><span class="nav-glyph">ϟ</span><span>Portafolio Turbo</span></button>
+      <button class="nav-item" id="navHelp"><span class="nav-glyph">?</span><span>Guía de ProFolio</span></button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <article class="pro-card">
+        <span class="pro-diamond">◇</span>
+        <strong>ProFolio Pro</strong>
+        <p>Acceso completo.<br>Más oportunidades.<br>Mejores decisiones.</p>
+        <button type="button" data-premium-action="pro">Actualizar Plan <span>→</span></button>
+      </article>
+      <div class="workspace-badge">
+        <span class="workspace-avatar">PF</span>
+        <div><strong>Wilmington, NC</strong><small>Mercado inicial · Estados Unidos</small></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-workspace">
+    <header class="global-topbar">
+      <label class="global-search search"><span>⌕</span><input id="search" aria-label="Buscar propiedad, zona o ZIP" placeholder="Buscar zonas, direcciones, propiedades u oportunidades..."></label>
+      <nav class="top-links" aria-label="Navegación secundaria">
+        <button type="button" data-premium-action="map">Explorar</button>
+        <button type="button" data-premium-action="favorites">Mis Propiedades</button>
+        <button type="button" data-premium-action="analysis">Analítica</button>
+        <button type="button" data-premium-action="reports">Herramientas</button>
+        <button type="button" id="helpBtn">Recursos</button>
+      </nav>
+      <div class="profile-chip"><span class="profile-bell">♧<i></i></span><span class="profile-avatar">PF</span><div><strong>Wilmington</strong><small>Workspace Pro</small></div><span>⌄</span></div>
+    </header>
+
+    <section class="premium-hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <small>INVIERTE HOY, CONSTRUYE MAÑANA</small>
+        <h1 id="heroTitle">Más que propiedades,<br>creamos libertad.</h1>
+        <p>Datos. Oportunidades. Personas. Un mejor futuro.</p>
+      </div>
+      <div class="hero-mantra">BUENAS PROPIEDADES.<br><strong>MEJORES HISTORIAS.</strong></div>
+      <div class="hero-actions">
+        <button class="hero-action" type="button" data-premium-action="map"><span class="hero-icon">▧</span><span><strong>Mapa de Mercado</strong><small>Explora oportunidades</small></span></button>
+        <button class="hero-action" type="button" data-premium-action="tour"><span class="hero-icon">⌂</span><span><strong>Open Tour</strong><small>Agenda y recorre</small></span></button>
+        <button class="hero-action hero-turbo" id="turboBtn" type="button"><span class="hero-icon">ϟ</span><span><strong>Turbo</strong><small>Análisis instantáneo</small></span></button>
+        <button class="hero-action" id="publishBtn" type="button"><span class="hero-icon">＋</span><span><strong>Publicar Propiedad</strong><small>Llega a más inversionistas</small></span></button>
+      </div>
+    </section>
+
+    <div class="dashboard-grid">
+      <div class="map-column">
+        <section class="map-card">
+          <div class="map-toolbar">
+            <div class="explore-toolbar">
+              <label class="sector-select"><span>Sector</span><select id="sectorSelect" aria-label="Filtrar por sector"><option value="">Toda la región</option></select></label>
+              <button class="thin" id="homeBtn" aria-label="Mostrar toda la región">↺ Región</button>
+              <div class="view-switch"><button class="active" id="mapViewBtn">Mapa</button><button id="listViewBtn">Lista</button></div>
+            </div>
+            <div class="filter-row"><div class="controls" id="filters"></div><span class="results-summary" id="resultCount"></span></div>
+          </div>
+
+          <section class="map-shell" id="market-section">
+            <div class="map-wrap">
+              <div id="market-map" class="map"></div>
+              <div id="mapFallbackNote" class="map-fallback-note" hidden><b>Mapa base temporalmente no disponible</b><span>Las delimitaciones verificadas, propiedades y Open Tour siguen operativos.</span></div>
+              <div class="map-label">Wilmington &amp; costa de Carolina del Norte</div>
+              <button class="wilmington-focus" id="wilmingtonFocus">⌖ Ver Wilmington</button>
+              <button class="location" id="location">⌖ Mi ubicación</button>
+
+              <section id="areaVideoDock" class="area-video-dock" hidden aria-hidden="true"><div class="area-video-dock-head"><div><small>VIDEO TOUR · MÁX. 60 S</small><strong id="areaVideoDockTitle"></strong></div><button id="areaVideoDockClose" type="button" aria-label="Cerrar video">×</button></div><video id="areaVideoDockPlayer" controls playsinline preload="metadata"></video><p id="areaVideoDockWarning" class="video-warning" hidden></p></section>
+
+              <aside id="areaPanel" class="area-panel" hidden aria-live="polite"><button id="areaPanelClose" class="area-panel-close" type="button" aria-label="Cerrar sector">×</button><small id="areaPanelEyebrow">SECTOR · MARKET MAP</small><h3 id="areaPanelName"></h3><div class="area-meta"><span id="areaPanelZip"></span><span id="areaPanelCount"></span></div><p id="areaPanelSource"></p><div id="areaVideoInline" class="area-video-inline"><button id="areaVideoCover" class="area-video-cover pending" type="button"><span class="play">＋</span><span><strong>VIDEO TOUR · 60 S</strong><small id="areaVideoInlineStatus">Video pendiente para esta área</small></span></button><video id="areaInlineVideo" controls playsinline preload="metadata" hidden></video><div class="area-video-tools"><span>Contenido propio del sector</span><button id="areaVideoManageInline" type="button">Gestionar video</button></div></div><div class="area-panel-actions"><button id="areaExploreBtn" type="button">Explorar propiedades</button><button id="areaOpenTourBtn" class="tour-start" type="button">↝ Iniciar Open Tour</button><button id="areaVideoBtn" type="button">＋ Añadir video</button><button id="areaOverviewBtn" type="button">Volver a región</button></div></aside>
+            </div>
+
+            <details class="map-legend"><summary>Capas del mapa</summary><aside class="legend"><h2>Leer el mapa</h2><p>Toca una propiedad para verla o añadirla a tu Open Tour.</p><div class="legend-item"><span class="legend-icon">●</span><div><strong>Regular</strong><small>Inventario residencial.</small></div></div><div class="legend-item"><span class="legend-icon">▲</span><div><strong>Premium</strong><small>Posicionamiento alto.</small></div></div><div class="legend-item"><span class="legend-icon">◇</span><div><strong>Oportunidad</strong><small>Ventaja o atributo especial.</small></div></div><div class="legend-item"><span class="legend-icon">ϟ</span><div><strong>Turbo</strong><small>Intervención comercial prioritaria.</small></div></div><div class="legend-item"><span class="legend-icon">◆</span><div><strong>Off-market</strong><small>FSBO o inventario detectado localmente.</small></div></div><div class="coverage"><b>Cobertura PROFOLIO</b><div class="zip-cloud" id="zipCloud"></div><div class="territory-key"><i></i> límites municipales/CDP reales</div><div class="territory-key"><i class="anchor"></i> sector referencial sin frontera legal</div><button class="coverage-action" id="areaVideoManagerBtn" type="button">Gestionar videos de 60 s</button></div></aside></details>
+          </section>
+        </section>
+
+        <section class="metric-strip" aria-label="Métricas del mercado">
+          <article><span class="metric-icon">▥</span><div><strong id="premiumMetricCount">—</strong><small>Propiedades activas</small><em>+12% <i>vs. mes anterior</i></em></div></article>
+          <article><span class="metric-icon">$</span><div><strong id="premiumMetricPrice">—</strong><small>Precio medio</small><em>+6.4% <i>vs. mes anterior</i></em></div></article>
+          <article><span class="metric-icon">♟</span><div><strong>8.7%</strong><small>Rendimiento promedio</small><em>+1.2% <i>vs. mes anterior</i></em></div></article>
+          <article><span class="metric-icon">↗</span><div><strong>28 días</strong><small>Tiempo en el mercado</small><em class="negative">-18% <i>vs. mes anterior</i></em></div></article>
+        </section>
+
+        <section class="feature-row">
+          <article class="feature-card video-feature"><div class="feature-heading"><span>▣</span><div><strong>Video Open House</strong><small>Recorre propiedades desde cualquier lugar.</small></div></div><div class="thumb-stack"><span></span><span></span><span></span><b>▶</b></div><button type="button" data-premium-action="videos">Explorar Tours →</button></article>
+          <article class="feature-card assistant-feature"><div class="feature-heading"><span>✦</span><div><strong>Asistente IA</strong><small>Tu analista de inversión, 24/7.</small></div></div><div class="assistant-prompts"><span>¿Cuál es la mejor zona para invertir?</span><span>Compara propiedades similares</span><span>Estima el retorno potencial</span></div><button type="button" data-premium-action="assistant">Hablar con IA →</button></article>
+          <article class="feature-card offmarket-feature"><div class="feature-heading"><span>▣</span><div><strong>Off-Market</strong><small>Propiedades exclusivas. Acceso limitado.</small></div></div><div class="offmarket-thumbs"><span></span><span></span></div><button type="button" data-premium-action="offmarket">Ver oportunidades →</button></article>
+          <blockquote class="quote-card">“<strong>La mejor inversión<br>también es una mejor vida.</strong><small>ProFolio</small></blockquote>
+        </section>
+      </div>
+
+      <aside class="right-rail">
+        <section class="detail-grid" id="properties-section">
+          <article class="panel properties-panel"><div class="panel-head-row"><div><h2>Propiedades Destacadas</h2><p class="muted">Oportunidades seleccionadas para tu mercado</p></div><button class="mini-action" id="favoritesBtn" type="button">♡ Ver todas</button></div><div class="cards" id="propertyCards"></div></article>
+          <aside class="panel tour-panel" id="tourPanel" hidden><button class="close tour-close" id="closeTourBtn" aria-label="Cerrar Open Tour">×</button><div class="panel-head-row"><div><h2>Open Tour</h2><p class="muted" id="tourHint">Selecciona dos o más propiedades para construir un recorrido.</p></div><button class="mini-action" id="savedToursInlineBtn" type="button">Guardados</button></div><div class="tour-stat"><div><span>Paradas</span><b id="tourStops">0</b></div><div><span>Distancia est.</span><b id="tourKm">0 km</b></div><div><span>Tiempo aprox.</span><b id="tourTime">0 min</b></div></div><div class="add-address"><input aria-label="Agregar dirección manual" id="manualAddress" placeholder="Agregar dirección manual"><button id="addAddressBtn" aria-label="Añadir parada">＋</button></div><div class="tour-list" id="tourList"></div><div class="tour-actions"><button id="optimizeBtn">Ordenar ruta</button><button class="primary" id="saveTourBtn">Guardar Open Tour</button><button id="clearTourBtn">Limpiar</button><button id="shareTourBtn">Compartir</button></div><p class="legal-note">Distancia y duración son estimaciones geométricas para planificación. La navegación final debe abrirse en un proveedor de mapas.</p></aside>
+        </section>
+
+        <article class="offmarket-banner"><span class="banner-diamond">◇</span><div><strong>Oportunidades Off-Market</strong><p>Accede a propiedades exclusivas antes que todos.</p></div><button type="button" data-premium-action="offmarket">Explorar ahora →</button></article>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<div class="tour-bar" id="tourBar"><b id="tourBarCount">0 seleccionadas</b><span id="tourBarSummary">Crea tu recorrido</span><button id="tourBarClear">Limpiar</button><button class="primary" id="tourBarOpen">Ver Open Tour</button></div>
+<div id="modal" class="modal" aria-hidden="true"><div class="modal-card" id="modalCard" role="dialog" aria-modal="true" aria-label="Detalle de ProFolio" tabindex="-1"></div></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div class="legacy-actions" aria-hidden="true">
+  <button id="savedToursBtn" type="button">Recorridos guardados</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://ruta-las-llaves-aickqgx5z-ignacio-s-ziio.vercel.app/territory-data.js"></script>
+<script src="https://ruta-las-llaves-aickqgx5z-ignacio-s-ziio.vercel.app/app.js"></script>
+<script src="./ui-premium.js"></script>
+</body>
+</html>
