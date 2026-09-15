@@ -1,0 +1,112 @@
+/* ProFolio mobile v2 — loaded after mobile.css. Keeps desktop unchanged. */
+@media (max-width:900px){
+  html,body,#app.profolio-premium,.main-workspace{width:100%;max-width:100%;overflow-x:hidden}
+  button,input,select,textarea{max-width:100%}
+
+  .global-topbar{min-height:56px!important;padding:7px 8px!important;gap:7px!important}
+  .global-search{height:40px!important;border-radius:11px!important}
+  .profile-avatar{width:36px!important;height:36px!important}
+
+  .premium-hero{padding:16px 11px 11px!important}
+  .hero-copy{max-width:94%!important}
+  .hero-copy h1{font-size:clamp(24px,7.4vw,29px)!important;line-height:1.02!important;margin:6px 0 5px!important}
+  .hero-copy p{font-size:10px!important;max-width:92%!important}
+  .hero-actions{margin-top:13px!important;gap:7px!important}
+  .hero-action{min-height:57px!important;padding:8px 9px!important;border-radius:12px!important;gap:7px!important}
+  .hero-action .hero-icon{font-size:21px!important;min-width:22px!important}
+  .hero-action strong{font-size:11px!important}
+  .hero-action small{font-size:7.5px!important}
+
+  .dashboard-grid{padding:8px 7px 0!important;gap:8px!important}
+  .map-card{padding:7px!important;border-radius:14px!important}
+  .map-toolbar{margin-bottom:7px!important}
+  .explore-toolbar{gap:5px!important}
+  .sector-select,.explore-toolbar .thin,.view-switch{height:37px!important;min-height:37px!important}
+  .sector-select{padding:0 8px!important}
+  .sector-select select{font-size:10px!important}
+  .controls{gap:5px!important;padding-bottom:4px!important}
+  .controls button{min-height:33px!important;padding:0 10px!important;font-size:8.5px!important}
+
+  .map-wrap{position:relative!important;height:clamp(370px,58dvh,560px)!important;min-height:370px!important;max-height:560px!important;overflow:hidden!important;touch-action:none!important;overscroll-behavior:contain!important;-webkit-user-select:none;user-select:none}
+  #market-map,.leaflet-container,.leaflet-map-pane{touch-action:none!important;overscroll-behavior:contain!important}
+  #market-map{height:100%!important;min-height:370px!important}
+
+  .map-label{position:absolute!important;left:9px!important;top:9px!important;z-index:820!important;max-width:58%!important;padding:6px 8px!important;font-size:7.5px!important;pointer-events:none!important}
+
+  .wilmington-focus,.location{position:absolute!important;top:auto!important;bottom:10px!important;z-index:930!important;margin:0!important;transform:none!important;touch-action:manipulation!important}
+  .wilmington-focus{right:60px!important;left:auto!important;height:42px!important;min-height:42px!important;max-width:132px!important;padding:0 10px!important;font-size:8px!important;white-space:nowrap!important}
+  .location{right:10px!important;left:auto!important;width:42px!important;min-width:42px!important;max-width:42px!important;height:42px!important;min-height:42px!important;padding:0!important;overflow:hidden!important;color:transparent!important;border-radius:12px!important}
+  .location::before{display:none!important}
+  .location::after{content:'⌖'!important;position:absolute!important;inset:0!important;display:grid!important;place-items:center!important;color:#7c0f30!important;font-size:19px!important;line-height:1!important;pointer-events:none!important}
+  .location[aria-busy="true"]::after{content:'…'!important}
+
+  .map-legend{left:9px!important;bottom:10px!important;z-index:920!important}
+  .map-legend summary{min-height:38px!important;display:flex!important;align-items:center!important;padding:0 10px!important;font-size:8.5px!important}
+  .leaflet-control-zoom{margin-right:9px!important;margin-bottom:61px!important;z-index:850!important}
+  .leaflet-control-zoom a{width:36px!important;height:36px!important;line-height:36px!important}
+
+  .area-panel{z-index:980!important;left:7px!important;right:7px!important;bottom:7px!important;max-height:68%!important;padding:13px!important;border-radius:17px!important}
+  .area-panel h3{font-size:18px!important}
+  .area-panel-actions{gap:6px!important}
+  .area-panel-actions button{min-height:39px!important;font-size:8.5px!important}
+
+  .metric-strip{margin-top:8px!important}
+  .metric-strip article{min-height:76px!important;padding:9px!important;gap:7px!important}
+  .metric-icon{width:31px!important;height:31px!important;flex:0 0 31px!important}
+  .metric-strip strong{font-size:14px!important}
+  .metric-strip small,.metric-strip em{font-size:7.5px!important}
+
+  .properties-panel{padding:12px!important}
+  .panel-head-row h2{font-size:17px!important}
+  #propertyCards.cards{grid-auto-columns:minmax(84%,1fr)!important;gap:8px!important}
+  #propertyCards .property-img{height:160px!important}
+  #propertyCards .property-body{padding:10px!important}
+  #propertyCards .price{font-size:17px!important}
+  #propertyCards h3{font-size:13px!important}
+  .card-actions{gap:6px!important}
+  .card-actions button{min-height:37px!important;padding:7px!important}
+
+  .feature-row{gap:8px!important}
+  .feature-card,.quote-card{padding:13px!important;border-radius:14px!important}
+  .offmarket-banner{padding:13px!important}
+
+  .tour-panel{padding:12px!important}
+  .tour-actions{gap:6px!important}
+  .tour-actions button{min-height:39px!important}
+
+  .modal{padding:6px!important}
+  .modal-card{max-height:86dvh!important;padding:14px!important;border-radius:18px 18px 12px 12px!important;overflow:auto!important}
+  .premium-modal-head h2{font-size:20px!important;line-height:1.1!important}
+  .premium-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .premium-kpi{min-width:0!important}
+
+  .premium-nav{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+  .premium-nav .nav-item{min-width:0!important}
+  .premium-nav .nav-item>span:last-of-type{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+
+@media (max-width:520px){
+  .global-topbar{min-height:54px!important}
+  .global-search{height:39px!important}
+  .premium-hero{padding:14px 9px 9px!important}
+  .hero-copy h1{font-size:25px!important}
+  .hero-actions{gap:6px!important;margin-top:11px!important}
+  .hero-action{min-height:54px!important;padding:7px 8px!important}
+  .hero-action small{display:none!important}
+  .map-wrap{height:clamp(360px,57dvh,520px)!important;min-height:360px!important}
+  #market-map{min-height:360px!important}
+  .wilmington-focus{max-width:118px!important;font-size:7.5px!important}
+  #propertyCards.cards{grid-auto-columns:89%!important}
+  #propertyCards .property-img{height:155px!important}
+  .premium-nav #navExplore,.premium-nav .nav-item[data-premium-action="map"],.premium-nav #navTour,.premium-nav #navVideos,.premium-nav #navPortfolio{font-size:7.5px!important}
+}
+
+@media (max-width:380px){
+  .hero-copy h1{font-size:23px!important}
+  .map-wrap{min-height:345px!important;height:55dvh!important}
+  #market-map{min-height:345px!important}
+  .wilmington-focus{right:58px!important;max-width:108px!important;padding:0 7px!important}
+  .location{right:8px!important}
+  .map-label{max-width:54%!important}
+  #propertyCards.cards{grid-auto-columns:93%!important}
+}
