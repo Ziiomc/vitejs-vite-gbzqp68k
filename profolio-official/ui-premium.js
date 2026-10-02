@@ -104,7 +104,7 @@
     if(document.getElementById('pfSettingsStyles')) return;
     const style=document.createElement('style');
     style.id='pfSettingsStyles';
-    style.textContent=\`
+    style.textContent=`
       .pf-settings-nav{margin-top:6px}.profile-chip{cursor:pointer}
       .pf-settings-backdrop{position:fixed;inset:0;z-index:99990;background:rgba(7,10,16,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:18px}
       .pf-settings-backdrop.open{display:flex}.pf-settings-card{width:min(560px,100%);border-radius:24px;background:#fff;color:#17202d;box-shadow:0 24px 80px rgba(0,0,0,.28);overflow:hidden;border:1px solid rgba(17,25,37,.08)}
@@ -128,7 +128,7 @@
       body.pf-dark .pf-settings-close{background:#1b2634;color:#e7edf5}body.pf-dark .pf-setting-row{background:#0d151f;border-color:#293649}body.pf-dark .pf-setting-copy small,body.pf-dark .pf-settings-note{color:#96a4b5}
       body.pf-dark .pf-setting-control{background:#1a2532}body.pf-dark .pf-setting-control button{color:#aeb9c7}body.pf-dark .pf-setting-control button.active{color:#fff}
       @media(max-width:760px){.pf-settings-card{border-radius:20px}.pf-settings-head{padding:20px 18px 15px}.pf-settings-body{padding:16px 18px 20px}.pf-setting-row{align-items:flex-start;flex-direction:column}.pf-setting-control{width:100%}.pf-setting-control button{flex:1}}
-    \`;
+    `;
     document.head.appendChild(style);
   };
 
