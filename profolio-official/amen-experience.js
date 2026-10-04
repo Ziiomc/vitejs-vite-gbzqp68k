@@ -267,6 +267,7 @@
       }
     });
     syncSoundUI();
+    installBasicButtons();
   };
 
   const wireEasyProfileAccess=()=>{
@@ -292,6 +293,26 @@
       if(!btn||btn.closest('#amenProfileOverlay')||btn.closest('#amenBottomNav')||btn.closest('#pfSettingsBackdrop')) return;
       playTone('tap');
     },false);
+  };
+
+  const openSimpleModal=(title,kicker,body)=>{
+    const modal=byId('modal'),card=byId('modalCard');if(!modal||!card)return;
+    card.innerHTML='<div class="premium-modal-head"><div><small>'+kicker+'</small><h2>'+title+'</h2></div><button class="premium-modal-close" type="button" data-amen-basic-close>×</button></div>'+body;
+    modal.classList.add('show','open','visible');modal.setAttribute('aria-hidden','false');
+    card.querySelector('[data-amen-basic-close]')?.addEventListener('click',()=>{modal.classList.remove('show','open','visible');modal.setAttribute('aria-hidden','true');card.innerHTML=''})
+  };
+
+  const installBasicButtons=()=>{
+    const bind=(id,fn)=>{const el=byId(id);if(el&&!el.dataset.amenBasicBound){el.dataset.amenBasicBound='1';el.addEventListener('click',fn)}};
+    bind('turboBtn',()=>{const b=$('#filters button').find(x=>(x.textContent||'').trim()==='Turbo');b?.click();byId('properties-section')?.scrollIntoView({behavior:'smooth',block:'start'});toast(tr('Mostrando oportunidades Turbo.','Showing Turbo opportunities.'))});
+    bind('navPortfolio',()=>byId('turboBtn')?.click());
+    bind('navVideos',()=>openSimpleModal(tr('Video Open House','Video Open House'),'PROFOLIO · OPEN HOUSE','<p class="premium-answer">'+tr('Acceso simple a los recorridos y videos de las propiedades y sectores. Selecciona una propiedad desde la ficha para continuar el recorrido.','Simple access to property and area tours and videos. Select a property card to continue.')+'</p>'));
+    bind('navHelp',()=>openSimpleModal(tr('Guía de ProFolio','ProFolio Guide'),'PROFOLIO · VALUE CORE','<div class="premium-grid"><div class="premium-kpi"><strong>1</strong><small>'+tr('Explora el mapa','Explore the map')+'</small></div><div class="premium-kpi"><strong>2</strong><small>'+tr('Guarda favoritos','Save favorites')+'</small></div><div class="premium-kpi"><strong>3</strong><small>'+tr('Arma un Open Tour','Build an Open Tour')+'</small></div><div class="premium-kpi"><strong>4</strong><small>'+tr('Crea tu perfil','Create your profile')+'</small></div></div>'));
+    bind('helpBtn',()=>byId('navHelp')?.click());
+    bind('publishBtn',()=>{
+      openSimpleModal(tr('Registrar oportunidad','Register opportunity'),'PROFOLIO · OFF-MARKET','<form id="amenQuickProperty" class="amen-form"><label class="full">'+tr('Nombre o dirección','Name or address')+'<input name="title" required maxlength="100" placeholder="'+tr('Ej. Propiedad detectada en Wilmington','E.g. Wilmington opportunity')+'"></label><label>'+tr('Sector','Area')+'<input name="zone" maxlength="80" placeholder="Wilmington"></label><label>ZIP<input name="zip" maxlength="10" placeholder="28401"></label></form><div class="amen-profile-actions"><button class="amen-save" type="submit" form="amenQuickProperty">'+tr('Guardar ficha','Save record')+'</button></div>');
+      const form=byId('amenQuickProperty');form?.addEventListener('submit',e=>{e.preventDefault();const fd=new FormData(form),all=readJSON('pf_quick_properties_v1',[]);all.unshift({id:'draft-'+Date.now(),title:String(fd.get('title')||'').trim(),zone:String(fd.get('zone')||'').trim(),zip:String(fd.get('zip')||'').trim(),createdAt:Date.now()});writeJSON('pf_quick_properties_v1',all.slice(0,50));playTone('save');toast(tr('Ficha guardada en este dispositivo.','Record saved on this device.'));byId('modal')?.classList.remove('show','open','visible')})
+    });
   };
 
   const maintain=()=>{
