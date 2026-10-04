@@ -104,7 +104,7 @@
   function installMapKey(){
     const card=$('.map-card'),toolbar=$('.map-toolbar');if(!card||id('amenMapKey'))return;
     const k=document.createElement('div');k.id='amenMapKey';k.className='amen-map-key';k.setAttribute('aria-label',tr('Simbología rápida del mapa','Quick map legend'));
-    k.innerHTML=`<button type="button" class="coverage" data-amen-map="coverage">◎ ${tr('Cobertura','Coverage')}</button><button type="button" data-amen-map="regular">● Regular</button><button type="button" data-amen-map="premium">▲ Premium</button><button type="button" data-amen-map="feature">◇ ${tr('Oportunidad','Opportunity')}</button><button type="button" data-amen-map="turbo">ϟ Turbo</button>`;
+    k.innerHTML=`<button type="button" class="amen-coverage" data-amen-map="coverage">◎ ${tr('Cobertura','Coverage')}</button><button type="button" data-amen-map="regular">● Regular</button><button type="button" data-amen-map="premium">▲ Premium</button><button type="button" data-amen-map="feature">◇ ${tr('Oportunidad','Opportunity')}</button><button type="button" data-amen-map="turbo">ϟ Turbo</button>`;
     if(toolbar&&toolbar.parentElement===card)toolbar.insertAdjacentElement('afterend',k);else card.prepend(k);
     k.addEventListener('click',e=>{const b=e.target.closest('[data-amen-map]');if(!b)return;const a=b.dataset.amenMap;
       if(a==='coverage')id('homeBtn')?.click();else filter(a==='feature'?'Oportunidad':a[0].toUpperCase()+a.slice(1))?.click();
