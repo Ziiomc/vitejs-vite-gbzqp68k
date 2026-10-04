@@ -38,7 +38,7 @@ button{touch-action:manipulation}
   border-radius:999px;padding:6px 8px;cursor:pointer
 }
 .amen-map-key button:hover,.amen-map-key button.active{background:var(--amen-wine);color:var(--amen-yellow)}
-.amen-map-key .coverage{background:var(--amen-yellow);color:var(--amen-wine-deep)}
+.amen-map-key .amen-coverage{background:var(--amen-yellow);color:var(--amen-wine-deep)}
 .amen-bottom-nav{
   position:fixed;z-index:5000;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);
   width:min(760px,calc(100% - 24px));min-height:62px;display:grid;grid-template-columns:repeat(5,1fr);
@@ -182,7 +182,7 @@ body.pf-dark .amen-profile-status{background:#2a220d;border-color:#6c5b22;color:
   min-width:0;overflow:hidden;text-overflow:ellipsis;
   color:var(--amen-wine-deep);font-size:8px;padding:7px 5px
 }
-.amen-map-key .coverage{background:var(--amen-wine);color:var(--amen-yellow)}
+.amen-map-key .amen-coverage{background:var(--amen-wine);color:var(--amen-yellow)}
 .amen-map-key button:hover,.amen-map-key button.active{background:var(--amen-wine-deep);color:var(--amen-yellow)}
 
 @media(max-width:620px){
