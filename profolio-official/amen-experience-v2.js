@@ -102,10 +102,11 @@
   }
   function filter(label){return $$('#filters button').find(b=>(b.textContent||'').trim().toLowerCase()===label.toLowerCase())}
   function installMapKey(){
-    const w=$('.map-wrap');if(!w||id('amenMapKey'))return;
+    const card=$('.map-card'),toolbar=$('.map-toolbar');if(!card||id('amenMapKey'))return;
     const k=document.createElement('div');k.id='amenMapKey';k.className='amen-map-key';k.setAttribute('aria-label',tr('Simbología rápida del mapa','Quick map legend'));
     k.innerHTML=`<button type="button" class="coverage" data-amen-map="coverage">◎ ${tr('Cobertura','Coverage')}</button><button type="button" data-amen-map="regular">● Regular</button><button type="button" data-amen-map="premium">▲ Premium</button><button type="button" data-amen-map="feature">◇ ${tr('Oportunidad','Opportunity')}</button><button type="button" data-amen-map="turbo">ϟ Turbo</button>`;
-    w.appendChild(k);k.addEventListener('click',e=>{const b=e.target.closest('[data-amen-map]');if(!b)return;const a=b.dataset.amenMap;
+    if(toolbar&&toolbar.parentElement===card)toolbar.insertAdjacentElement('afterend',k);else card.prepend(k);
+    k.addEventListener('click',e=>{const b=e.target.closest('[data-amen-map]');if(!b)return;const a=b.dataset.amenMap;
       if(a==='coverage')id('homeBtn')?.click();else filter(a==='feature'?'Oportunidad':a[0].toUpperCase()+a.slice(1))?.click();
       $$('#amenMapKey button').forEach(x=>x.classList.toggle('active',x===b));tone(560);
     });
