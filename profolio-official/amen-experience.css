@@ -125,3 +125,110 @@ body.pf-dark .amen-profile-status{background:#2a220d;border-color:#6c5b22;color:
   .amen-form{grid-template-columns:1fr}.amen-form label.full{grid-column:auto}.amen-profile-actions{flex-direction:column}
   .amen-map-key button{font-size:7px;padding:6px}.hero-action{border-width:1px!important}
 }
+
+/* ProFolio map experience polish · 2026-10-04 */
+.map-card{
+  background:linear-gradient(145deg,var(--amen-wine-deep),var(--amen-wine))!important;
+  border:2px solid var(--amen-yellow)!important;
+  box-shadow:0 18px 42px rgba(56,4,22,.24)!important
+}
+.map-toolbar{color:#fff}
+.map-toolbar .sector-select,
+.map-toolbar .explore-toolbar .thin,
+.map-toolbar .view-switch,
+.map-toolbar .controls button{
+  border-color:rgba(246,201,69,.9)!important;
+  background:#fff7cf!important;
+  color:var(--amen-wine-deep)!important
+}
+.map-toolbar .view-switch .active,
+.map-toolbar .controls button.active{
+  background:var(--amen-yellow)!important;
+  color:var(--amen-wine-deep)!important;
+  box-shadow:inset 0 0 0 1px rgba(75,8,29,.16)!important
+}
+.map-toolbar .sector-select span,
+.map-toolbar .results-summary{color:#ffe788!important}
+.map-toolbar .sector-select select{color:var(--amen-wine-deep)!important}
+.map-wrap{
+  border:2px solid rgba(246,201,69,.95)!important;
+  box-shadow:0 0 0 3px rgba(75,8,29,.16),inset 0 0 0 1px rgba(255,255,255,.18)!important;
+  background:#efe6d9!important
+}
+.map-label{
+  background:rgba(75,8,29,.94)!important;
+  border:1px solid var(--amen-yellow)!important;
+  color:#fff4bf!important
+}
+.wilmington-focus,.location{
+  background:var(--amen-yellow)!important;
+  color:var(--amen-wine-deep)!important;
+  border:1px solid var(--amen-wine)!important
+}
+.map-legend summary{
+  background:var(--amen-wine-deep)!important;
+  color:var(--amen-yellow)!important;
+  border:1px solid var(--amen-yellow)!important
+}
+.amen-map-key{
+  position:relative;z-index:35;left:auto;right:auto;bottom:auto;transform:none;
+  width:100%;max-width:none;margin:0 0 8px;padding:6px;
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;overflow:visible;
+  border:1px solid var(--amen-yellow);border-radius:12px;
+  background:linear-gradient(180deg,#ffe47b,var(--amen-yellow));
+  box-shadow:0 7px 18px rgba(42,4,16,.22)
+}
+.amen-map-key button{
+  min-width:0;overflow:hidden;text-overflow:ellipsis;
+  color:var(--amen-wine-deep);font-size:8px;padding:7px 5px
+}
+.amen-map-key .coverage{background:var(--amen-wine);color:var(--amen-yellow)}
+.amen-map-key button:hover,.amen-map-key button.active{background:var(--amen-wine-deep);color:var(--amen-yellow)}
+
+@media(max-width:620px){
+  html,body,#app.profolio-premium,.main-workspace{
+    background:linear-gradient(180deg,#4b081d 0%,#73102f 58%,#4b081d 100%)!important
+  }
+  .dashboard-grid{padding:8px!important;background:transparent!important}
+  .map-card{padding:8px!important;border-radius:18px!important}
+  .map-toolbar{display:grid!important;gap:7px!important;margin-bottom:7px!important}
+  .explore-toolbar{width:100%;max-width:100%;gap:5px!important;overflow-x:auto!important;scrollbar-width:none}
+  .explore-toolbar::-webkit-scrollbar{display:none}
+  .sector-select{flex:1 0 158px;min-width:158px}
+  .sector-select select{max-width:108px!important}
+  .explore-toolbar .thin{flex:0 0 auto}
+  .view-switch{flex:0 0 auto}
+  .filter-row{width:100%;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important;overflow:visible!important}
+  .controls{display:grid!important;grid-template-columns:repeat(5,max-content);gap:5px!important;overflow-x:auto!important;padding-bottom:1px}
+  .controls button{min-height:32px!important;padding:0 9px!important}
+  .results-summary{align-self:center;font-size:8px!important;white-space:nowrap}
+  .amen-map-key{
+    grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:8px;
+    padding:6px;border-radius:13px
+  }
+  .amen-map-key button{
+    white-space:normal;overflow:visible;text-overflow:clip;line-height:1.12;
+    min-height:32px;font-size:8px;padding:5px 4px
+  }
+  .map-wrap{height:420px!important;border-radius:15px!important}
+  .map{min-height:420px!important}
+  .map-label{display:none!important}
+  .map-legend{display:none!important}
+  .pfl{display:none!important}
+  .pfm{
+    width:28px!important;height:28px!important;border-width:2px!important;
+    box-shadow:0 4px 10px rgba(31,3,13,.26)!important
+  }
+  .pfm span{font-size:11px!important}
+  .leaflet-popup-content-wrapper{max-width:245px}
+  .leaflet-popup-content{margin:11px 13px!important}
+  .wilmington-focus{right:49px!important;top:10px!important;max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .location{right:9px!important;top:10px!important}
+  .right-rail>.detail-grid{
+    background:#fff8df!important;
+    border-color:var(--amen-yellow)!important
+  }
+  .panel-head-row h2{color:var(--amen-wine-deep)!important}
+  .property{border-color:#e6c970!important}
+}
+
