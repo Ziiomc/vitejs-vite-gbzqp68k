@@ -203,12 +203,12 @@ body.pf-dark .amen-profile-status{background:#2a220d;border-color:#6c5b22;color:
   .controls button{min-height:32px!important;padding:0 9px!important}
   .results-summary{align-self:center;font-size:8px!important;white-space:nowrap}
   .amen-map-key{
-    grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:8px;
-    padding:6px;border-radius:13px
+    grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;margin-bottom:8px;
+    padding:5px;border-radius:11px
   }
   .amen-map-key button{
-    white-space:normal;overflow:visible;text-overflow:clip;line-height:1.12;
-    min-height:32px;font-size:8px;padding:5px 4px
+    white-space:nowrap;overflow:hidden;text-overflow:clip;line-height:1;
+    min-height:30px;font-size:7px;padding:5px 2px;border-radius:8px
   }
   .map-wrap{height:420px!important;border-radius:15px!important}
   .map{min-height:420px!important}
@@ -216,10 +216,10 @@ body.pf-dark .amen-profile-status{background:#2a220d;border-color:#6c5b22;color:
   .map-legend{display:none!important}
   .pfl{display:none!important}
   .pfm{
-    width:28px!important;height:28px!important;border-width:2px!important;
+    width:24px!important;height:24px!important;border-width:2px!important;
     box-shadow:0 4px 10px rgba(31,3,13,.26)!important
   }
-  .pfm span{font-size:11px!important}
+  .pfm span{font-size:9px!important}
   .leaflet-popup-content-wrapper{max-width:245px}
   .leaflet-popup-content{margin:11px 13px!important}
   .wilmington-focus{right:49px!important;top:10px!important;max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
