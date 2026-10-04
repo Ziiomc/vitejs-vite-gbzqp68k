@@ -321,6 +321,7 @@
     enhanceSettings();
     syncProfileUI();
     syncSoundUI();
+    installBasicButtons();
   };
 
   wireEasyProfileAccess();
