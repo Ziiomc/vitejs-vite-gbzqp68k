@@ -30,8 +30,8 @@ function previewDraft(id){
   const details=[
     [L('Tipo de propiedad','Property type'),draftType(x)],
     [L('Precio solicitado','Asking price'),usMoney(x.price)],
-    [L('Dormitorios','Bedrooms'),x.beds===undefined?'—':String(x.beds)],
-    [L('Baños','Bathrooms'),x.baths===undefined?'—':String(x.baths)],
+    [L('Dormitorios','Bedrooms'),x.beds==null?'—':String(x.beds)],
+    [L('Baños','Bathrooms'),x.baths==null?'—':String(x.baths)],
     [L('Superficie interior','Interior area'),x.sqft?Number(x.sqft).toLocaleString('en-US')+' sq ft':'—'],
     [L('Estado del borrador','Draft status'),draftStateLabel(x)]
   ];
