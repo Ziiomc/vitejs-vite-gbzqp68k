@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="./amen-experience.css">
   <link rel="stylesheet" href="./launch.css">
   <link rel="stylesheet" href="./tour-panel.css">
-  <link rel="stylesheet" href="./etapa0-mapa.css?v=map-first-20261011-b">
+  <link rel="stylesheet" href="./etapa0-mapa.css?v=map-list-20261011">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -73,13 +73,14 @@
 
     <p class="demo-label">Inventario ilustrativo para demostración. Las propiedades y fotografías no son anuncios verificados.</p>
     <div class="dashboard-grid">
+      <div class="pf-list-controls" role="status"><div><strong>Resultados de la búsqueda</strong><small>Explora las propiedades de ejemplo y añade tus favoritas al Open Tour.</small></div><button id="listBackToMap" type="button">← Volver al mapa</button></div>
       <div class="map-column">
         <section class="map-card">
           <div class="map-toolbar">
             <div class="explore-toolbar">
               <label class="sector-select"><span>Sector</span><select id="sectorSelect" aria-label="Filtrar por sector"><option value="">Toda la región</option></select></label><label class="budget-select"><span>Presupuesto máximo</span><select id="budgetSelect" aria-label="Maximum budget in USD"><option value="0">Sin límite</option><option value="500000">$500,000</option><option value="600000">$600,000</option><option value="750000">$750,000</option><option value="1000000">$1,000,000</option><option value="1500000">$1,500,000</option><option value="2500000">$2,500,000</option></select></label>
               <button class="thin" id="homeBtn" aria-label="Mostrar toda la región">↺ Región</button>
-              <div class="view-switch"><button class="active" id="mapViewBtn">Mapa</button><button id="listViewBtn">Lista</button></div>
+              <div class="view-switch"><button class="active" id="mapViewBtn" type="button" aria-pressed="true">Mapa</button><button id="listViewBtn" type="button" aria-pressed="false">Lista</button></div>
             </div>
             <div class="filter-row"><div class="controls" id="filters"></div><span class="results-summary" id="resultCount"></span></div>
           </div>
@@ -174,7 +175,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js"></script>
+<script src="./map-fix-v4.js?v=map-list-20261011"></script>
 <script src="./boundary-fix.js"></script>
 <script src="./ui-premium-v2.js"></script>
 <script src="./amen-experience-v2.js"></script>
