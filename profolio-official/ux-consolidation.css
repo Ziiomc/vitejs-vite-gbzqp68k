@@ -342,3 +342,37 @@ html{scroll-behavior:smooth}
   html{scroll-behavior:auto}
   #app.profolio-premium .filter-row .controls button{transition:none!important}
 }
+
+
+/* Category label and active content states */
+#app.profolio-premium .pf-filter-label{
+  font-size:11px!important;font-weight:850!important;
+  letter-spacing:.08em!important;text-transform:uppercase!important;
+  color:#fff0bb!important;white-space:nowrap!important;
+}
+@media(max-width:700px){
+  #app.profolio-premium .pf-filter-label{width:100%!important;font-size:10px!important}
+}
+/* Theme accessibility: dark appearance must not inherit burgundy text on dark panels. */
+body.pf-dark #app.profolio-premium :is(.property-body h3,.right-rail .price,.properties-panel .panel-head-row h2){
+  color:#ffe7ac!important;
+}
+body.pf-dark #app.profolio-premium :is(.property-body .muted,.property-facts,.properties-panel .panel-head-row .muted){
+  color:#ced4df!important;
+}
+body.pf-dark #app.profolio-premium .right-rail .property{
+  background:#182431!important;border-color:#5a4651!important;
+}
+body.pf-dark #app.profolio-premium :is(.right-rail>.detail-grid,.pf-search-refinements){
+  background:#17212d!important;color:#e9edf5!important;border-color:#594952!important;
+}
+body.pf-dark #app.profolio-premium .pf-search-refinements label{
+  color:#f5e9d8!important;
+}
+body.pf-dark #app.profolio-premium .pf-refinement-note{color:#d4c7bb!important}
+body.pf-dark #app.profolio-premium .filter-row .controls button{
+  color:#f3deab!important;background:#312838!important;border-color:#7a5c58!important;
+}
+body.pf-dark #app.profolio-premium .filter-row .controls button.active{
+  background:#ecc65b!important;color:#3d1226!important;
+}
