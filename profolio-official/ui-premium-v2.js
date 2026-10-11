@@ -74,6 +74,7 @@
     assistant,
     analysis,
     favorites:()=>click('favoritesBtn'),
+    drafts:()=>click('navPortfolio'),
     reports,
     pro:()=>openPremiumModal('ProFolio Pro',tr('PLAN EN PREPARACIÓN','PLANNED PLAN'),'<p class="premium-answer">'+tr('El plan Pro y la facturación están en preparación. Esta demostración no acepta suscripciones ni pagos.','ProFolio Pro and billing are planned. This demo does not accept subscriptions or payments.')+'</p>')
   };
@@ -137,6 +138,31 @@
   };
 
   const dictionary={
+    // The dictionary always maps Spanish source text to US English.
+    'Vista previa de IA':'AI Preview',
+    'Mis borradores':'My Drafts',
+    'Propiedades de demostración':'Featured Sample Properties',
+    'Explora inmuebles ilustrativos en Wilmington':'Explore sample homes in the Wilmington area',
+    'Inventario ilustrativo. Las propiedades y fotografías no son anuncios verificados.':'Illustrative sample inventory. The properties and photographs are not verified listings.',
+    'Precio máximo':'Maximum price',
+    'Sin límite de precio':'No maximum',
+    '↺ Restablecer filtros':'↺ Reset filters',
+    'Propiedades de muestra':'Sample properties',
+    'Demostración':'Demo',
+    'Datos ilustrativos':'Illustrative data',
+    'Sin datos verificados':'No verified data',
+    'Las funciones Pro están en preparación.':'Premium features are planned.',
+    'Aún no hay planes de pago disponibles.':'No paid plans are available yet.',
+    'Ver planes Pro':'View Pro plans',
+    'Mercado de prueba · Estados Unidos':'Demo market · United States',
+    'Explora propiedades en el mapa.':'Explore homes through the map.',
+    'Explora posibilidades':'Explore the possibilities',
+    'Explora propiedades ilustrativas por zona, precio y características.':'Browse sample properties by area, budget, and features.',
+    'Guardar recorrido Open Tour':'Save Open Tour',
+    'Reordenar recorrido':'Reorder route',
+    'Las direcciones manuales no aparecen en el mapa.':'Manually entered addresses are not placed on the map.',
+    'No conectado. No hay anuncios exclusivos verificados.':'Not connected. No verified exclusive listings.',
+    'Ver estado →':'View status →',
     'PROFOLIO · EXPLORA TU MERCADO':'PROFOLIO · EXPLORE YOUR MARKET',
     'Tu próximo hogar comienza en el mapa.':'Your next home starts on the map.',
     'Elige una zona, abre la ficha de cada inmueble y prepara tu':'Choose an area, explore home details, and plan your',
