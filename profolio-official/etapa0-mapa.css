@@ -209,3 +209,59 @@
   #app.profolio-premium .pf-map-intro p{max-width:330px}
   #app.profolio-premium .pf-map-intro-badges span:nth-child(2){display:none}
 }
+
+
+/* Etapa 0.2 — lista funcional sin perder filtros ni selección. */
+#app.profolio-premium .pf-list-controls{display:none!important}
+#app.profolio-premium .dashboard-grid.pf-list-mode{
+  display:flex!important;flex-direction:column!important;gap:10px!important;
+}
+#app.profolio-premium .dashboard-grid.pf-list-mode>.map-column{display:contents!important}
+#app.profolio-premium .dashboard-grid.pf-list-mode .map-card{order:0;max-width:100%}
+#app.profolio-premium .dashboard-grid.pf-list-mode .map-shell{display:none!important}
+#app.profolio-premium .dashboard-grid.pf-list-mode>.pf-list-controls{
+  display:flex!important;order:1;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;padding:15px 18px;border:1px solid #dfbd69;
+  border-radius:14px;background:#fff4da;color:#491429;
+}
+#app.profolio-premium .pf-list-controls strong{
+  display:block;font-size:19px;font-family:Georgia,'Times New Roman',serif;
+}
+#app.profolio-premium .pf-list-controls small{display:block;margin-top:3px;color:#765564;font-size:11px}
+#app.profolio-premium .pf-list-controls button{
+  border-radius:9px;border:1px solid #8d1739;background:#65122c;
+  color:#ffe699;padding:9px 14px;font-size:12px;font-weight:800;
+}
+#app.profolio-premium .dashboard-grid.pf-list-mode>.right-rail{
+  position:static!important;order:2!important;z-index:1!important;
+  margin:0!important;width:100%!important;max-width:none!important;
+  pointer-events:auto!important;overflow:visible!important;
+}
+#app.profolio-premium .dashboard-grid.pf-list-mode .right-rail>.detail-grid{
+  max-height:none!important;min-height:0!important;overflow:visible!important;
+  padding:16px!important;backdrop-filter:none!important;
+}
+#app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .cards{
+  display:grid!important;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))!important;
+  max-height:none!important;overflow:visible!important;
+  gap:12px!important;scroll-snap-type:none!important;
+}
+#app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .property{
+  width:100%!important;max-width:none!important;min-width:0!important;
+  flex:none!important;grid-template-columns:105px minmax(0,1fr)!important;
+  min-height:150px!important;scroll-snap-align:none!important;
+}
+#app.profolio-premium .dashboard-grid.pf-list-mode .metric-strip{order:3!important;margin:0}
+#app.profolio-premium .dashboard-grid.pf-list-mode .feature-row{order:4!important}
+#app.profolio-premium .dashboard-grid.pf-list-mode .map-card .map-toolbar{margin:0}
+@media(max-width:620px){
+  #app.profolio-premium .dashboard-grid.pf-list-mode>.pf-list-controls{padding:12px}
+  #app.profolio-premium .pf-list-controls strong{font-size:16px}
+  #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .cards{
+    grid-template-columns:1fr!important;
+  }
+  #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .property{
+    grid-template-columns:100px minmax(0,1fr)!important;
+  }
+  #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail>.detail-grid{padding:10px!important}
+}
