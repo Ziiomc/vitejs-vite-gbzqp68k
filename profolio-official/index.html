@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./premium.css">
   <link rel="stylesheet" href="./amen-experience.css">
   <link rel="stylesheet" href="./launch.css">
+  <link rel="stylesheet" href="./tour-panel.css">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -125,7 +126,29 @@
       <aside class="right-rail">
         <section class="detail-grid" id="properties-section">
           <article class="panel properties-panel"><div class="panel-head-row"><div><h2>Propiedades Destacadas</h2><p class="muted">Oportunidades seleccionadas para tu mercado</p></div><button class="mini-action" id="favoritesBtn" type="button">♡ Ver todas</button></div><div class="cards" id="propertyCards"></div></article>
-          <aside class="panel tour-panel" id="tourPanel" hidden><button class="close tour-close" id="closeTourBtn" aria-label="Cerrar Open Tour">×</button><div class="panel-head-row"><div><h2>Open Tour</h2><p class="muted" id="tourHint">Selecciona dos o más propiedades para construir un recorrido.</p></div><button class="mini-action" id="savedToursInlineBtn" type="button">Guardados</button></div><div class="tour-stat"><div><span>Paradas</span><b id="tourStops">0</b></div><div><span>Distancia est.</span><b id="tourKm">0 km</b></div><div><span>Tiempo aprox.</span><b id="tourTime">0 min</b></div></div><div class="add-address"><input aria-label="Agregar dirección manual" id="manualAddress" placeholder="Agregar dirección manual"><button id="addAddressBtn" aria-label="Añadir parada">＋</button></div><div class="tour-list" id="tourList"></div><div class="tour-actions"><button id="optimizeBtn">Ordenar ruta</button><button class="primary" id="saveTourBtn">Guardar Open Tour</button><button id="clearTourBtn">Limpiar</button><button id="shareTourBtn">Compartir</button></div><p class="legal-note">Recorridos guardados solo en este navegador. Distancia y duración son estimaciones en línea recta, no rutas viales.</p></aside>
+          <aside class="panel tour-panel" id="tourPanel" aria-labelledby="tourPanelTitle" hidden>
+            <header class="tour-panel-header">
+              <div class="tour-panel-eyebrow"><span class="tour-panel-mark" aria-hidden="true">⌂</span> PROFOLIO <span aria-hidden="true">/</span> OPEN TOUR</div>
+              <button class="close tour-close" id="closeTourBtn" type="button" aria-label="Cerrar Open Tour">×</button>
+              <h2 id="tourPanelTitle">Open Tour</h2>
+              <p id="tourHint">Selecciona dos o más propiedades para construir un recorrido.</p>
+              <button class="tour-saved-link" id="savedToursInlineBtn" type="button">Guardados <span aria-hidden="true">↗</span></button>
+            </header>
+            <div class="tour-panel-body">
+              <div class="tour-stat" aria-label="Resumen del recorrido">
+                <div><span>Paradas</span><b id="tourStops">0</b></div>
+                <div><span>Distancia est.</span><b id="tourKm">0 km</b></div>
+                <div><span>Tiempo aprox.</span><b id="tourTime">0 min</b></div>
+              </div>
+              <div class="tour-section-heading"><div><small>01 / RUTA</small><h3>Tu itinerario</h3></div><span class="tour-demo-tag">DEMO</span></div>
+              <div class="tour-list" id="tourList"></div>
+              <label class="tour-address-label" for="manualAddress">Añadir otra parada</label>
+              <div class="add-address"><input id="manualAddress" aria-label="Agregar dirección manual" placeholder="Agregar dirección manual" autocomplete="street-address"><button id="addAddressBtn" type="button" aria-label="Añadir parada">＋</button></div>
+              <p class="tour-address-help">Las direcciones manuales no se ubican en el mapa.</p>
+              <div class="tour-actions"><button class="primary" id="saveTourBtn" type="button">Guardar Open Tour <span aria-hidden="true">→</span></button><button id="optimizeBtn" type="button">Ordenar ruta</button><button id="shareTourBtn" type="button">Compartir</button><button id="clearTourBtn" type="button">Limpiar</button></div>
+              <p class="legal-note">Recorridos guardados solo en este navegador. Distancia y duración son estimaciones en línea recta, no rutas viales.</p>
+            </div>
+          </aside>
         </section>
 
         <article class="offmarket-banner"><span class="banner-diamond">◇</span><div><strong>Oportunidades Off-Market</strong><p>Función en preparación. Sin anuncios exclusivos verificados.</p></div><button type="button" data-premium-action="offmarket">Ver estado →</button></article>

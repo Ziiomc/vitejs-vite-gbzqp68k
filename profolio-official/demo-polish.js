@@ -83,6 +83,21 @@
       const current = element.getAttribute('aria-label');
       if (labelMap[current]) element.setAttribute('aria-label', labelMap[current]);
     });
+    const stopCount = Number($('#tourStops')?.textContent || 0);
+    const hint = $('#tourHint');
+    const hintText = stopCount === 0
+      ? (en() ? 'Select two or more properties to build a route.' : 'Selecciona dos o más propiedades para construir un recorrido.')
+      : stopCount === 1
+        ? (en() ? 'Add one more property to build your route.' : 'Añade una propiedad más para construir tu ruta.')
+        : (en() ? 'Your route is ready to review and save.' : 'Tu ruta está lista para revisar y guardar.');
+    if (hint && hint.textContent !== hintText) hint.textContent = hintText;
+    const summary = $('#tourPanel .tour-stat');
+    if (summary) summary.setAttribute('aria-label', en() ? 'Tour summary' : 'Resumen del recorrido');
+    document.querySelectorAll('#tourList [data-rm]').forEach(button => {
+      const title = button.closest('.tour-stop')?.querySelector('b')?.textContent || '';
+      const label = en() ? `Remove ${title} from tour` : `Quitar ${title} del recorrido`;
+      if (button.getAttribute('aria-label') !== label) button.setAttribute('aria-label', label);
+    });
     const dialog = $('#modalCard');
     const modalOpen = $('#modal')?.getAttribute('aria-hidden') === 'false';
     if (dialog && modalOpen) {

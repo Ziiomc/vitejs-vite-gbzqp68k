@@ -159,6 +159,7 @@
     'Propiedades Destacadas':'Featured Properties','Oportunidades seleccionadas para tu mercado':'Selected opportunities for your market','♡ Ver todas':'♡ View all',
     'Selecciona dos o más propiedades para construir un recorrido.':'Select two or more properties to build a route.','Guardados':'Saved','Paradas':'Stops','Distancia est.':'Est. distance','Tiempo aprox.':'Approx. time',
     'Agregar dirección manual':'Add address manually','Ordenar ruta':'Optimize route','Guardar Open Tour':'Save Open Tour','Limpiar':'Clear','Compartir':'Share',
+    'Resumen del recorrido':'Tour summary','Tu itinerario':'Your itinerary','Añadir otra parada':'Add another stop','Las direcciones manuales no se ubican en el mapa.':'Manual addresses are not mapped.','01 / RUTA':'01 / ROUTE',
     'Oportunidades Off-Market':'Off-Market Opportunities','Accede a propiedades exclusivas antes que todos.':'Access exclusive properties before everyone else.','Explorar ahora →':'Explore now →',
     'Crea tu recorrido':'Build your route','Ver Open Tour':'View Open Tour','Recorridos guardados':'Saved tours',
  'DESCUBRE TU PRÓXIMO HOGAR':'DISCOVER YOUR NEXT HOME','Encuentra una casa que se sienta tuya.':'Find a place that feels like home.',
