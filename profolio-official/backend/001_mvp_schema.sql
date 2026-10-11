@@ -203,6 +203,21 @@ DROP TRIGGER IF EXISTS profolio_approval_invalidation ON public.profolio_listing
 CREATE TRIGGER profolio_approval_invalidation BEFORE UPDATE ON public.profolio_listings
 FOR EACH ROW EXECUTE FUNCTION public.profolio_invalidate_approval();
 
+-- Changing listing photos also requires a fresh moderation review.
+-- Storage policies must separately forbid unreviewed overwrites of existing files.
+CREATE OR REPLACE FUNCTION public.profolio_invalidate_photo_change()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $
+BEGIN
+  UPDATE public.profolio_listings SET moderation_status='pending'
+  WHERE id=COALESCE(NEW.listing_id,OLD.listing_id);
+  RETURN COALESCE(NEW,OLD);
+END;
+$;
+REVOKE ALL ON FUNCTION public.profolio_invalidate_photo_change() FROM PUBLIC;
+DROP TRIGGER IF EXISTS profolio_photo_approval_invalidation ON public.profolio_listing_photos;
+CREATE TRIGGER profolio_photo_approval_invalidation AFTER INSERT OR UPDATE OR DELETE ON public.profolio_listing_photos
+FOR EACH ROW EXECUTE FUNCTION public.profolio_invalidate_photo_change();
+
 -- Only administrators can change moderation. Must be called by an authenticated admin.
 CREATE OR REPLACE FUNCTION public.profolio_moderate_listing(p_listing uuid, p_status text)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
