@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="./amen-experience.css">
   <link rel="stylesheet" href="./launch.css">
   <link rel="stylesheet" href="./tour-panel.css">
-  <link rel="stylesheet" href="./etapa0-mapa.css">
+  <link rel="stylesheet" href="./etapa0-mapa.css?v=map-first-20261011-b">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -64,19 +64,11 @@
       <div class="profile-chip" id="profileAccessBtn" role="button" tabindex="0" aria-label="Abrir perfil"><span class="profile-bell">♧<i></i></span><span class="profile-avatar">PF</span><div><strong>Wilmington</strong><small>Workspace Pro</small></div><span>⌄</span></div>
     </header>
 
-    <section class="premium-hero" aria-labelledby="heroTitle">
-      <div class="hero-copy">
-        <small>DESCUBRE TU PRÓXIMO HOGAR</small>
-        <h1 id="heroTitle">Encuentra una casa que se sienta tuya.</h1>
-        <p>Explora por zona, presupuesto y estilo de vida.</p>
-      </div>
-      <div class="hero-mantra">FULL EXPERIENCE.<br><strong>YOUR NEXT CHAPTER.</strong></div><div class="launch-house" aria-hidden="true"><i class="roof"></i><i class="home"></i><b>PROFOLIO</b></div>
-      <div class="hero-actions">
-        <button class="hero-action" type="button" data-premium-action="map"><span class="hero-icon">▧</span><span><strong>Mapa de Mercado</strong><small>Explora oportunidades</small></span></button>
-        <button class="hero-action" type="button" data-premium-action="tour"><span class="hero-icon">⌂</span><span><strong>Open Tour</strong><small>Agenda y recorre</small></span></button>
-        <button class="hero-action hero-turbo" id="turboBtn" type="button"><span class="hero-icon">ϟ</span><span><strong>Turbo</strong><small>Análisis instantáneo</small></span></button>
-        <button class="hero-action" id="publishBtn" type="button"><span class="hero-icon">＋</span><span><strong>Crear borrador</strong><small>Guarda un borrador local</small></span></button>
-      </div>
+    <section class="pf-map-intro" aria-labelledby="pfMapIntroTitle">
+      <div class="pf-map-intro-copy"><span class="pf-map-intro-eyebrow">PROFOLIO · EXPLORA TU MERCADO</span>
+        <h1 id="pfMapIntroTitle">Tu próximo hogar comienza en el mapa.</h1>
+        <p>Elige una zona, abre la ficha de cada inmueble y prepara tu <strong>Open Tour</strong>.</p></div>
+      <div class="pf-map-intro-badges" aria-label="Herramientas disponibles"><span>Mapa interactivo</span><span>Fichas y favoritos</span><span>Open Tour</span></div>
     </section>
 
     <p class="demo-label">Inventario ilustrativo para demostración. Las propiedades y fotografías no son anuncios verificados.</p>
@@ -155,6 +147,21 @@
         <article class="offmarket-banner"><span class="banner-diamond">◇</span><div><strong>Oportunidades Off-Market</strong><p>Función en preparación. Sin anuncios exclusivos verificados.</p></div><button type="button" data-premium-action="offmarket">Ver estado →</button></article>
       </aside>
     </div>
+
+    <section class="premium-hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <small>DESCUBRE TU PRÓXIMO HOGAR</small>
+        <h1 id="heroTitle">Encuentra una casa que se sienta tuya.</h1>
+        <p>Explora por zona, presupuesto y estilo de vida.</p>
+      </div>
+      <div class="hero-mantra">FULL EXPERIENCE.<br><strong>YOUR NEXT CHAPTER.</strong></div><div class="launch-house" aria-hidden="true"><i class="roof"></i><i class="home"></i><b>PROFOLIO</b></div>
+      <div class="hero-actions">
+        <button class="hero-action" type="button" data-premium-action="map"><span class="hero-icon">▧</span><span><strong>Mapa de Mercado</strong><small>Explora oportunidades</small></span></button>
+        <button class="hero-action" type="button" data-premium-action="tour"><span class="hero-icon">⌂</span><span><strong>Open Tour</strong><small>Agenda y recorre</small></span></button>
+        <button class="hero-action hero-turbo" id="turboBtn" type="button"><span class="hero-icon">ϟ</span><span><strong>Turbo</strong><small>Análisis instantáneo</small></span></button>
+        <button class="hero-action" id="publishBtn" type="button"><span class="hero-icon">＋</span><span><strong>Crear borrador</strong><small>Guarda un borrador local</small></span></button>
+      </div>
+    </section>
   </main>
 </div>
 
