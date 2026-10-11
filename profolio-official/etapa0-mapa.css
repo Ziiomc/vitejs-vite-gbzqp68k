@@ -136,3 +136,76 @@
   height:36px;width:36px;display:grid;place-items:center;
 }
 #app.profolio-premium .pf-cluster-icon:focus-visible{outline:3px solid #f5ce54;outline-offset:3px}
+
+
+/* Map-first release: visibly different first screen, while preserving all prior actions below. */
+#app.profolio-premium .pf-map-intro{
+  position:relative;display:flex;align-items:center;justify-content:space-between;
+  gap:20px;margin:15px 16px 0;padding:19px 24px;
+  overflow:hidden;border:2px solid #d5ac42;border-radius:18px;
+  color:#fff8e8;background:
+    radial-gradient(circle at 93% 18%,#ffe29233,transparent 31%),
+    linear-gradient(115deg,#410b20 0%,#791534 73%,#581127 100%);
+  box-shadow:0 10px 29px #3c0b1d29;
+}
+#app.profolio-premium .pf-map-intro-copy{position:relative;z-index:1;min-width:0}
+#app.profolio-premium .pf-map-intro-eyebrow{
+  display:block;font-size:10px;font-weight:900;letter-spacing:.15em;color:#f5ce54;
+  margin-bottom:7px;
+}
+#app.profolio-premium .pf-map-intro h1{
+  font:600 clamp(22px,2.6vw,34px)/1.1 Georgia,'Times New Roman',serif;
+  margin:0;letter-spacing:-.02em;color:#fffdf1;
+}
+#app.profolio-premium .pf-map-intro p{
+  margin:8px 0 0;font-size:12px;line-height:1.5;color:#ffe7d7;
+}
+#app.profolio-premium .pf-map-intro p strong{color:#ffe699}
+#app.profolio-premium .pf-map-intro-badges{
+  display:flex;align-items:center;justify-content:flex-end;gap:7px;
+  flex-wrap:wrap;flex:0 1 370px;
+}
+#app.profolio-premium .pf-map-intro-badges span{
+  padding:9px 11px;border:1px solid #f5ce5490;border-radius:999px;
+  background:#2808176b;color:#ffe69a;font-weight:800;font-size:10px;
+  white-space:nowrap;
+}
+#app.profolio-premium .demo-label{
+  margin:9px 16px 0!important;padding:7px 12px!important;
+  border-left:4px solid #d19b26!important;font-size:10px!important;
+}
+#app.profolio-premium .main-workspace>.premium-hero{
+  margin:20px 16px 6px!important;border-radius:18px!important;
+  min-height:205px!important;padding:23px 27px 19px!important;
+}
+#app.profolio-premium .dashboard-grid{margin-top:0!important}
+#app.profolio-premium .map-card{
+  border:2px solid #dfbd69!important;box-shadow:0 12px 35px #38121f20!important;
+}
+#app.profolio-premium .map-toolbar{border-bottom:1px solid #dfcfb3;padding-bottom:9px}
+#app.profolio-premium .map-wrap{border-radius:14px!important}
+@media(max-width:1150px){
+  #app.profolio-premium .pf-map-intro{gap:12px;padding:16px 19px}
+  #app.profolio-premium .pf-map-intro-badges{flex-basis:260px}
+}
+@media(max-width:800px){
+  #app.profolio-premium .pf-map-intro{
+    flex-direction:column;align-items:flex-start;gap:8px;
+    margin:9px 8px 0;padding:12px 14px;
+  }
+  #app.profolio-premium .pf-map-intro-eyebrow{font-size:8px;margin-bottom:4px}
+  #app.profolio-premium .pf-map-intro h1{font-size:clamp(19px,5vw,26px)}
+  #app.profolio-premium .pf-map-intro p{font-size:10px;margin-top:5px}
+  #app.profolio-premium .pf-map-intro-badges{flex:none;gap:5px}
+  #app.profolio-premium .pf-map-intro-badges span{
+    font-size:8px;padding:5px 7px;
+  }
+  #app.profolio-premium .demo-label{margin:7px 8px 0!important;font-size:9px!important}
+  #app.profolio-premium .main-workspace>.premium-hero{
+    margin:11px 8px 8px!important;padding:17px 15px!important;
+  }
+}
+@media(max-width:420px){
+  #app.profolio-premium .pf-map-intro p{max-width:330px}
+  #app.profolio-premium .pf-map-intro-badges span:nth-child(2){display:none}
+}
