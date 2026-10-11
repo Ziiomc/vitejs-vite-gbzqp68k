@@ -99,7 +99,7 @@
       if(a==='tour')id('navTour')?.click();
       if(a==='drafts')id('navPortfolio')?.click();
       if(a==='profile')openProfile();
-      $('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});tone(560);
+      $$('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});tone(560);
     });
   }
   function enhanceSettings(){
