@@ -123,3 +123,16 @@
   #app.profolio-premium .property,
   #app.profolio-premium .property:hover{transition:none!important;transform:none!important}
 }
+
+/* Marker groups, shown until zoom separates nearby sample properties. */
+#app.profolio-premium .pf-cluster-icon{
+  background:rgba(66,10,30,.18);border:2px solid #f5ce54;
+  border-radius:50%;box-shadow:0 4px 18px #33091a55;
+  display:grid;place-items:center;
+}
+#app.profolio-premium .pf-cluster-icon span{
+  background:#65122c;color:#ffe79c;border:2px solid #f5ce54;
+  font:900 16px system-ui,sans-serif;border-radius:50%;
+  height:36px;width:36px;display:grid;place-items:center;
+}
+#app.profolio-premium .pf-cluster-icon:focus-visible{outline:3px solid #f5ce54;outline-offset:3px}
