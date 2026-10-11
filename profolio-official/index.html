@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <link rel="stylesheet" href="./premium.css">
   <link rel="stylesheet" href="./amen-experience.css">
+  <link rel="stylesheet" href="./launch.css">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -63,11 +64,11 @@
 
     <section class="premium-hero" aria-labelledby="heroTitle">
       <div class="hero-copy">
-        <small>INVIERTE HOY, CONSTRUYE MAÑANA</small>
-        <h1 id="heroTitle">Más que propiedades,<br>creamos libertad.</h1>
-        <p>Datos. Oportunidades. Personas. Un mejor futuro.</p>
+        <small>DESCUBRE TU PRÓXIMO HOGAR</small>
+        <h1 id="heroTitle">Encuentra una casa que se sienta tuya.</h1>
+        <p>Explora por zona, presupuesto y estilo de vida.</p>
       </div>
-      <div class="hero-mantra">BUENAS PROPIEDADES.<br><strong>MEJORES HISTORIAS.</strong></div>
+      <div class="hero-mantra">FULL EXPERIENCE.<br><strong>YOUR NEXT CHAPTER.</strong></div><div class="launch-house" aria-hidden="true"><i class="roof"></i><i class="home"></i><b>PROFOLIO</b></div>
       <div class="hero-actions">
         <button class="hero-action" type="button" data-premium-action="map"><span class="hero-icon">▧</span><span><strong>Mapa de Mercado</strong><small>Explora oportunidades</small></span></button>
         <button class="hero-action" type="button" data-premium-action="tour"><span class="hero-icon">⌂</span><span><strong>Open Tour</strong><small>Agenda y recorre</small></span></button>
@@ -76,12 +77,13 @@
       </div>
     </section>
 
+    <p class="demo-label">Inventario ilustrativo para demostración. Las propiedades y fotografías no son anuncios verificados.</p>
     <div class="dashboard-grid">
       <div class="map-column">
         <section class="map-card">
           <div class="map-toolbar">
             <div class="explore-toolbar">
-              <label class="sector-select"><span>Sector</span><select id="sectorSelect" aria-label="Filtrar por sector"><option value="">Toda la región</option></select></label>
+              <label class="sector-select"><span>Sector</span><select id="sectorSelect" aria-label="Filtrar por sector"><option value="">Toda la región</option></select></label><label class="budget-select"><span>Presupuesto máximo</span><select id="budgetSelect" aria-label="Maximum budget in USD"><option value="0">Sin límite</option><option value="500000">$500,000</option><option value="600000">$600,000</option><option value="750000">$750,000</option><option value="1000000">$1,000,000</option><option value="1500000">$1,500,000</option><option value="2500000">$2,500,000</option></select></label>
               <button class="thin" id="homeBtn" aria-label="Mostrar toda la región">↺ Región</button>
               <div class="view-switch"><button class="active" id="mapViewBtn">Mapa</button><button id="listViewBtn">Lista</button></div>
             </div>
@@ -106,15 +108,15 @@
         </section>
 
         <section class="metric-strip" aria-label="Métricas del mercado">
-          <article><span class="metric-icon">▥</span><div><strong id="premiumMetricCount">—</strong><small>Propiedades activas</small><em>+12% <i>vs. mes anterior</i></em></div></article>
-          <article><span class="metric-icon">$</span><div><strong id="premiumMetricPrice">—</strong><small>Precio medio</small><em>+6.4% <i>vs. mes anterior</i></em></div></article>
-          <article><span class="metric-icon">♟</span><div><strong>8.7%</strong><small>Rendimiento promedio</small><em>+1.2% <i>vs. mes anterior</i></em></div></article>
-          <article><span class="metric-icon">↗</span><div><strong>28 días</strong><small>Tiempo en el mercado</small><em class="negative">-18% <i>vs. mes anterior</i></em></div></article>
+          <article><span class="metric-icon">▥</span><div><strong id="premiumMetricCount">—</strong><small>Propiedades de ejemplo</small><em>Demostración</em></div></article>
+          <article><span class="metric-icon">$</span><div><strong id="premiumMetricPrice">—</strong><small>Precio medio de ejemplo</small><em>Datos ilustrativos</em></div></article>
+          <article><span class="metric-icon">♟</span><div><strong>—</strong><small>Rendimiento</small><em>Sin datos verificados</em></div></article>
+          <article><span class="metric-icon">↗</span><div><strong>—</strong><small>Tiempo en el mercado</small><em>Sin datos verificados</em></div></article>
         </section>
 
         <section class="feature-row">
           <article class="feature-card video-feature"><div class="feature-heading"><span>▣</span><div><strong>Video Open House</strong><small>Recorre propiedades desde cualquier lugar.</small></div></div><div class="thumb-stack"><span></span><span></span><span></span><b>▶</b></div><button type="button" data-premium-action="videos">Explorar Tours →</button></article>
-          <article class="feature-card assistant-feature"><div class="feature-heading"><span>✦</span><div><strong>Asistente IA</strong><small>Tu analista de inversión, 24/7.</small></div></div><div class="assistant-prompts"><span>¿Cuál es la mejor zona para invertir?</span><span>Compara propiedades similares</span><span>Estima el retorno potencial</span></div><button type="button" data-premium-action="assistant">Hablar con IA →</button></article>
+          <article class="feature-card assistant-feature"><div class="feature-heading"><span>✦</span><div><strong>Asistente IA · Próximamente</strong><small>Integración planificada.</small></div></div><div class="assistant-prompts"><span>¿Cuál es la mejor zona para invertir?</span><span>Compara propiedades similares</span><span>Estima el retorno potencial</span></div><button type="button" data-premium-action="assistant">Ver demostración →</button></article>
           <article class="feature-card offmarket-feature"><div class="feature-heading"><span>▣</span><div><strong>Off-Market</strong><small>Propiedades exclusivas. Acceso limitado.</small></div></div><div class="offmarket-thumbs"><span></span><span></span></div><button type="button" data-premium-action="offmarket">Ver oportunidades →</button></article>
           <blockquote class="quote-card">“<strong>La mejor inversión<br>también es una mejor vida.</strong><small>ProFolio</small></blockquote>
         </section>
@@ -145,5 +147,6 @@
 <script src="./boundary-fix.js"></script>
 <script src="./ui-premium-v2.js"></script>
 <script src="./amen-experience-v2.js"></script>
+<script src="./launch.js"></script>
 </body>
 </html>

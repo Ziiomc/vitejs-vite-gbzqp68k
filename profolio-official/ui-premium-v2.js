@@ -38,7 +38,7 @@
   };
 
   const assistant=()=>{
-    openPremiumModal('Asistente IA','PROFOLIO INTELLIGENCE',`<p class="muted">Usa el contexto visible del Market Map para acelerar tu análisis comercial.</p><div class="premium-assistant-buttons"><button data-ai="zone">¿Qué zona debo revisar primero?</button><button data-ai="compare">¿Cómo comparo oportunidades?</button><button data-ai="tour">¿Cómo armo una ruta eficiente?</button><button data-ai="off">¿Cómo detecto oportunidades Off-Market?</button></div><div class="premium-answer" id="premiumAnswer">Selecciona una pregunta para obtener una recomendación contextual.</div>`);
+    openPremiumModal(document.documentElement.lang==='en'?'AI Roadmap':'Plan de IA','GUIDED DEMO',`<p class="muted">${document.documentElement.lang==='en'?'Scripted preview. Live AI is not connected yet.':'Vista guiada sin un servicio real de IA conectado.'}</p><div class="premium-assistant-buttons"><button data-ai="zone">¿Qué zona debo revisar primero?</button><button data-ai="compare">¿Cómo comparo oportunidades?</button><button data-ai="tour">¿Cómo armo una ruta eficiente?</button><button data-ai="off">¿Cómo detecto oportunidades Off-Market?</button></div><div class="premium-answer" id="premiumAnswer">Selecciona una pregunta para obtener una recomendación contextual.</div>`);
     $$('.premium-assistant-buttons button',$('#modalCard')).forEach(btn=>btn.addEventListener('click',()=>{
       const answer=$('#premiumAnswer'); const summary=marketSummary();
       const replies={
@@ -54,7 +54,7 @@
   const analysis=()=>{
     const selected=$('#areaPanelName')?.textContent?.trim()||$('#sectorSelect')?.selectedOptions?.[0]?.textContent||'Toda la región';
     const summary=marketSummary();
-    openPremiumModal('Análisis de Zona','MARKET INTELLIGENCE',`<p class="muted">Lectura rápida del mercado activo en <strong>${selected}</strong>.</p><div class="premium-grid"><div class="premium-kpi"><strong>${summary.cardCount}</strong><small>Propiedades visibles</small></div><div class="premium-kpi"><strong>8.7%</strong><small>Rendimiento de referencia</small></div><div class="premium-kpi"><strong>28 días</strong><small>Tiempo de mercado objetivo</small></div><div class="premium-kpi"><strong>Turbo</strong><small>Disponible para priorización</small></div></div><p class="premium-answer">Combina las delimitaciones del Market Map con Open Tour y Portafolio Turbo para pasar del análisis territorial a una acción comercial concreta.</p>`);
+    openPremiumModal('Análisis de Zona','MARKET INTELLIGENCE',`<p class="muted">Lectura rápida del mercado activo en <strong>${selected}</strong>.</p><div class="premium-grid"><div class="premium-kpi"><strong>${summary.cardCount}</strong><small>Propiedades visibles</small></div><div class="premium-kpi"><strong>—</strong><small>Sin rendimiento verificado</small></div><div class="premium-kpi"><strong>—</strong><small>Sin tiempo verificado</small></div><div class="premium-kpi"><strong>Turbo</strong><small>Disponible para priorización</small></div></div><p class="premium-answer">Combina las delimitaciones del Market Map con Open Tour y Portafolio Turbo para pasar del análisis territorial a una acción comercial concreta.</p>`);
   };
 
   const reports=()=>{
@@ -96,7 +96,7 @@
 (()=>{
   const LANG_KEY='pf_language';
   const THEME_KEY='pf_theme';
-  let lang=localStorage.getItem(LANG_KEY)||'es';
+  let lang=localStorage.getItem(LANG_KEY)||'en';
   let theme=localStorage.getItem(THEME_KEY)||'light';
   let translating=false;
 
@@ -156,7 +156,13 @@
     'Selecciona dos o más propiedades para construir un recorrido.':'Select two or more properties to build a route.','Guardados':'Saved','Paradas':'Stops','Distancia est.':'Est. distance','Tiempo aprox.':'Approx. time',
     'Agregar dirección manual':'Add address manually','Ordenar ruta':'Optimize route','Guardar Open Tour':'Save Open Tour','Limpiar':'Clear','Compartir':'Share',
     'Oportunidades Off-Market':'Off-Market Opportunities','Accede a propiedades exclusivas antes que todos.':'Access exclusive properties before everyone else.','Explorar ahora →':'Explore now →',
-    'Crea tu recorrido':'Build your route','Ver Open Tour':'View Open Tour','Recorridos guardados':'Saved tours'
+    'Crea tu recorrido':'Build your route','Ver Open Tour':'View Open Tour','Recorridos guardados':'Saved tours',
+ 'DESCUBRE TU PRÓXIMO HOGAR':'DISCOVER YOUR NEXT HOME','Encuentra una casa que se sienta tuya.':'Find a place that feels like home.',
+ 'Explora por zona, presupuesto y estilo de vida.':'Explore by area, budget and lifestyle.','Presupuesto máximo':'Max budget','Sin límite':'Any budget',
+ 'Inventario ilustrativo para demostración. Las propiedades y fotografías no son anuncios verificados.':'Demo inventory. Properties and photos are illustrative, not verified listings.',
+ 'Propiedades de ejemplo':'Sample properties','Demostración':'Demo','Precio medio de ejemplo':'Sample average price','Datos ilustrativos':'Illustrative data',
+ 'Rendimiento':'Yield','Sin datos verificados':'No verified data',
+ 'Asistente IA · Próximamente':'AI Assistant · Coming soon','Integración planificada.':'Integration planned.','Ver demostración →':'View preview →'
   };
   const reverse=Object.fromEntries(Object.entries(dictionary).map(([a,b])=>[b,a]));
 
@@ -190,7 +196,7 @@
     const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=theme==='dark'?'#0b1119':'#111925';
     renderLabels();
   };
-  const setLanguage=v=>{lang=v;localStorage.setItem(LANG_KEY,v);translateTree(document)};
+  const setLanguage=v=>{lang=v;localStorage.setItem(LANG_KEY,v);translateTree(document);document.dispatchEvent(new CustomEvent('pf:language-changed'))};
   const setTheme=v=>{theme=v;localStorage.setItem(THEME_KEY,v);applyTheme()};
 
   const closeSettings=()=>{document.getElementById('pfSettingsBackdrop')?.classList.remove('open');document.body.style.overflow=''};
