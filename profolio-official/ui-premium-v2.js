@@ -138,6 +138,8 @@
   };
 
   const dictionary={
+    'Categorías':'Categories',
+    'Simbología del mapa':'Map symbols',
     // The dictionary always maps Spanish source text to US English.
     'Vista previa de IA':'AI Preview',
     'Mis borradores':'My Drafts',

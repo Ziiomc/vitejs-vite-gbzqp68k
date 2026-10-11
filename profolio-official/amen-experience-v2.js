@@ -39,7 +39,7 @@
     const navIcon=$('#amenBottomNav [data-amen-nav="profile"] i');if(navIcon)navIcon.textContent=profile?initials(profile.name):'◎';
   }
   function syncSound(){
-    localStorage.setItem(SOUND_KEY,sound?'on':'off');localStorage.setItem(VOLUME_KEY,String(volume));
+    try{localStorage.setItem(SOUND_KEY,sound?'on':'off');localStorage.setItem(VOLUME_KEY,String(volume))}catch{}
     $$('[data-amen-sound-toggle]').forEach(b=>{b.textContent=sound?tr('Activado','On'):tr('Desactivado','Off');b.classList.toggle('on',sound);b.classList.toggle('active',sound);b.setAttribute('aria-pressed',String(sound))});
     $$('[data-amen-volume]').forEach(r=>r.value=String(Math.round(volume*100)));
     $$('[data-amen-volume-value]').forEach(e=>e.textContent=Math.round(volume*100)+'%');
@@ -57,8 +57,9 @@
     let o=id('amenProfileOverlay');if(o)return o;
     o=document.createElement('div');o.id='amenProfileOverlay';o.className='amen-profile-overlay';
     o.innerHTML=`<section class="amen-profile-card" role="dialog" aria-modal="true" aria-labelledby="amenProfileTitle">
-      <header class="amen-profile-head"><div><small>PROFOLIO · ${tr('MI CUENTA','MY ACCOUNT')}</small><h2 id="amenProfileTitle">${tr('Perfil y preferencias','Profile & preferences')}</h2></div><button class="amen-close" type="button" data-amen-close aria-label="${tr('Cerrar','Close')}">×</button></header>
+      <header class="amen-profile-head"><div><small>PROFOLIO · ${tr('PERFIL LOCAL','LOCAL PROFILE')}</small><h2 id="amenProfileTitle">${tr('Perfil y preferencias','Profile & preferences')}</h2></div><button class="amen-close" type="button" data-amen-close aria-label="${tr('Cerrar','Close')}">×</button></header>
       <div class="amen-profile-body">
+        <p class="amen-local-note">${tr('Este perfil se guarda solo en este navegador. No es una cuenta en línea ni activa contactos con agentes.','Saved only on this device. This is not an online account and cannot contact agents.')}</p>
         <div class="amen-profile-status"><span class="amen-avatar" data-amen-avatar>PF</span><div><b data-amen-status-title></b><small data-amen-status-copy></small></div></div>
         <form class="amen-form" id="amenProfileForm">
           <label><span>${tr('Nombre','Name')}</span><input name="name" autocomplete="name" required maxlength="60" placeholder="${tr('Tu nombre','Your name')}"></label>
@@ -99,18 +100,7 @@
       if(a==='tour')id('navTour')?.click();
       if(a==='drafts')id('navPortfolio')?.click();
       if(a==='profile')openProfile();
-      $('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});tone(560);
-    });
-  }
-  function filter(label){return $$('#filters button').find(b=>(b.textContent||'').trim().toLowerCase()===label.toLowerCase())}
-  function installMapKey(){
-    const card=$('.map-card'),toolbar=$('.map-toolbar');if(!card||id('amenMapKey'))return;
-    const k=document.createElement('div');k.id='amenMapKey';k.className='amen-map-key';k.setAttribute('aria-label',tr('Simbología rápida del mapa','Quick map legend'));
-    k.innerHTML=`<button type="button" class="amen-coverage" data-amen-map="coverage">◎ ${tr('Cobertura','Coverage')}</button><button type="button" data-amen-map="regular">● Regular</button><button type="button" data-amen-map="premium">▲ Premium</button><button type="button" data-amen-map="feature">◇ ${tr('Oportunidad','Opportunity')}</button><button type="button" data-amen-map="turbo">ϟ Turbo</button>`;
-    if(toolbar&&toolbar.parentElement===card)toolbar.insertAdjacentElement('afterend',k);else card.prepend(k);
-    k.addEventListener('click',e=>{const b=e.target.closest('[data-amen-map]');if(!b)return;const a=b.dataset.amenMap;
-      if(a==='coverage')id('homeBtn')?.click();else filter(a==='feature'?tr('Oportunidad','Opportunity'):a[0].toUpperCase()+a.slice(1))?.click();
-      $$('#amenMapKey button').forEach(x=>x.classList.toggle('active',x===b));tone(560);
+      $$('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});tone(560);
     });
   }
   function enhanceSettings(){
@@ -127,13 +117,14 @@
   },true);
   document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();openProfile()}if(e.key==='Escape'&&id('amenProfileOverlay')?.classList.contains('open')){id('amenProfileOverlay').classList.remove('open');document.body.style.overflow=''}},true);
 
-  installBottom();installMapKey();syncProfile();syncSound();
+  // Keep a single interactive category filter. The map has its own optional legend.
+  id('amenMapKey')?.remove();installBottom();syncProfile();syncSound();
   document.addEventListener('pf:language-changed',()=>{
     id('amenProfileOverlay')?.remove();
     $('.pf-setting-sound-row')?.remove();
     id('amenBottomNav')?.remove();
     id('amenMapKey')?.remove();
-    installBottom();installMapKey();syncProfile();syncSound();
+    installBottom();syncProfile();syncSound();
   });
-  window.addEventListener('load',()=>{setTimeout(()=>{installBottom();installMapKey();syncProfile()},180)});
+  window.addEventListener('load',()=>{setTimeout(()=>{installBottom();syncProfile()},180)});
 })();
