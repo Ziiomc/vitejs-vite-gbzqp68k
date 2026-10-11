@@ -1,6 +1,7 @@
 (()=>{
   const $=(q,r=document)=>r.querySelector(q);
   const $$=(q,r=document)=>Array.from(r.querySelectorAll(q));
+  const tr=(es,en)=>document.documentElement.lang==='en'?en:es;
   const click=id=>document.getElementById(id)?.click();
   const scrollTo=(el)=>el?.scrollIntoView({behavior:'smooth',block:'start'});
 
@@ -38,7 +39,7 @@
   };
 
   const assistant=()=>{
-    openPremiumModal(document.documentElement.lang==='en'?'AI Roadmap':'Plan de IA','GUIDED DEMO',`<p class="muted">${document.documentElement.lang==='en'?'Scripted preview. Live AI is not connected yet.':'Vista guiada sin un servicio real de IA conectado.'}</p><div class="premium-assistant-buttons"><button data-ai="zone">¿Qué zona debo revisar primero?</button><button data-ai="compare">¿Cómo comparo oportunidades?</button><button data-ai="tour">¿Cómo armo una ruta eficiente?</button><button data-ai="off">¿Cómo detecto oportunidades Off-Market?</button></div><div class="premium-answer" id="premiumAnswer">Selecciona una pregunta para obtener una recomendación contextual.</div>`);
+    openPremiumModal(document.documentElement.lang==='en'?'AI Roadmap':'Plan de IA','GUIDED DEMO',`<p class="muted">${document.documentElement.lang==='en'?'Scripted preview. Live AI is not connected yet.':'Vista guiada sin un servicio real de IA conectado.'}</p><div class="premium-assistant-buttons"><button data-ai="zone">${tr('¿Qué zona debo revisar primero?','Which area should I review first?')}</button><button data-ai="compare">${tr('¿Cómo comparo oportunidades?','How do I compare properties?')}</button><button data-ai="tour">${tr('¿Cómo armo una ruta eficiente?','How do I plan a tour?')}</button><button data-ai="off">${tr('¿Cómo detecto oportunidades Off-Market?','What is planned for Off-Market?')}</button></div><div class="premium-answer" id="premiumAnswer">${tr('Selecciona una pregunta para ver una respuesta preparada.','Choose a question to see a prepared answer.')}</div>`);
     $$('.premium-assistant-buttons button',$('#modalCard')).forEach(btn=>btn.addEventListener('click',()=>{
       const answer=$('#premiumAnswer'); const summary=marketSummary();
       const replies={
@@ -47,19 +48,21 @@
         tour:`Selecciona las propiedades que quieras visitar y pulsa Open Tour. Ordena la ruta y guarda el recorrido. ProFolio mantiene la selección para que puedas iterar sin perder contexto.`,
         off:`Revisa zonas con baja oferta visible y alto interés, y usa “Publicar Propiedad” para registrar FSBO u oportunidades detectadas localmente. Luego puedes marcarlas y sumarlas a Turbo.`
       };
-      if(answer) answer.textContent=replies[btn.dataset.ai]||'';
+      if(answer) answer.textContent=tr(replies[btn.dataset.ai]||'',({zone:'Start with your selected area and budget. The map shows sample properties only.',compare:'Compare sample prices and features, then add homes to Open Tour.',tour:'Select sample properties, arrange stops and save the tour locally in this browser.',off:'Off-Market listings are planned. There are no verified exclusive listings in this demo.'})[btn.dataset.ai]||'');
     }));
   };
 
   const analysis=()=>{
-    const selected=$('#areaPanelName')?.textContent?.trim()||$('#sectorSelect')?.selectedOptions?.[0]?.textContent||'Toda la región';
-    const summary=marketSummary();
-    openPremiumModal('Análisis de Zona','MARKET INTELLIGENCE',`<p class="muted">Lectura rápida del mercado activo en <strong>${selected}</strong>.</p><div class="premium-grid"><div class="premium-kpi"><strong>${summary.cardCount}</strong><small>Propiedades visibles</small></div><div class="premium-kpi"><strong>—</strong><small>Sin rendimiento verificado</small></div><div class="premium-kpi"><strong>—</strong><small>Sin tiempo verificado</small></div><div class="premium-kpi"><strong>Turbo</strong><small>Disponible para priorización</small></div></div><p class="premium-answer">Combina las delimitaciones del Market Map con Open Tour y Portafolio Turbo para pasar del análisis territorial a una acción comercial concreta.</p>`);
+    const selected=$('#areaPanelName')?.textContent?.trim()||$('#sectorSelect')?.selectedOptions?.[0]?.textContent||tr('Toda la región','Entire region');
+    const count=$$('#propertyCards .property').length;
+    openPremiumModal(tr('Análisis de zona','Area overview'),'DEMO MARKET MAP',
+      '<p class="muted">'+tr('Inventario ilustrativo para','Sample inventory shown for')+' <strong>'+selected+'</strong>.</p><div class="premium-grid"><div class="premium-kpi"><strong>'+count+'</strong><small>'+tr('Propiedades de ejemplo','Sample properties')+'</small></div><div class="premium-kpi"><strong>—</strong><small>'+tr('Sin rendimiento verificado','No verified yield')+'</small></div><div class="premium-kpi"><strong>—</strong><small>'+tr('Sin tiempo verificado','No verified time on market')+'</small></div></div><p class="premium-answer">'+tr('Usa el mapa y Open Tour para explorar este inventario de ejemplo.','Use the map and Open Tour to explore this sample inventory.')+'</p>');
   };
 
   const reports=()=>{
-    const summary=marketSummary();
-    openPremiumModal('Resumen Ejecutivo','REPORTES PROFOLIO',`<div class="premium-grid"><div class="premium-kpi"><strong>${summary.cardCount}</strong><small>Inventario en vista</small></div><div class="premium-kpi"><strong>${$('#tourStops')?.textContent||'0'}</strong><small>Paradas en Open Tour</small></div><div class="premium-kpi"><strong>${$('#tourKm')?.textContent||'0 km'}</strong><small>Distancia estimada</small></div><div class="premium-kpi"><strong>${$('#tourTime')?.textContent||'0 min'}</strong><small>Tiempo estimado</small></div></div><p class="premium-answer">Este resumen refleja el estado actual de tu espacio de trabajo y se actualiza conforme filtras el mapa y construyes recorridos.</p>`);
+    const count=$$('#propertyCards .property').length;
+    openPremiumModal(tr('Resumen de demostración','Demo summary'),'PROFOLIO REPORTS',
+      '<div class="premium-grid"><div class="premium-kpi"><strong>'+count+'</strong><small>'+tr('Propiedades de ejemplo','Sample properties')+'</small></div><div class="premium-kpi"><strong>'+($('#tourStops')?.textContent||'0')+'</strong><small>'+tr('Paradas en Open Tour','Open Tour stops')+'</small></div><div class="premium-kpi"><strong>'+($('#tourKm')?.textContent||'0 km')+'</strong><small>'+tr('Distancia en línea recta','Straight-line distance')+'</small></div><div class="premium-kpi"><strong>'+($('#tourTime')?.textContent||'0 min')+'</strong><small>'+tr('Tiempo aproximado','Approximate time')+'</small></div></div><p class="premium-answer">'+tr('Este resumen refleja las propiedades de ejemplo y el recorrido en este navegador.','This summary reflects sample properties and the tour in this browser.')+'</p>');
   };
 
   const actionMap={
@@ -67,12 +70,12 @@
     properties:()=>{ click('listViewBtn'); scrollTo($('#properties-section')); },
     tour:()=>click('navTour'),
     videos:()=>click('navVideos'),
-    offmarket:()=>click('publishBtn'),
+    offmarket:()=>openPremiumModal('Off-Market',tr('FUNCIÓN EN PREPARACIÓN','PLANNED FEATURE'),'<p class="premium-answer">'+tr('Aún no hay anuncios exclusivos verificados ni publicación en línea. Puedes crear un borrador local desde la pantalla principal.','There are no verified exclusive listings or online publishing yet. You can create a local draft from the home screen.')+'</p>'),
     assistant,
     analysis,
     favorites:()=>click('favoritesBtn'),
     reports,
-    pro:()=>openPremiumModal('ProFolio Pro','PLAN PROFESIONAL',`<p class="premium-answer">El espacio Pro centraliza Market Map, Open Tour, video por sector, Off-Market, análisis y Portafolio Turbo. La activación comercial puede conectarse a facturación cuando definamos el plan final.</p>`)
+    pro:()=>openPremiumModal('ProFolio Pro',tr('PLAN EN PREPARACIÓN','PLANNED PLAN'),'<p class="premium-answer">'+tr('El plan Pro y la facturación están en preparación. Esta demostración no acepta suscripciones ni pagos.','ProFolio Pro and billing are planned. This demo does not accept subscriptions or payments.')+'</p>')
   };
 
   $$('[data-premium-action]').forEach(btn=>btn.addEventListener('click',e=>{
@@ -160,6 +163,7 @@
  'DESCUBRE TU PRÓXIMO HOGAR':'DISCOVER YOUR NEXT HOME','Encuentra una casa que se sienta tuya.':'Find a place that feels like home.',
  'Explora por zona, presupuesto y estilo de vida.':'Explore by area, budget and lifestyle.','Presupuesto máximo':'Max budget','Sin límite':'Any budget',
  'Inventario ilustrativo para demostración. Las propiedades y fotografías no son anuncios verificados.':'Demo inventory. Properties and photos are illustrative, not verified listings.',
+ 'Crear borrador':'Create demo draft','Guarda un borrador local':'Save a local draft','Función en preparación.':'Planned feature.','Función en preparación. Sin anuncios exclusivos verificados.':'Planned feature. No verified exclusive listings.','Ver estado →':'View status →','Recorridos en video: próximamente.':'Video tours: coming soon.','Recorridos guardados solo en este navegador. Distancia y duración son estimaciones en línea recta, no rutas viales.':'Tours are saved only in this browser. Distance and time use straight-line estimates, not road routes.',
  'Propiedades de ejemplo':'Sample properties','Demostración':'Demo','Precio medio de ejemplo':'Sample average price','Datos ilustrativos':'Illustrative data',
  'Rendimiento':'Yield','Sin datos verificados':'No verified data',
  'Asistente IA · Próximamente':'AI Assistant · Coming soon','Integración planificada.':'Integration planned.','Ver demostración →':'View preview →'

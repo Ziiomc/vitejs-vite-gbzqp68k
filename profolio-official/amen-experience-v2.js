@@ -107,7 +107,7 @@
     k.innerHTML=`<button type="button" class="amen-coverage" data-amen-map="coverage">◎ ${tr('Cobertura','Coverage')}</button><button type="button" data-amen-map="regular">● Regular</button><button type="button" data-amen-map="premium">▲ Premium</button><button type="button" data-amen-map="feature">◇ ${tr('Oportunidad','Opportunity')}</button><button type="button" data-amen-map="turbo">ϟ Turbo</button>`;
     if(toolbar&&toolbar.parentElement===card)toolbar.insertAdjacentElement('afterend',k);else card.prepend(k);
     k.addEventListener('click',e=>{const b=e.target.closest('[data-amen-map]');if(!b)return;const a=b.dataset.amenMap;
-      if(a==='coverage')id('homeBtn')?.click();else filter(a==='feature'?'Oportunidad':a[0].toUpperCase()+a.slice(1))?.click();
+      if(a==='coverage')id('homeBtn')?.click();else filter(a==='feature'?tr('Oportunidad','Opportunity'):a[0].toUpperCase()+a.slice(1))?.click();
       $$('#amenMapKey button').forEach(x=>x.classList.toggle('active',x===b));tone(560);
     });
   }
@@ -126,5 +126,12 @@
   document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();openProfile()}if(e.key==='Escape'&&id('amenProfileOverlay')?.classList.contains('open')){id('amenProfileOverlay').classList.remove('open');document.body.style.overflow=''}},true);
 
   installBottom();installMapKey();syncProfile();syncSound();
+  document.addEventListener('pf:language-changed',()=>{
+    id('amenProfileOverlay')?.remove();
+    $('.pf-setting-sound-row')?.remove();
+    id('amenBottomNav')?.remove();
+    id('amenMapKey')?.remove();
+    installBottom();installMapKey();syncProfile();syncSound();
+  });
   window.addEventListener('load',()=>{setTimeout(()=>{installBottom();installMapKey();syncProfile()},180)});
 })();
