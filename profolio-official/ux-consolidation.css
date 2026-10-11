@@ -376,3 +376,15 @@ body.pf-dark #app.profolio-premium .filter-row .controls button{
 body.pf-dark #app.profolio-premium .filter-row .controls button.active{
   background:#ecc65b!important;color:#3d1226!important;
 }
+
+
+/* Account expectations: any demo profile is device-local, not authentication. */
+.amen-profile-card .amen-local-note{
+  margin:0 0 14px;padding:11px 13px;
+  background:#fff4d7;border-left:4px solid #cd9c35;
+  border-radius:9px;font-size:12px;line-height:1.5;
+  color:#5b3846;font-weight:650;
+}
+body.pf-dark .amen-profile-card .amen-local-note{
+  background:#322a20;color:#f8e6be;
+}
