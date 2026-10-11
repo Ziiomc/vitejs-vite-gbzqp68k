@@ -181,6 +181,28 @@ CREATE POLICY "profolio event owner read" ON public.profolio_listing_events FOR 
 USING (EXISTS (SELECT 1 FROM public.profolio_listings l
  WHERE l.id=listing_id AND (l.agent_id=(SELECT auth.uid()) OR public.profolio_is_admin())));
 
+-- Editing material listing data invalidates an earlier moderation approval.
+-- Agents cannot bypass this because UPDATE(moderation_status) is not granted.
+CREATE OR REPLACE FUNCTION public.profolio_invalidate_approval()
+RETURNS trigger LANGUAGE plpgsql SET search_path = public, pg_temp AS $
+BEGIN
+  IF ROW(NEW.title,NEW.description,NEW.operation,NEW.property_type,NEW.price,
+         NEW.currency,NEW.address,NEW.city,NEW.region,NEW.country,
+         NEW.latitude,NEW.longitude,NEW.bedrooms,NEW.bathrooms,NEW.area_m2)
+     IS DISTINCT FROM
+     ROW(OLD.title,OLD.description,OLD.operation,OLD.property_type,OLD.price,
+         OLD.currency,OLD.address,OLD.city,OLD.region,OLD.country,
+         OLD.latitude,OLD.longitude,OLD.bedrooms,OLD.bathrooms,OLD.area_m2)
+  THEN
+    NEW.moderation_status := 'pending';
+  END IF;
+  RETURN NEW;
+END;
+$;
+DROP TRIGGER IF EXISTS profolio_approval_invalidation ON public.profolio_listings;
+CREATE TRIGGER profolio_approval_invalidation BEFORE UPDATE ON public.profolio_listings
+FOR EACH ROW EXECUTE FUNCTION public.profolio_invalidate_approval();
+
 -- Only administrators can change moderation. Must be called by an authenticated admin.
 CREATE OR REPLACE FUNCTION public.profolio_moderate_listing(p_listing uuid, p_status text)
 RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
