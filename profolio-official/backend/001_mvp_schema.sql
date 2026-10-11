@@ -184,7 +184,7 @@ USING (EXISTS (SELECT 1 FROM public.profolio_listings l
 -- Editing material listing data invalidates an earlier moderation approval.
 -- Agents cannot bypass this because UPDATE(moderation_status) is not granted.
 CREATE OR REPLACE FUNCTION public.profolio_invalidate_approval()
-RETURNS trigger LANGUAGE plpgsql SET search_path = public, pg_temp AS $
+RETURNS trigger LANGUAGE plpgsql SET search_path = public, pg_temp AS $$
 BEGIN
   IF ROW(NEW.title,NEW.description,NEW.operation,NEW.property_type,NEW.price,
          NEW.currency,NEW.address,NEW.city,NEW.region,NEW.country,
@@ -198,7 +198,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$;
+$$;
 DROP TRIGGER IF EXISTS profolio_approval_invalidation ON public.profolio_listings;
 CREATE TRIGGER profolio_approval_invalidation BEFORE UPDATE ON public.profolio_listings
 FOR EACH ROW EXECUTE FUNCTION public.profolio_invalidate_approval();
@@ -206,13 +206,16 @@ FOR EACH ROW EXECUTE FUNCTION public.profolio_invalidate_approval();
 -- Changing listing photos also requires a fresh moderation review.
 -- Storage policies must separately forbid unreviewed overwrites of existing files.
 CREATE OR REPLACE FUNCTION public.profolio_invalidate_photo_change()
-RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $$
+DECLARE v_listing_id uuid;
 BEGIN
-  UPDATE public.profolio_listings SET moderation_status='pending'
-  WHERE id=COALESCE(NEW.listing_id,OLD.listing_id);
-  RETURN COALESCE(NEW,OLD);
+  IF TG_OP = 'DELETE' THEN v_listing_id := OLD.listing_id;
+  ELSE v_listing_id := NEW.listing_id; END IF;
+  UPDATE public.profolio_listings SET moderation_status='pending' WHERE id=v_listing_id;
+  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
+  RETURN NEW;
 END;
-$;
+$$;
 REVOKE ALL ON FUNCTION public.profolio_invalidate_photo_change() FROM PUBLIC;
 DROP TRIGGER IF EXISTS profolio_photo_approval_invalidation ON public.profolio_listing_photos;
 CREATE TRIGGER profolio_photo_approval_invalidation AFTER INSERT OR UPDATE OR DELETE ON public.profolio_listing_photos
