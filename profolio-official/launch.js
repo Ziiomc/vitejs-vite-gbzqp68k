@@ -52,11 +52,109 @@ function previewDraft(id){
     }
   );
 }
+
+/* A portable JSON backup while secure server persistence is unavailable.
+   Backups can contain street addresses and contact emails; never upload them automatically. */
+const BACKUP_FORMAT='profolio-private-drafts',BACKUP_VERSION=1,MAX_BACKUP_BYTES=256*1024;
+const limitedText=(v,max)=>typeof v==='string'?v.slice(0,max):'';
+function sanitizeImportedDraft(x){
+  if(!x||typeof x!=='object'||Array.isArray(x))return null;
+  const id=limitedText(x.id,100);
+  if(!/^[a-zA-Z0-9._-]{1,100}$/.test(id))return null;
+  const price=Number(x.price);
+  const title=limitedText(x.title,120).trim(),address=limitedText(x.address,150).trim();
+  if(!title&&!address)return null;
+  if(!Number.isFinite(price)||price<0||price>999999999)return null;
+  const numberOrNull=(v,max,step)=>{
+    if(v==null||v==='')return null;
+    const n=Number(v);
+    return Number.isFinite(n)&&n>=0&&n<=max&&Number.isInteger(n/step)?n:null;
+  };
+  const state=limitedText(x.state,2).toUpperCase(),zip=limitedText(x.zip,10);
+  return {
+    id,title,address,
+    type:['single_family','townhouse','condo','multi_family','land','commercial','other'].includes(x.type)?x.type:'other',
+    city:limitedText(x.city,100),state:/^[A-Z]{2}$/.test(state)?state:'',
+    zip:/^\d{5}(-\d{4})?$/.test(zip)?zip:'',
+    price,email:limitedText(x.email,254),description:limitedText(x.description,1600),
+    beds:numberOrNull(x.beds,30,1),baths:numberOrNull(x.baths,30,.5),
+    sqft:numberOrNull(x.sqft,1000000,1),
+    status:draftState(x),
+    createdAt:Number.isFinite(x.createdAt)?x.createdAt:Date.now(),
+    updatedAt:Number.isFinite(x.updatedAt)?x.updatedAt:Date.now()
+  };
+}
+function makeBackup(){
+  return {format:BACKUP_FORMAT,version:BACKUP_VERSION,exportedAt:new Date().toISOString(),drafts:drafts().map(x=>sanitizeImportedDraft(x)).filter(Boolean)};
+}
+function exportDraftBackup(){
+  const records=drafts();
+  if(!records.length){alert(L('Todavía no hay borradores para respaldar.','There are no drafts to back up yet.'));return false}
+  let objectUrl;
+  try{
+    const data=JSON.stringify(makeBackup(),null,2);
+    const blob=new Blob([data],{type:'application/json'});
+    objectUrl=URL.createObjectURL(blob);
+    const link=document.createElement('a');
+    link.href=objectUrl;
+    link.download='profolio-private-drafts-'+new Date().toISOString().slice(0,10)+'.json';
+    link.style.display='none';
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),1000);
+    return true;
+  }catch{
+    if(objectUrl)URL.revokeObjectURL(objectUrl);
+    alert(L('No se pudo crear el respaldo.','Could not create a backup.'));
+    return false;
+  }
+}
+function parseDraftBackup(data){
+  if(typeof data!=='string'||data.length>MAX_BACKUP_BYTES)throw Error('size');
+  const parsed=JSON.parse(data);
+  if(!parsed||parsed.format!==BACKUP_FORMAT||parsed.version!==BACKUP_VERSION||!Array.isArray(parsed.drafts)||parsed.drafts.length>30)throw Error('format');
+  const entries=parsed.drafts.map(sanitizeImportedDraft);
+  if(entries.some(x=>!x))throw Error('records');
+  const ids=new Set();
+  for(const row of entries){if(ids.has(row.id))throw Error('duplicate');ids.add(row.id)}
+  return entries;
+}
+function mergeDraftBackup(data){
+  const incoming=parseDraftBackup(data);
+  const existing=drafts();
+  const known=new Set(existing.map(x=>x.id));
+  let added=0,skipped=0;
+  for(const x of incoming){
+    if(known.has(x.id)){skipped++;continue}
+    if(existing.length>=30){skipped++;continue}
+    existing.push(x);known.add(x.id);added++;
+  }
+  if(added&&!persistDrafts(existing))throw Error('storage');
+  return {added,skipped,total:existing.length};
+}
+async function importDraftBackupFile(file){
+  if(!file)return;
+  if(file.size>MAX_BACKUP_BYTES){alert(L('Archivo demasiado grande (máximo 256 KB).','File too large (256 KB maximum).'));return}
+  try{
+    const contents=await file.text();
+    // Confirm before adding addresses, names and other personal details to local storage.
+    const entries=parseDraftBackup(contents);
+    if(!window.confirm(L('Importar '+entries.length+' borradores privados de este archivo a este navegador, sin sustituir los actuales?','Import '+entries.length+' private drafts to this browser, keeping your existing drafts?')))return;
+    const outcome=mergeDraftBackup(contents);
+    portfolio();
+    alert(L('Importados: '+outcome.added+'. Omitidos: '+outcome.skipped+'.','Imported: '+outcome.added+'. Skipped: '+outcome.skipped+'.'));
+  }catch{
+    alert(L('No se pudo importar. Comprueba que sea un respaldo válido de ProFolio.','Import failed. Select a valid ProFolio draft backup.'));
+  }
+}
+
 function portfolio(){
   const data=drafts();
   const row=x=>'<article class="pf-draft-row"><div><span class="pf-draft-status" data-status="'+draftState(x)+'">'+safe(draftStateLabel(x))+'</span><strong>'+safe(x.title||x.address||'Untitled property')+'</strong><small>'+safe(addressSummary(x))+'</small><span>'+safe(usMoney(x.price))+' · '+safe(draftType(x))+'</span></div><div class="pf-draft-actions"><button type="button" data-draft-preview="'+safe(x.id)+'">'+L('Vista previa','Preview')+'</button><button type="button" data-draft-edit="'+safe(x.id)+'">'+L('Editar','Edit')+'</button><button type="button" data-draft-status="'+safe(x.id)+'">'+(draftState(x)==='on_hold'?L('Reanudar','Resume'):L('Pausar','Hold'))+'</button><button type="button" data-draft-delete="'+safe(x.id)+'">'+L('Eliminar','Delete')+'</button></div></article>';
-  modal(L('Mis borradores','My saved drafts'),'<p class="pf-draft-disclaimer">'+L('Estos borradores se guardan solamente en este navegador. No son publicaciones reales y no aparecen en el mapa.','Drafts are saved only in this browser. They are not live listings and do not appear on the map.')+'</p><div class="pf-draft-summary">'+data.length+' '+L('borradores guardados','drafts saved')+'</div><div id="launchDrafts" class="pf-draft-list">'+(data.length?data.map(row).join(''):'<p class="pf-empty-drafts">'+L('No hay borradores guardados todavía.','You have no saved drafts yet.')+'</p>')+'</div><button class="launch-primary" type="button" id="newDraft">'+L('Crear nuevo borrador','Create new draft')+'</button>',()=>{
+  modal(L('Mis borradores','My saved drafts'),'<p class="pf-draft-disclaimer">'+L('Estos borradores se guardan solamente en este navegador. No son publicaciones reales y no aparecen en el mapa.','Drafts are saved only in this browser. They are not live listings and do not appear on the map.')+'</p><div class="pf-draft-summary">'+data.length+' '+L('borradores guardados','drafts saved')+'</div><div id="launchDrafts" class="pf-draft-list">'+(data.length?data.map(row).join(''):'<p class="pf-empty-drafts">'+L('No hay borradores guardados todavía.','You have no saved drafts yet.')+'</p>')+'</div><div class="pf-draft-backup"><p>'+L('El respaldo contiene direcciones y correos: guárdalo en privado.','Backups contain addresses and emails. Keep the file private.')+'</p><div class="pf-draft-backup-actions"><button class="pf-draft-secondary" id="exportDrafts" type="button">'+L('Descargar respaldo','Download backup')+'</button><button class="pf-draft-secondary" id="importDrafts" type="button">'+L('Importar respaldo','Import backup')+'</button><input id="importDraftFile" type="file" accept=".json,application/json" hidden aria-label="'+L('Archivo de respaldo JSON','JSON backup file')+'"></div></div><button class="launch-primary" type="button" id="newDraft">'+L('Crear nuevo borrador','Create new draft')+'</button>',()=>{
     $('#newDraft').onclick=()=>draft();
+    $('#exportDrafts').onclick=exportDraftBackup;
+    $('#importDrafts').onclick=()=>$('#importDraftFile')?.click();
+    $('#importDraftFile').onchange=e=>{importDraftBackupFile(e.target.files?.[0]);e.target.value=''};
     $('#launchDrafts').onclick=e=>{
       const preview=e.target.closest('[data-draft-preview]');
       if(preview){previewDraft(preview.dataset.draftPreview);return}
