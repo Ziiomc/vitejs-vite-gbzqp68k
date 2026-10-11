@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="./launch.css">
   <link rel="stylesheet" href="./tour-panel.css?v=overlay-fix-20261011">
   <link rel="stylesheet" href="./etapa0-mapa.css?v=readable-layout-20261011">
+  <link rel="stylesheet" href="./ux-consolidation.css?v=20261011-ux-audit">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -87,7 +88,7 @@
               <label for="bedsSelect"><span>Bedrooms</span><select id="bedsSelect" aria-label="Minimum number of bedrooms"><option value="0">Any bedrooms</option><option value="3">3+ beds</option><option value="4">4+ beds</option><option value="5">5+ beds</option></select></label>
               <small class="pf-refinement-note">Sample for-sale homes · Wilmington, NC area</small>
             </div>
-            <div class="filter-row"><div class="controls" id="filters"></div><span class="results-summary" id="resultCount"></span></div>
+            <div class="filter-row"><span class="pf-filter-label" id="propertyCategoriesLabel">Categories</span><div class="controls" id="filters" role="group" aria-labelledby="propertyCategoriesLabel"></div><span class="results-summary" id="resultCount" role="status" aria-live="polite"></span></div>
           </div>
 
           <section class="map-shell" id="market-section">
@@ -103,7 +104,7 @@
               <aside id="areaPanel" class="area-panel" hidden aria-live="polite"><button id="areaPanelClose" class="area-panel-close" type="button" aria-label="Close area details">×</button><small id="areaPanelEyebrow">AREA · MARKET MAP</small><h3 id="areaPanelName"></h3><div class="area-meta"><span id="areaPanelZip"></span><span id="areaPanelCount"></span></div><p id="areaPanelSource"></p><div id="areaVideoInline" class="area-video-inline"><button id="areaVideoCover" class="area-video-cover pending" type="button"><span class="play">＋</span><span><strong>VIDEO TOUR · 60 S</strong><small id="areaVideoInlineStatus">Video pending for this area</small></span></button><video id="areaInlineVideo" controls playsinline preload="metadata" hidden></video><div class="area-video-tools"><span>Area-specific content</span><button id="areaVideoManageInline" type="button">Manage video</button></div></div><div class="area-panel-actions"><button id="areaExploreBtn" type="button">Explore properties</button><button id="areaOpenTourBtn" class="tour-start" type="button">↝ Start Open Tour</button><button id="areaVideoBtn" type="button">＋ Add video</button><button id="areaOverviewBtn" type="button">Back to region</button></div></aside>
             </div>
 
-            <details class="map-legend"><summary>Map layers</summary><aside class="legend"><h2>Map legend</h2><p>Select a sample home to view details or add it to your Open Tour.</p><div class="legend-item"><span class="legend-icon">●</span><div><strong>Regular</strong><small>Residential inventory.</small></div></div><div class="legend-item"><span class="legend-icon">▲</span><div><strong>Premium</strong><small>Premium category.</small></div></div><div class="legend-item"><span class="legend-icon">◇</span><div><strong>Opportunity</strong><small>Special attribute.</small></div></div><div class="legend-item"><span class="legend-icon">ϟ</span><div><strong>Turbo</strong><small>Priority demo category.</small></div></div><div class="legend-item"><span class="legend-icon">◆</span><div><strong>Off-market</strong><small>Off-market features are not yet connected.</small></div></div><div class="coverage"><b>PROFOLIO coverage</b><div class="zip-cloud" id="zipCloud"></div><div class="territory-key"><i></i> real city and CDP boundaries</div><div class="territory-key"><i class="anchor"></i> reference area without legal boundaries</div><button class="coverage-action" id="areaVideoManagerBtn" type="button">Manage 60-second videos</button></div></aside></details>
+            <details class="map-legend"><summary>Map symbols</summary><aside class="legend"><h2>Map legend</h2><p>Select a sample home to view details or add it to your Open Tour.</p><div class="legend-item"><span class="legend-icon">●</span><div><strong>Regular</strong><small>Residential inventory.</small></div></div><div class="legend-item"><span class="legend-icon">▲</span><div><strong>Premium</strong><small>Premium category.</small></div></div><div class="legend-item"><span class="legend-icon">◇</span><div><strong>Opportunity</strong><small>Special attribute.</small></div></div><div class="legend-item"><span class="legend-icon">ϟ</span><div><strong>Turbo</strong><small>Priority demo category.</small></div></div><div class="legend-item"><span class="legend-icon">◆</span><div><strong>Off-market</strong><small>Off-market features are not yet connected.</small></div></div><div class="coverage"><b>PROFOLIO coverage</b><div class="zip-cloud" id="zipCloud"></div><div class="territory-key"><i></i> real city and CDP boundaries</div><div class="territory-key"><i class="anchor"></i> reference area without legal boundaries</div><button class="coverage-action" id="areaVideoManagerBtn" type="button">Manage 60-second videos</button></div></aside></details>
           </section>
         </section>
 
@@ -182,10 +183,10 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=rail-alignment-20261011"></script>
+<script src="./map-fix-v4.js?v=map-density-20261011"></script>
 <script src="./boundary-fix.js"></script>
 <script src="./ui-premium-v2.js?v=english-core-20261011"></script>
-<script src="./amen-experience-v2.js?v=mobile-nav-20261011"></script>
+<script src="./amen-experience-v2.js?v=single-categories-mobile-nav-20261011"></script>
 <script src="./launch.js?v=private-backup-20261011"></script>
 <script src="./demo-polish.js?v=english-runtime-20261011"></script>
 </body>
