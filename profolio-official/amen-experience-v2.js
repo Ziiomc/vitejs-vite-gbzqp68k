@@ -89,7 +89,7 @@
   function installBottom(){
     if(id('amenBottomNav'))return;
     const n=document.createElement('nav');n.id='amenBottomNav';n.className='amen-bottom-nav';n.setAttribute('aria-label',tr('Navegación rápida ProFolio','ProFolio quick navigation'));
-    n.innerHTML=`<button type="button" class="active" data-amen-nav="home"><i>⌂</i><span>${tr('Inicio','Home')}</span></button><button type="button" data-amen-nav="map"><i>▧</i><span>${tr('Mapa','Map')}</span></button><button type="button" data-amen-nav="favorites"><i>♡</i><span>${tr('Favoritos','Favorites')}</span></button><button type="button" data-amen-nav="tour"><i>↝</i><span>Open Tour</span></button><button type="button" data-amen-nav="drafts"><i>＋</i><span>${tr('Borradores','Drafts')}</span></button><button type="button" data-amen-nav="profile"><i>◎</i><span>${tr('Perfil','Profile')}</span></button>`;
+    n.innerHTML=`<button type="button" class="active" aria-current="page" data-amen-nav="home"><i>⌂</i><span>${tr('Inicio','Home')}</span></button><button type="button" data-amen-nav="map"><i>▧</i><span>${tr('Mapa','Map')}</span></button><button type="button" data-amen-nav="favorites"><i>♡</i><span>${tr('Favoritos','Favorites')}</span></button><button type="button" data-amen-nav="tour"><i>↝</i><span>Open Tour</span></button><button type="button" data-amen-nav="drafts"><i>＋</i><span>${tr('Borradores','Drafts')}</span></button><button type="button" data-amen-nav="profile"><i>◎</i><span>${tr('Perfil','Profile')}</span></button>`;
     document.body.appendChild(n);syncProfile();
     n.addEventListener('click',e=>{const b=e.target.closest('[data-amen-nav]');if(!b)return;const a=b.dataset.amenNav;
       if(a!=='tour'&&!id('tourPanel')?.hidden)id('closeTourBtn')?.click();
