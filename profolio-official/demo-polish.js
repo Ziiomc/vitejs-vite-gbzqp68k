@@ -145,11 +145,16 @@
       $('#modalCard .premium-modal-close')?.click();
       return;
     }
-    if (event.key !== 'Tab' || $('#modal')?.getAttribute('aria-hidden') !== 'false') return;
-    const items = [...$('#modalCard').querySelectorAll('button,input,select,a[href],[tabindex="0"]')]
+    if (event.key !== 'Tab') return;
+    const dialog = $('#pfSettingsBackdrop.open .pf-settings-card') || $('#amenProfileOverlay.open .amen-profile-card') ||
+      ($('#modal')?.getAttribute('aria-hidden') === 'false' ? $('#modalCard') : null);
+    if (!dialog) return;
+    const items = [...dialog.querySelectorAll('button,input,select,a[href],[tabindex="0"]')]
       .filter(item => !item.disabled && item.getClientRects().length);
     if (!items.length) return;
-    if (event.shiftKey && document.activeElement === items[0]) {
+    if (document.activeElement === dialog) {
+      event.preventDefault(); (event.shiftKey ? items.at(-1) : items[0]).focus();
+    } else if (event.shiftKey && document.activeElement === items[0]) {
       event.preventDefault(); items.at(-1).focus();
     } else if (!event.shiftKey && document.activeElement === items.at(-1)) {
       event.preventDefault(); items[0].focus();

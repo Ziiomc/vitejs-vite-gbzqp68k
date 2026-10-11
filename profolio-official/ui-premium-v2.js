@@ -102,6 +102,7 @@
   let lang=localStorage.getItem(LANG_KEY)||'en';
   let theme=localStorage.getItem(THEME_KEY)||'light';
   let translating=false;
+  let settingsTrigger=null;
 
   const addStyles=()=>{
     if(document.getElementById('pfSettingsStyles')) return;
@@ -203,8 +204,9 @@
   const setLanguage=v=>{lang=v;localStorage.setItem(LANG_KEY,v);translateTree(document);document.dispatchEvent(new CustomEvent('pf:language-changed'))};
   const setTheme=v=>{theme=v;localStorage.setItem(THEME_KEY,v);applyTheme()};
 
-  const closeSettings=()=>{document.getElementById('pfSettingsBackdrop')?.classList.remove('open');document.body.style.overflow=''};
+  const closeSettings=()=>{document.getElementById('pfSettingsBackdrop')?.classList.remove('open');document.body.style.overflow='';settingsTrigger?.focus?.()};
   const openSettings=()=>{
+    settingsTrigger=document.activeElement;
     let back=document.getElementById('pfSettingsBackdrop');
     if(!back){
       back=document.createElement('div');back.id='pfSettingsBackdrop';back.className='pf-settings-backdrop';
@@ -215,7 +217,7 @@
       document.getElementById('pfEsBtn').onclick=()=>setLanguage('es');document.getElementById('pfEnBtn').onclick=()=>setLanguage('en');
       document.getElementById('pfLightBtn').onclick=()=>setTheme('light');document.getElementById('pfDarkBtn').onclick=()=>setTheme('dark');
     }
-    renderLabels();applyTheme();back.classList.add('open');document.body.style.overflow='hidden';
+    renderLabels();applyTheme();back.classList.add('open');document.body.style.overflow='hidden';document.getElementById('pfSettingsClose')?.focus();
   };
 
   const installEntry=()=>{

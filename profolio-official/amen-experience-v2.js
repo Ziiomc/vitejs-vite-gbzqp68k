@@ -7,7 +7,7 @@
   const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
   let profile=read(PROFILE_KEY,null);
   let sound=localStorage.getItem(SOUND_KEY)!=='off';
-  let volume=Math.max(.05,Math.min(1,Number(localStorage.getItem(VOLUME_KEY)||.32)));
+  let volume=Math.round(Math.max(.05,Math.min(1,Number(localStorage.getItem(VOLUME_KEY)||.3)))*20)/20;
   let ctx=null,timer=0;
 
   function tone(freq=560){
