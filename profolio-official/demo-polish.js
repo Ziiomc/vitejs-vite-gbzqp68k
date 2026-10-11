@@ -124,6 +124,7 @@
   new MutationObserver(schedule).observe(document.body, { subtree: true, childList: true, characterData: true });
   document.addEventListener('pf:language-changed', schedule);
   $('#navExplore')?.addEventListener('click', () => {
+    if (!$('#tourPanel')?.hidden) $('#closeTourBtn')?.click();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.querySelectorAll('.premium-nav .nav-item').forEach(button => button.classList.toggle('active', button.id === 'navExplore'));
   });

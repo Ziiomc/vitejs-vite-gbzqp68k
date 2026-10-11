@@ -92,6 +92,7 @@
     n.innerHTML=`<button type="button" class="active" data-amen-nav="home"><i>⌂</i><span>${tr('Inicio','Home')}</span></button><button type="button" data-amen-nav="map"><i>▧</i><span>${tr('Mapa','Map')}</span></button><button type="button" data-amen-nav="favorites"><i>♡</i><span>${tr('Favoritos','Favorites')}</span></button><button type="button" data-amen-nav="tour"><i>↝</i><span>Open Tour</span></button><button type="button" data-amen-nav="profile"><i>◎</i><span>${tr('Perfil','Profile')}</span></button>`;
     document.body.appendChild(n);syncProfile();
     n.addEventListener('click',e=>{const b=e.target.closest('[data-amen-nav]');if(!b)return;const a=b.dataset.amenNav;
+      if(a!=='tour'&&!id('tourPanel')?.hidden)id('closeTourBtn')?.click();
       if(a==='home')window.scrollTo({top:0,behavior:'smooth'});
       if(a==='map'){id('mapViewBtn')?.click();id('market-section')?.scrollIntoView({behavior:'smooth',block:'start'})}
       if(a==='favorites'){id('favoritesBtn')?.click();id('properties-section')?.scrollIntoView({behavior:'smooth',block:'start'})}
