@@ -1,0 +1,344 @@
+/*
+ * ProFolio · experience consolidation, October 2026
+ * Single design-system pass applied after legacy theme files.
+ * Preserve original wine/gold identity and all existing app behaviors.
+ */
+:root{
+  --pf-ux-wine:#64152f;
+  --pf-ux-wine-dark:#461026;
+  --pf-ux-gold:#ecc65b;
+  --pf-ux-cream:#fff9ec;
+  --pf-ux-line:#e5d4ac;
+  --pf-ux-text:#44202e;
+  --pf-ux-radius:16px;
+  --pf-ux-shadow:0 12px 34px rgba(66,14,35,.12);
+}
+html{scroll-behavior:smooth}
+#app.profolio-premium{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+#app.profolio-premium :is(button,select,input,summary){touch-action:manipulation}
+#app.profolio-premium :is(button,a,select,input,summary):focus-visible{
+  outline:3px solid #d89d25!important;outline-offset:3px!important;
+}
+/* 1. One category filter, one optional legend. No duplicate category strip. */
+#amenMapKey,.amen-map-key{display:none!important}
+#app.profolio-premium .filter-row{
+  margin:0!important;padding:0!important;min-width:0!important;
+  border:0!important;display:flex!important;gap:12px!important;
+  align-items:center!important;justify-content:space-between!important;
+}
+#app.profolio-premium .filter-row .controls{
+  display:flex!important;gap:7px!important;align-items:center!important;
+  flex-wrap:wrap!important;overflow:visible!important;
+}
+#app.profolio-premium .filter-row .controls button{
+  font-family:inherit;min-height:40px!important;
+  padding:8px 14px!important;border-radius:999px!important;
+  font-size:12px!important;font-weight:750!important;
+  border:1px solid rgba(249,217,136,.52)!important;
+  background:#fff9e9!important;color:#5b2339!important;
+  box-shadow:none!important;transition:background-color .18s,border-color .18s;
+}
+#app.profolio-premium .filter-row .controls button.active,
+#app.profolio-premium .filter-row .controls button[aria-pressed="true"]{
+  background:#efc958!important;color:#481528!important;
+  border-color:#efc958!important;box-shadow:inset 0 0 0 1px #9d7536!important;
+}
+#app.profolio-premium .filter-row .controls button:hover{
+  border-color:#f6d27b!important;background:#fff0c6!important;
+}
+#app.profolio-premium .filter-row .results-summary{
+  min-width:max-content;margin-left:auto!important;
+  font-size:12px!important;font-weight:750!important;color:#ffeab3!important;
+  letter-spacing:.005em!important;line-height:1.5!important;
+}
+/* 2. Professional, compact search instead of multiple unrelated large cards. */
+#app.profolio-premium .pf-map-intro{
+  margin:12px 16px 0!important;padding:17px 22px!important;
+  border-radius:18px!important;box-shadow:var(--pf-ux-shadow)!important;
+}
+#app.profolio-premium .pf-map-intro h1{
+  font-size:clamp(27px,2.6vw,37px)!important;line-height:1.15!important;
+}
+#app.profolio-premium .pf-map-intro p{
+  font-size:13px!important;line-height:1.5!important;
+}
+#app.profolio-premium .pf-map-intro-badges span{font-size:11px!important}
+#app.profolio-premium .demo-label{
+  margin:8px 16px 0!important;padding:8px 13px!important;
+  font-size:12px!important;line-height:1.45!important;
+}
+#app.profolio-premium .map-card{
+  border-radius:18px!important;padding:13px!important;
+  box-shadow:0 16px 44px rgba(58,7,24,.18)!important;
+}
+#app.profolio-premium .map-toolbar{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:9px!important;padding:4px 4px 14px!important;
+  margin:0 0 11px!important;min-width:0!important;
+  border-bottom:1px solid rgba(246,205,104,.45)!important;
+}
+#app.profolio-premium .explore-toolbar{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) auto auto!important;
+  gap:9px!important;align-items:center!important;
+  min-width:0!important;width:100%!important;overflow:visible!important;
+}
+#app.profolio-premium .map-toolbar :is(.sector-select,.budget-select){
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  justify-content:center!important;gap:4px!important;
+  min-width:0!important;min-height:54px!important;
+  width:100%!important;max-width:none!important;
+  padding:7px 12px!important;border-radius:11px!important;
+  background:#fff6dd!important;border:1px solid #e8ce91!important;
+  box-sizing:border-box!important;
+}
+#app.profolio-premium .map-toolbar :is(.sector-select,.budget-select) span{
+  font-size:11px!important;font-weight:850!important;
+  color:#755266!important;letter-spacing:.005em!important;line-height:1.25!important;
+}
+#app.profolio-premium .map-toolbar :is(.sector-select,.budget-select) select{
+  width:100%!important;max-width:none!important;min-width:0!important;
+  border:0!important;background:transparent!important;
+  padding:0 18px 0 0!important;
+  font-size:14px!important;line-height:1.35!important;font-weight:750!important;
+  color:#50192e!important;
+}
+#app.profolio-premium .explore-toolbar .thin{
+  min-width:110px!important;min-height:53px!important;height:auto!important;
+  padding:9px 13px!important;font-size:12px!important;line-height:1.3!important;
+  font-weight:800!important;border-radius:11px!important;
+  background:#fff6dd!important;border:1px solid #e8ce91!important;
+}
+#app.profolio-premium .view-switch{
+  width:auto!important;min-width:122px!important;min-height:53px!important;
+  padding:4px!important;border-radius:11px!important;
+  background:#fbe5ae!important;display:flex!important;
+}
+#app.profolio-premium .view-switch button{
+  flex:1;min-height:42px!important;min-width:55px!important;
+  font-size:12px!important;font-weight:850!important;border-radius:8px!important;
+}
+#app.profolio-premium .pf-search-refinements{
+  display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto!important;
+  gap:10px!important;align-items:center!important;
+  padding:9px 12px!important;margin:0!important;
+  min-width:0!important;border-radius:11px!important;
+  background:#fff7e4!important;border-color:#e8ce91!important;
+}
+#app.profolio-premium .pf-search-refinements label{
+  display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:center!important;gap:9px!important;min-width:0!important;
+  width:100%!important;font-size:12px!important;font-weight:800!important;
+}
+#app.profolio-premium .pf-search-refinements select{
+  width:100%!important;max-width:190px!important;min-width:0!important;
+  min-height:41px!important;background:white!important;
+  border:1px solid #d3b776!important;font-size:13px!important;
+  font-weight:700!important;
+}
+#app.profolio-premium .pf-refinement-note{
+  margin-left:0!important;text-align:right!important;font-size:11px!important;
+  line-height:1.4!important;color:#6b4b5a!important;
+}
+/* 3. Scale cards for real reading instead of 7–9px compact theme remnants. */
+#app.profolio-premium .right-rail>.detail-grid{
+  padding:16px!important;border-radius:16px!important;
+  box-shadow:var(--pf-ux-shadow)!important;
+}
+#app.profolio-premium .right-rail .panel-head-row h2{
+  font-size:clamp(19px,1.6vw,24px)!important;line-height:1.18!important;
+}
+#app.profolio-premium .right-rail .panel-head-row .muted{
+  font-size:12px!important;line-height:1.45!important;margin-top:5px!important;
+}
+#app.profolio-premium .right-rail .mini-action{
+  font-size:12px!important;font-weight:850!important;
+  min-height:36px!important;white-space:nowrap!important;
+}
+#app.profolio-premium .right-rail .cards{gap:12px!important}
+#app.profolio-premium .right-rail .property{
+  grid-template-columns:140px minmax(0,1fr)!important;
+  min-height:169px!important;border-radius:13px!important;
+  border:1px solid #e5d1a9!important;
+}
+#app.profolio-premium .right-rail .property-img{min-height:169px!important}
+#app.profolio-premium .right-rail .property-body{padding:11px 12px!important}
+#app.profolio-premium .right-rail .price{
+  font-size:20px!important;line-height:1.2!important;color:#67152e!important;
+}
+#app.profolio-premium .right-rail .property-body h3{
+  font-size:14px!important;line-height:1.3!important;margin:5px 0!important;
+  -webkit-line-clamp:2!important;
+}
+#app.profolio-premium .right-rail :is(.property-body .muted,.property-facts){
+  font-size:11px!important;line-height:1.45!important;
+}
+#app.profolio-premium .right-rail .property-facts{
+  margin:7px 0!important;white-space:normal!important;
+}
+#app.profolio-premium .right-rail .card-actions{
+  gap:7px!important;margin-top:8px!important;flex-wrap:wrap!important;
+}
+#app.profolio-premium .right-rail .card-actions button{
+  font-size:11px!important;line-height:1.25!important;
+  min-height:40px!important;padding:8px 10px!important;
+  font-weight:800!important;flex:1 1 auto!important;
+}
+#app.profolio-premium .right-rail :is(.tag,.source){font-size:10px!important}
+#app.profolio-premium .right-rail .card-favorite{
+  width:40px!important;height:40px!important;min-height:40px!important;
+}
+/* 4. Sidebar nav is scrollable; Pro upsell may not cut off 'Reports'. */
+@media(min-width:981px){
+  #app.profolio-premium .sidebar{
+    display:flex!important;flex-direction:column!important;
+    height:100dvh!important;min-height:0!important;
+  }
+  #app.profolio-premium .premium-nav{
+    min-height:0!important;flex:1 1 auto!important;
+    overflow-y:auto!important;overflow-x:hidden!important;
+    scrollbar-width:thin;scrollbar-color:#856371 transparent;
+    padding-bottom:12px!important;
+  }
+  #app.profolio-premium .sidebar-bottom{
+    flex-shrink:0!important;
+    max-height:min(38dvh,360px)!important;overflow-y:auto!important;
+  }
+  body .amen-bottom-nav{display:none!important}
+  body{padding-bottom:0!important}
+}
+@media(min-width:1280px){
+  #app.profolio-premium .dashboard-grid>.right-rail{
+    width:clamp(370px,31vw,435px)!important;
+  }
+}
+@media(min-width:981px) and (max-width:1279px){
+  #app.profolio-premium .explore-toolbar{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #app.profolio-premium .pf-search-refinements{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #app.profolio-premium .pf-refinement-note{
+    grid-column:1/-1!important;text-align:left!important;
+  }
+  #app.profolio-premium .right-rail .cards{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:980px){
+  #app.profolio-premium .explore-toolbar{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #app.profolio-premium .pf-search-refinements{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #app.profolio-premium .pf-refinement-note{
+    grid-column:1/-1!important;text-align:left!important;
+  }
+  #app.profolio-premium .right-rail .property{
+    grid-template-columns:124px minmax(0,1fr)!important;
+    flex:0 0 clamp(290px,76vw,380px)!important;
+  }
+  /* Provide map legend on mobile, instead of 5 duplicate full-width buttons. */
+  #app.profolio-premium .map-legend{
+    display:block!important;left:12px!important;bottom:12px!important;
+  }
+  #app.profolio-premium .map-legend summary{
+    display:block!important;min-height:40px!important;
+    padding:11px 13px!important;font-size:12px!important;
+    font-weight:750!important;
+  }
+  #app.profolio-premium .map-legend[open] .legend{
+    max-width:calc(100vw - 48px)!important;
+    max-height:min(50svh,360px)!important;
+    overflow:auto!important;bottom:47px!important;
+  }
+}
+@media(max-width:700px){
+  #app.profolio-premium .pf-map-intro{
+    margin:9px 9px 0!important;padding:14px!important;
+  }
+  #app.profolio-premium .pf-map-intro h1{font-size:24px!important}
+  #app.profolio-premium .pf-map-intro p{font-size:12px!important}
+  #app.profolio-premium .pf-map-intro-badges span{font-size:10px!important}
+  #app.profolio-premium .map-card{padding:9px!important}
+  #app.profolio-premium .explore-toolbar{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #app.profolio-premium .explore-toolbar :is(.sector-select,.budget-select){
+    padding:8px!important;min-height:58px!important;
+  }
+  #app.profolio-premium .explore-toolbar :is(select,input){
+    font-size:16px!important;
+  }
+  #app.profolio-premium .explore-toolbar .thin{
+    min-width:0!important;width:100%!important;min-height:46px!important;
+  }
+  #app.profolio-premium .explore-toolbar .view-switch{
+    width:100%!important;min-width:0!important;min-height:46px!important;
+  }
+  #app.profolio-premium .explore-toolbar .view-switch button{min-height:38px!important}
+  #app.profolio-premium .pf-search-refinements{gap:10px!important}
+  #app.profolio-premium .pf-search-refinements label{
+    display:flex!important;flex-direction:column!important;
+    align-items:stretch!important;gap:6px!important;
+    font-size:12px!important;
+  }
+  #app.profolio-premium .pf-search-refinements select{
+    max-width:100%!important;min-height:42px!important;font-size:16px!important;
+  }
+  #app.profolio-premium .filter-row{
+    gap:8px!important;align-items:flex-start!important;
+  }
+  #app.profolio-premium .filter-row .controls{
+    flex-wrap:nowrap!important;overflow-x:auto!important;
+    max-width:100%!important;padding:2px 0 8px!important;
+    scrollbar-width:thin!important;scrollbar-color:#f5cf65 transparent;
+  }
+  #app.profolio-premium .filter-row .controls button{
+    flex:0 0 auto!important;min-height:42px!important;
+  }
+  #app.profolio-premium .filter-row .results-summary{
+    margin-left:0!important;font-size:11px!important;
+  }
+  #app.profolio-premium .right-rail .property{
+    grid-template-columns:115px minmax(0,1fr)!important;
+    flex-basis:clamp(280px,88vw,356px)!important;
+    min-height:170px!important;
+  }
+  #app.profolio-premium .right-rail .price{font-size:17px!important}
+  #app.profolio-premium .right-rail .property-body h3{font-size:13px!important}
+  #app.profolio-premium .right-rail .property-facts{font-size:11px!important}
+  #app.profolio-premium .right-rail .card-actions button{
+    font-size:11px!important;min-height:40px!important;
+  }
+  #app.profolio-premium #market-map:not(.pf-area-labels-visible) .pfl{
+    display:none!important;
+  }
+  body .amen-bottom-nav span{font-size:10px!important;line-height:1.15!important}
+}
+@media(max-width:390px){
+  #app.profolio-premium .pf-search-refinements{
+    grid-template-columns:1fr!important;
+  }
+  #app.profolio-premium .pf-refinement-note{grid-column:auto!important}
+  #app.profolio-premium .right-rail .property{
+    grid-template-columns:104px minmax(0,1fr)!important;
+    flex-basis:calc(100vw - 34px)!important;
+  }
+  #app.profolio-premium .right-rail .property-body{padding:8px!important}
+  #app.profolio-premium .right-rail .price{font-size:16px!important}
+  #app.profolio-premium .right-rail .property-body h3{font-size:12px!important}
+  #app.profolio-premium .right-rail .card-actions{gap:4px!important}
+  #app.profolio-premium .right-rail .card-actions button{
+    font-size:10px!important;padding:6px!important;
+  }
+  body .amen-bottom-nav span{font-size:9px!important}
+}
+/* Hide the surrounding mini-buttons until there is room to inspect neighborhood detail. */
+#app.profolio-premium #market-map:not(.pf-area-labels-visible) .pfl{display:none!important}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  #app.profolio-premium .filter-row .controls button{transition:none!important}
+}
