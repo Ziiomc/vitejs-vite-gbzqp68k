@@ -102,17 +102,6 @@
       $('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});tone(560);
     });
   }
-  function filter(label){return $$('#filters button').find(b=>(b.textContent||'').trim().toLowerCase()===label.toLowerCase())}
-  function installMapKey(){
-    const card=$('.map-card'),toolbar=$('.map-toolbar');if(!card||id('amenMapKey'))return;
-    const k=document.createElement('div');k.id='amenMapKey';k.className='amen-map-key';k.setAttribute('aria-label',tr('Simbología rápida del mapa','Quick map legend'));
-    k.innerHTML=`<button type="button" class="amen-coverage" data-amen-map="coverage">◎ ${tr('Cobertura','Coverage')}</button><button type="button" data-amen-map="regular">● Regular</button><button type="button" data-amen-map="premium">▲ Premium</button><button type="button" data-amen-map="feature">◇ ${tr('Oportunidad','Opportunity')}</button><button type="button" data-amen-map="turbo">ϟ Turbo</button>`;
-    if(toolbar&&toolbar.parentElement===card)toolbar.insertAdjacentElement('afterend',k);else card.prepend(k);
-    k.addEventListener('click',e=>{const b=e.target.closest('[data-amen-map]');if(!b)return;const a=b.dataset.amenMap;
-      if(a==='coverage')id('homeBtn')?.click();else filter(a==='feature'?tr('Oportunidad','Opportunity'):a[0].toUpperCase()+a.slice(1))?.click();
-      $$('#amenMapKey button').forEach(x=>x.classList.toggle('active',x===b));tone(560);
-    });
-  }
   function enhanceSettings(){
     const body=$('#pfSettingsBackdrop .pf-settings-body');if(!body||$('.pf-setting-sound-row',body))return;
     const row=document.createElement('div');row.className='pf-setting-row pf-setting-sound-row';
@@ -127,13 +116,14 @@
   },true);
   document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();openProfile()}if(e.key==='Escape'&&id('amenProfileOverlay')?.classList.contains('open')){id('amenProfileOverlay').classList.remove('open');document.body.style.overflow=''}},true);
 
-  installBottom();installMapKey();syncProfile();syncSound();
+  // Keep a single interactive category filter. The map has its own optional legend.
+  id('amenMapKey')?.remove();installBottom();syncProfile();syncSound();
   document.addEventListener('pf:language-changed',()=>{
     id('amenProfileOverlay')?.remove();
     $('.pf-setting-sound-row')?.remove();
     id('amenBottomNav')?.remove();
     id('amenMapKey')?.remove();
-    installBottom();installMapKey();syncProfile();syncSound();
+    installBottom();syncProfile();syncSound();
   });
-  window.addEventListener('load',()=>{setTimeout(()=>{installBottom();installMapKey();syncProfile()},180)});
+  window.addEventListener('load',()=>{setTimeout(()=>{installBottom();syncProfile()},180)});
 })();
