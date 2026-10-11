@@ -39,7 +39,7 @@
     const navIcon=$('#amenBottomNav [data-amen-nav="profile"] i');if(navIcon)navIcon.textContent=profile?initials(profile.name):'◎';
   }
   function syncSound(){
-    localStorage.setItem(SOUND_KEY,sound?'on':'off');localStorage.setItem(VOLUME_KEY,String(volume));
+    try{localStorage.setItem(SOUND_KEY,sound?'on':'off');localStorage.setItem(VOLUME_KEY,String(volume))}catch{}
     $$('[data-amen-sound-toggle]').forEach(b=>{b.textContent=sound?tr('Activado','On'):tr('Desactivado','Off');b.classList.toggle('on',sound);b.classList.toggle('active',sound);b.setAttribute('aria-pressed',String(sound))});
     $$('[data-amen-volume]').forEach(r=>r.value=String(Math.round(volume*100)));
     $$('[data-amen-volume-value]').forEach(e=>e.textContent=Math.round(volume*100)+'%');
@@ -57,8 +57,9 @@
     let o=id('amenProfileOverlay');if(o)return o;
     o=document.createElement('div');o.id='amenProfileOverlay';o.className='amen-profile-overlay';
     o.innerHTML=`<section class="amen-profile-card" role="dialog" aria-modal="true" aria-labelledby="amenProfileTitle">
-      <header class="amen-profile-head"><div><small>PROFOLIO · ${tr('MI CUENTA','MY ACCOUNT')}</small><h2 id="amenProfileTitle">${tr('Perfil y preferencias','Profile & preferences')}</h2></div><button class="amen-close" type="button" data-amen-close aria-label="${tr('Cerrar','Close')}">×</button></header>
+      <header class="amen-profile-head"><div><small>PROFOLIO · ${tr('PERFIL LOCAL','LOCAL PROFILE')}</small><h2 id="amenProfileTitle">${tr('Perfil y preferencias','Profile & preferences')}</h2></div><button class="amen-close" type="button" data-amen-close aria-label="${tr('Cerrar','Close')}">×</button></header>
       <div class="amen-profile-body">
+        <p class="amen-local-note">${tr('Este perfil se guarda solo en este navegador. No es una cuenta en línea ni activa contactos con agentes.','Saved only on this device. This is not an online account and cannot contact agents.')}</p>
         <div class="amen-profile-status"><span class="amen-avatar" data-amen-avatar>PF</span><div><b data-amen-status-title></b><small data-amen-status-copy></small></div></div>
         <form class="amen-form" id="amenProfileForm">
           <label><span>${tr('Nombre','Name')}</span><input name="name" autocomplete="name" required maxlength="60" placeholder="${tr('Tu nombre','Your name')}"></label>
