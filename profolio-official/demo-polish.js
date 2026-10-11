@@ -162,7 +162,8 @@
     }
     if (event.key !== 'Tab') return;
     const dialog = $('#pfSettingsBackdrop.open .pf-settings-card') || $('#amenProfileOverlay.open .amen-profile-card') ||
-      ($('#modal')?.getAttribute('aria-hidden') === 'false' ? $('#modalCard') : null);
+      ($('#modal')?.getAttribute('aria-hidden') === 'false' ? $('#modalCard') : null) ||
+      $('#tourPanel:not([hidden])');
     if (!dialog) return;
     const items = [...dialog.querySelectorAll('button,input,select,a[href],[tabindex="0"]')]
       .filter(item => !item.disabled && item.getClientRects().length);

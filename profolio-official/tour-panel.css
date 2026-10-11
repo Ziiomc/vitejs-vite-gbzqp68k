@@ -344,3 +344,55 @@ body:has(#tourPanel:not([hidden])) #amenBottomNav { display: none !important; }
   #tourPanel .tour-stat span { font-size: 9px; }
   #tourPanel .tour-stat b { font-size: 16px; }
 }
+
+
+/* Open Tour overlay fix: no clipping by map's blurred floating property rail. */
+#tourBackdrop[hidden]{display:none!important}
+#tourBackdrop{
+  position:fixed;inset:0;z-index:9900;
+  background:rgba(29,9,21,.60);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+body.pf-tour-open{overflow:hidden}
+#tourPanel{
+  position:fixed!important;
+  top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;
+  transform:translate(-50%,-50%)!important;
+  width:min(560px,calc(100vw - 40px))!important;
+  max-width:calc(100vw - 32px)!important;
+  max-height:calc(100dvh - 40px)!important;
+  margin:0!important;
+  z-index:9999!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior:contain;
+  isolation:isolate;
+}
+#tourPanel .tour-panel-header{
+  padding-right:100px;
+}
+#tourPanel .tour-panel-body{min-width:0}
+#tourPanel .tour-stat b{font-size:clamp(17px,2vw,22px)!important}
+#tourPanel .tour-saved-link{max-width:120px}
+@media(max-width:680px){
+  #tourPanel{
+    top:50%!important;left:50%!important;right:auto!important;
+    width:calc(100vw - 16px)!important;
+    max-width:calc(100vw - 16px)!important;
+    max-height:calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;
+    border-radius:18px!important;
+  }
+  #tourPanel .tour-panel-header{padding-right:90px}
+  #tourPanel .tour-stat{gap:6px}
+  #tourPanel .tour-stat > div{min-height:72px;padding:9px 7px}
+}
+@media(max-width:390px){
+  #tourPanel .tour-panel-header{padding-right:76px}
+  #tourPanel .tour-panel-eyebrow{font-size:9px;letter-spacing:.08em}
+  #tourPanel .tour-panel-header h2{font-size:26px}
+  #tourPanel .tour-saved-link{right:12px;font-size:10px}
+  #tourPanel .tour-stat span{font-size:9px}
+  #tourPanel .tour-stat b{font-size:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #tourBackdrop{-webkit-backdrop-filter:none;backdrop-filter:none}
+}
