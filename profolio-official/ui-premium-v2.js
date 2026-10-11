@@ -13,7 +13,7 @@
     }).filter(Boolean);
     const count=$('#premiumMetricCount');
     const price=$('#premiumMetricPrice');
-    if(count) count.textContent=cards.length ? cards.length.toLocaleString('es-ES') : '—';
+    if(count) count.textContent=cards.length ? cards.length.toLocaleString('en-US') : '—';
     if(price){
       const avg=prices.length?Math.round(prices.reduce((a,b)=>a+b,0)/prices.length):0;
       price.textContent=avg?`$${avg.toLocaleString('en-US')}`:'—';
