@@ -13,7 +13,7 @@
     }).filter(Boolean);
     const count=$('#premiumMetricCount');
     const price=$('#premiumMetricPrice');
-    if(count) count.textContent=cards.length ? cards.length.toLocaleString('es-ES') : '—';
+    if(count) count.textContent=cards.length ? cards.length.toLocaleString('en-US') : '—';
     if(price){
       const avg=prices.length?Math.round(prices.reduce((a,b)=>a+b,0)/prices.length):0;
       price.textContent=avg?`$${avg.toLocaleString('en-US')}`:'—';
@@ -137,6 +137,18 @@
   };
 
   const dictionary={
+    'PROFOLIO · EXPLORA TU MERCADO':'PROFOLIO · EXPLORE YOUR MARKET',
+    'Tu próximo hogar comienza en el mapa.':'Your next home starts on the map.',
+    'Elige una zona, abre la ficha de cada inmueble y prepara tu':'Choose an area, explore home details, and plan your',
+    'Mapa interactivo':'Interactive map',
+    'Fichas y favoritos':'Listings & favorites',
+    'Resultados de la búsqueda':'Search results',
+    'Explora las propiedades de ejemplo y añade tus favoritas al Open Tour.':'Browse sample homes and add favorites to your Open Tour.',
+    '← Volver al mapa':'← Back to map',
+    'Guardar un borrador':'Save a draft',
+    'Solo en este dispositivo':'Saved only on this device',
+    'Crear borrador':'Save a draft',
+    'Guarda un borrador local':'Saved only on this device',
     'Inicio':'Home','Mapa de Mercado':'Market Map','Propiedades':'Properties','Asistente IA':'AI Assistant','Análisis de Zona':'Area Analysis',
     'Mis Favoritos':'My Favorites','Reportes':'Reports','Portafolio Turbo':'Turbo Portfolio','Guía de ProFolio':'ProFolio Guide','Configuración':'Settings',
     'Acceso completo.':'Full access.','Más oportunidades.':'More opportunities.','Mejores decisiones.':'Better decisions.','Actualizar Plan':'Upgrade Plan',
@@ -165,7 +177,7 @@
  'DESCUBRE TU PRÓXIMO HOGAR':'DISCOVER YOUR NEXT HOME','Encuentra una casa que se sienta tuya.':'Find a place that feels like home.',
  'Explora por zona, presupuesto y estilo de vida.':'Explore by area, budget and lifestyle.','Presupuesto máximo':'Max budget','Sin límite':'Any budget',
  'Inventario ilustrativo para demostración. Las propiedades y fotografías no son anuncios verificados.':'Demo inventory. Properties and photos are illustrative, not verified listings.',
- 'Crear borrador':'Create demo draft','Guarda un borrador local':'Save a local draft','Función en preparación.':'Planned feature.','Función en preparación. Sin anuncios exclusivos verificados.':'Planned feature. No verified exclusive listings.','Ver estado →':'View status →','Recorridos en video: próximamente.':'Video tours: coming soon.','Recorridos guardados solo en este navegador. Distancia y duración son estimaciones en línea recta, no rutas viales.':'Tours are saved only in this browser. Distance and time use straight-line estimates, not road routes.',
+'Función en preparación.':'Planned feature.','Función en preparación. Sin anuncios exclusivos verificados.':'Planned feature. No verified exclusive listings.','Ver estado →':'View status →','Recorridos en video: próximamente.':'Video tours: coming soon.','Recorridos guardados solo en este navegador. Distancia y duración son estimaciones en línea recta, no rutas viales.':'Tours are saved only in this browser. Distance and time use straight-line estimates, not road routes.',
  'Propiedades de ejemplo':'Sample properties','Demostración':'Demo','Precio medio de ejemplo':'Sample average price','Datos ilustrativos':'Illustrative data',
  'Rendimiento':'Yield','Sin datos verificados':'No verified data',
  'Asistente IA · Próximamente':'AI Assistant · Coming soon','Integración planificada.':'Integration planned.','Ver demostración →':'View preview →'
