@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="./amen-experience.css">
   <link rel="stylesheet" href="./launch.css">
   <link rel="stylesheet" href="./tour-panel.css?v=overlay-fix-20261011">
-  <link rel="stylesheet" href="./etapa0-mapa.css?v=details-nav-20261011">
+  <link rel="stylesheet" href="./etapa0-mapa.css?v=roadmap-filters-20261011">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -81,6 +81,11 @@
               <label class="sector-select"><span>Sector</span><select id="sectorSelect" aria-label="Filtrar por sector"><option value="">Toda la región</option></select></label><label class="budget-select"><span>Presupuesto máximo</span><select id="budgetSelect" aria-label="Maximum budget in USD"><option value="0">Sin límite</option><option value="500000">$500,000</option><option value="600000">$600,000</option><option value="750000">$750,000</option><option value="1000000">$1,000,000</option><option value="1500000">$1,500,000</option><option value="2500000">$2,500,000</option></select></label>
               <button class="thin" id="homeBtn" aria-label="Mostrar toda la región">↺ Región</button>
               <div class="view-switch"><button class="active" id="mapViewBtn" type="button" aria-pressed="true">Mapa</button><button id="listViewBtn" type="button" aria-pressed="false">Lista</button></div>
+            </div>
+            <div class="pf-search-refinements" role="group" aria-label="Additional property filters">
+              <label for="minPriceSelect"><span>Minimum price</span><select id="minPriceSelect" aria-label="Minimum price in USD"><option value="0">No minimum</option><option value="400000">$400,000</option><option value="500000">$500,000</option><option value="750000">$750,000</option><option value="1000000">$1,000,000</option></select></label>
+              <label for="bedsSelect"><span>Bedrooms</span><select id="bedsSelect" aria-label="Minimum number of bedrooms"><option value="0">Any bedrooms</option><option value="3">3+ beds</option><option value="4">4+ beds</option><option value="5">5+ beds</option></select></label>
+              <small class="pf-refinement-note">Sample for-sale homes · Wilmington, NC area</small>
             </div>
             <div class="filter-row"><div class="controls" id="filters"></div><span class="results-summary" id="resultCount"></span></div>
           </div>
@@ -177,7 +182,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=open-tour-overlay-20261011"></script>
+<script src="./map-fix-v4.js?v=roadmap-search-share-20261011"></script>
 <script src="./boundary-fix.js"></script>
 <script src="./ui-premium-v2.js?v=en-us-20261011"></script>
 <script src="./amen-experience-v2.js?v=mobile-nav-20261011"></script>
