@@ -516,3 +516,18 @@ body .amen-bottom-nav button[aria-current="page"]{
   #modal .pf-draft-actions{max-width:none;width:100%;justify-content:stretch}
   #modal .pf-draft-actions button{flex:1 1 42%}
 }
+
+
+/* Private local draft backup management, never server-side or public. */
+#modal .pf-draft-backup{
+  padding:12px;margin:14px 0 16px;border:1px solid #dbc89f;
+  border-radius:12px;background:#fff8e9;
+}
+#modal .pf-draft-backup p{
+  color:#674951;font-size:12px;line-height:1.5;margin:0 0 10px;
+}
+#modal .pf-draft-backup-actions{display:flex;gap:8px;flex-wrap:wrap}
+#modal .pf-draft-backup-actions button{flex:1 1 150px;min-height:43px}
+#modal .pf-draft-backup-actions button:focus-visible{
+  outline:3px solid #e0b644;outline-offset:2px;
+}
