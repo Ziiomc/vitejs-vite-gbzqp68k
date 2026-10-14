@@ -158,7 +158,8 @@ body #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .property-im
 body #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .property-img img{position:absolute;inset:0}
 body #app.profolio-premium .dashboard-grid.pf-list-mode .metric-strip{width:100%}
 body #modal .modal-card,body #modalCard{background:var(--pf-r-surface)!important;color:var(--pf-r-ink)!important;border:1px solid var(--pf-r-line)!important;border-radius:20px!important;box-shadow:0 28px 80px #10212640!important}
-body #modalCard{box-sizing:border-box;max-width:calc(100vw - 28px)!important;padding:clamp(16px,3vw,28px)!important}
+body #modal[aria-hidden="false"]{grid-template-columns:minmax(0,1fr)}
+body #modal .modal-card{box-sizing:border-box;width:min(760px,100%)!important;max-width:100%!important;min-width:0;padding:clamp(16px,3vw,28px)!important}
 body #modal .pf-detail-grid,body #modal .pf-detail-grid>*{min-width:0}
 body #modal .pf-detail-photo{max-width:100%}
 body #modal .pf-detail-copy{overflow-wrap:anywhere}
