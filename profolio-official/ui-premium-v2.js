@@ -151,6 +151,18 @@
   };
 
   const dictionary={
+    'WILMINGTON, CAROLINA DEL NORTE':'WILMINGTON, NORTH CAROLINA',
+    'Explora un lado distinto':'Explore a different',
+    'de Wilmington.':'side of Wilmington.',
+    'Barrios, casas de ejemplo y tu próximo Open Tour, en una vista cuidada.':'Neighborhoods, sample homes and your next Open Tour, in one considered view.',
+    'Explorar':'Explore',
+    'Guardar':'Save',
+    'Recorrido':'Tour',
+    'Más filtros':'More filters',
+    'Precio mínimo y habitaciones':'Minimum price & bedrooms',
+    'LA COSTA / A LA VISTA':'THE COAST / IN VIEW',
+    'La costa, de cerca.':'A closer look at the coast.',
+    'Selecciona una zona o una casa para explorar sus alrededores.':'Select an area or a home to explore what is around it.',
     'DESCUBRIR':'DISCOVER',
     'TU ESPACIO':'YOUR WORKSPACE',
     'PRÓXIMAMENTE':'COMING NEXT',
@@ -276,7 +288,8 @@
     document.documentElement.lang=lang;
     const search=document.getElementById('search');if(search){search.placeholder=lang==='en'?'Search sample homes, neighborhoods or ZIP...':'Buscar casas de ejemplo, barrios o ZIP...';search.setAttribute('aria-label',lang==='en'?'Search sample homes, areas, or ZIP codes':'Buscar casas de ejemplo, zonas o códigos ZIP')}
     const manual=document.getElementById('manualAddress');if(manual)manual.placeholder=lang==='en'?'Add address manually':'Agregar dirección manual';
-    document.querySelector('.pf-intro-steps')?.setAttribute('aria-label',lang==='en'?'How to explore':'Cómo explorar');
+    document.querySelector('.pf-discovery-steps')?.setAttribute('aria-label',lang==='en'?'Your property journey':'Tu búsqueda de propiedades');
+    document.querySelector('.pf-search-panel')?.setAttribute('aria-label',lang==='en'?'Property search filters':'Filtros de búsqueda de propiedades');
     document.getElementById('profileAccessBtn')?.setAttribute('aria-label',lang==='en'?'Open local profile':'Abrir perfil local');
     renderLabels();translating=false;
   };
