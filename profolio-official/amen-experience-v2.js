@@ -8,19 +8,45 @@
   let profile=read(PROFILE_KEY,null);
   let sound=localStorage.getItem(SOUND_KEY)!=='off';
   let volume=Math.round(Math.max(.05,Math.min(1,Number(localStorage.getItem(VOLUME_KEY)||.3)))*20)/20;
-  let ctx=null,timer=0;
+  let ctx=null,timer=0,lastSoundAt=0;
 
-  function tone(freq=560){
-    if(!sound)return;
+  function audioContext(){
+    if(!sound)return null;
     try{
       ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
       if(ctx.state==='suspended')ctx.resume();
-      const o=ctx.createOscillator(),g=ctx.createGain(),n=ctx.currentTime;
-      o.frequency.setValueAtTime(freq,n);
-      g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(Math.max(.006,volume*.08),n+.008);g.gain.exponentialRampToValueAtTime(.0001,n+.08);
-      o.connect(g);g.connect(ctx.destination);o.start(n);o.stop(n+.09);
-    }catch{}
+      return ctx;
+    }catch{return null}
   }
+  function voice(ac,{freq,at=0,duration=.12,gain=.04,type='sine',endFreq=0}){
+    const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+at,peak=Math.max(.002,Math.min(.12,gain*volume));
+    o.type=type;o.frequency.setValueAtTime(freq,n);
+    if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,n+duration);
+    g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(peak,n+.012);g.gain.exponentialRampToValueAtTime(.0001,n+duration);
+    o.connect(g);g.connect(ac.destination);o.start(n);o.stop(n+duration+.02);
+  }
+  function bell(ac,freq,at=.0,duration=.52,gain=.055){
+    voice(ac,{freq,at,duration,gain,type:'sine'});
+    voice(ac,{freq:freq*2.01,at,duration:duration*.62,gain:gain*.24,type:'sine'});
+    voice(ac,{freq:freq*3.02,at,duration:duration*.38,gain:gain*.09,type:'sine'});
+  }
+  function playSound(kind='nav'){
+    if(!sound)return false;
+    const now=performance.now();if(now-lastSoundAt<55)return false;
+    const ac=audioContext();if(!ac)return false;lastSoundAt=now;
+    try{
+      if(kind==='door'){
+        bell(ac,659.25,0,.58,.062);bell(ac,493.88,.27,.66,.056);
+      }else if(kind==='confirm'){
+        bell(ac,587.33,0,.32,.044);bell(ac,783.99,.105,.36,.038);bell(ac,987.77,.215,.42,.031);
+      }else{
+        voice(ac,{freq:520,at:0,duration:.055,gain:.032,type:'sine',endFreq:690});
+      }
+      document.dispatchEvent(new CustomEvent('pf:sound-play',{detail:{kind}}));
+      return true;
+    }catch{return false}
+  }
+  window.__pfSound={play:playSound,get enabled(){return sound},get volume(){return volume}};
   function toast(msg){
     let e=id('amenToast');
     if(!e){e=document.createElement('div');e.id='amenToast';e.className='amen-toast';e.setAttribute('role','status');document.body.appendChild(e)}
@@ -69,23 +95,23 @@
           <label class="full"><span>${tr('Zona principal','Main area')}</span><input name="area" maxlength="80" placeholder="Wilmington, NC"></label>
         </form>
         <div class="amen-profile-actions"><button class="amen-save" type="submit" form="amenProfileForm">${tr('Guardar perfil','Save profile')}</button><button class="amen-secondary" type="button" data-amen-settings>${tr('Configuración general','General settings')}</button></div>
-        <section class="amen-sound"><div class="amen-sound-head"><div><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Confirmaciones suaves al tocar y guardar.','Soft confirmations when tapping and saving.')}</small></div><button class="amen-toggle" type="button" data-amen-sound-toggle></button></div><label class="amen-volume"><span>${tr('Volumen','Volume')}</span><input data-amen-volume type="range" min="5" max="100" step="5"><b data-amen-volume-value></b></label></section>
+        <section class="amen-sound"><div class="amen-sound-head"><div><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Timbre al abrir propiedades, confirmación moderna y señal breve de navegación.','Door chime for properties, modern confirmations and a brief navigation cue.')}</small></div><button class="amen-toggle" type="button" data-amen-sound-toggle></button></div><label class="amen-volume"><span>${tr('Volumen','Volume')}</span><input data-amen-volume type="range" min="5" max="100" step="5"><b data-amen-volume-value></b></label></section>
       </div></section>`;
     document.body.appendChild(o);
     o.addEventListener('click',e=>{
-      if(e.target===o||e.target.closest('[data-amen-close]')){o.classList.remove('open');document.body.style.overflow='';tone(410);return}
-      if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)tone(680)}
+      if(e.target===o||e.target.closest('[data-amen-close]')){o.classList.remove('open');document.body.style.overflow='';return}
+      if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)playSound('nav')}
       if(e.target.closest('[data-amen-settings]')){o.classList.remove('open');document.body.style.overflow='';setTimeout(()=>id('pfSettingsBtn')?.click(),60)}
     });
     o.addEventListener('input',e=>{if(e.target.matches('[data-amen-volume]')){volume=Math.max(.05,Math.min(1,Number(e.target.value)/100));syncSound()}});
     id('amenProfileForm').addEventListener('submit',e=>{
       e.preventDefault();const d=new FormData(e.currentTarget);
       profile={name:String(d.get('name')||'').trim(),email:String(d.get('email')||'').trim(),phone:String(d.get('phone')||'').trim(),role:String(d.get('role')||'buyer'),area:String(d.get('area')||'').trim(),updatedAt:Date.now()};
-      write(PROFILE_KEY,profile);syncProfile();profileData();tone(720);toast(tr('Perfil guardado.','Profile saved.'));
+      write(PROFILE_KEY,profile);syncProfile();profileData();playSound('confirm');toast(tr('Perfil guardado.','Profile saved.'));
     });
     profileData();syncSound();return o;
   }
-  function openProfile(){const o=ensureProfile();profileData();syncSound();o.classList.add('open');document.body.style.overflow='hidden';setTimeout(()=>$('input[name="name"]',o)?.focus(),30);tone(630)}
+  function openProfile(){const o=ensureProfile();profileData();syncSound();o.classList.add('open');document.body.style.overflow='hidden';setTimeout(()=>$('input[name="name"]',o)?.focus(),30)}
 
   function installBottom(){
     if(id('amenBottomNav'))return;
@@ -100,22 +126,31 @@
       if(a==='tour')id('navTour')?.click();
       if(a==='drafts')id('navPortfolio')?.click();
       if(a==='profile')openProfile();
-      $$('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});tone(560);
+      $$('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});playSound('nav');
     });
   }
   function enhanceSettings(){
     const body=$('#pfSettingsBackdrop .pf-settings-body');if(!body||$('.pf-setting-sound-row',body))return;
     const row=document.createElement('div');row.className='pf-setting-row pf-setting-sound-row';
-    row.innerHTML=`<div class="pf-setting-copy"><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Activa o desactiva las confirmaciones suaves.','Enable or disable soft confirmations.')}</small></div><div class="amen-setting-sound"><button type="button" data-amen-sound-toggle></button></div>`;
-    body.insertBefore(row,$('.pf-settings-note',body));row.addEventListener('click',e=>{if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)tone(680)}});syncSound();
+    row.innerHTML=`<div class="pf-setting-copy"><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Controla los timbres y la señal breve de navegación.','Control door chimes and the brief navigation cue.')}</small></div><div class="amen-setting-sound"><button type="button" data-amen-sound-toggle></button></div>`;
+    body.insertBefore(row,$('.pf-settings-note',body));row.addEventListener('click',e=>{if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)playSound('nav')}});syncSound();
+  }
+
+  const isAdding=b=>/^\s*(\+|♡|Guardar|Save)/i.test((b?.textContent||'').trim());
+  function soundForControl(b){
+    if(!b||b.closest('#amenProfileOverlay,#amenBottomNav,#pfSettingsBackdrop'))return;
+    if(b.matches('[data-focus]'))return playSound('door');
+    if(b.matches('[data-tour],[data-pf-tour],[data-poptour],[data-fav],[data-pf-fav]')&&isAdding(b))return playSound('confirm');
+    if(b.id==='saveTourBtn'&&Number(id('tourStops')?.textContent||0)>0)return playSound('confirm');
+    if(b.matches('#filters button,#homeBtn,#mapViewBtn,#listViewBtn,#wilmingtonFocus,#favoritesBtn,.premium-nav button,.top-links button,[data-premium-action]'))return playSound('nav');
   }
 
   document.addEventListener('click',e=>{
-    if(e.target.closest('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();openProfile();return}
+    if(e.target.closest('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();playSound('nav');openProfile();return}
     if(e.target.closest('#pfSettingsBtn'))setTimeout(enhanceSettings,50);
-    const b=e.target.closest('button');if(b&&!b.closest('#amenProfileOverlay')&&!b.closest('#amenBottomNav')&&!b.closest('#pfSettingsBackdrop'))tone(540);
+    soundForControl(e.target.closest('button,[role="button"],a'));
   },true);
-  document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();openProfile()}if(e.key==='Escape'&&id('amenProfileOverlay')?.classList.contains('open')){id('amenProfileOverlay').classList.remove('open');document.body.style.overflow=''}},true);
+  document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();playSound('nav');openProfile()}if(e.key==='Escape'&&id('amenProfileOverlay')?.classList.contains('open')){id('amenProfileOverlay').classList.remove('open');document.body.style.overflow=''}},true);
 
   // Keep a single interactive category filter. The map has its own optional legend.
   id('amenMapKey')?.remove();installBottom();syncProfile();syncSound();
