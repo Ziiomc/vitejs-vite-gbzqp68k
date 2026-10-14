@@ -263,6 +263,7 @@ body.pf-dark #app.profolio-premium :is(.pf-filter-label,.filter-row .results-sum
   body #modal .pf-detail-copy h2{font-size:27px}
 }
 @media(max-width:360px){
+  body #app.profolio-premium .explore-toolbar :is(.sector-select,.budget-select){grid-column:1/-1}
   body #app.profolio-premium .pf-discovery-copy h2{font-size:27px}
   body #app.profolio-premium .pf-more-filters summary span{display:none}
   body #app.profolio-premium .pf-search-refinements{grid-template-columns:1fr!important}
