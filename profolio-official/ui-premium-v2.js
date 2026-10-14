@@ -66,14 +66,14 @@
   };
 
   const actionMap={
-    map:()=>{ click('mapViewBtn'); scrollTo($('#market-section')); },
+    map:()=>{ if($('#favoritesBtn')?.getAttribute('aria-pressed')==='true')click('favoritesBtn'); click('mapViewBtn'); scrollTo($('#market-section')); },
     properties:()=>{ click('listViewBtn'); scrollTo($('#properties-section')); },
     tour:()=>click('navTour'),
     videos:()=>click('navVideos'),
     offmarket:()=>openPremiumModal('Off-Market',tr('FUNCIÓN EN PREPARACIÓN','PLANNED FEATURE'),'<p class="premium-answer">'+tr('Aún no hay anuncios exclusivos verificados ni publicación en línea. Puedes crear un borrador local desde la pantalla principal.','There are no verified exclusive listings or online publishing yet. You can create a local draft from the home screen.')+'</p>'),
     assistant,
     analysis,
-    favorites:()=>click('favoritesBtn'),
+    favorites:()=>{ if($('#favoritesBtn')?.getAttribute('aria-pressed')!=='true')click('favoritesBtn'); click('listViewBtn'); scrollTo($('#properties-section')); },
     drafts:()=>click('navPortfolio'),
     reports,
     pro:()=>openPremiumModal('ProFolio Pro',tr('PLAN EN PREPARACIÓN','PLANNED PLAN'),'<p class="premium-answer">'+tr('El plan Pro y la facturación están en preparación. Esta demostración no acepta suscripciones ni pagos.','ProFolio Pro and billing are planned. This demo does not accept subscriptions or payments.')+'</p>')
@@ -82,6 +82,19 @@
   $$('[data-premium-action]').forEach(btn=>btn.addEventListener('click',e=>{
     const fn=actionMap[e.currentTarget.dataset.premiumAction]; if(fn) fn();
   }));
+
+  // Highlight the destination the visitor actually chose, rather than leaving Home active.
+  const mainNav=$('.premium-nav');
+  mainNav?.addEventListener('click',e=>{
+    const button=e.target.closest('button.nav-item');
+    if(!button||button.closest('.nav-future')||['navHelp','pfSettingsBtn','publishBtn'].includes(button.id)||['analysis','reports'].includes(button.dataset.premiumAction))return;
+    $$('button.nav-item',mainNav).forEach(item=>{
+      const active=item===button;
+      item.classList.toggle('active',active);
+      if(active)item.setAttribute('aria-current','location');
+      else item.removeAttribute('aria-current');
+    });
+  });
 
   const target=$('#propertyCards');
   if(target){ new MutationObserver(syncMetrics).observe(target,{childList:true,subtree:true,characterData:true}); }
@@ -138,6 +151,36 @@
   };
 
   const dictionary={
+    'DESCUBRIR':'DISCOVER',
+    'TU ESPACIO':'YOUR WORKSPACE',
+    'PRÓXIMAMENTE':'COMING NEXT',
+    'EXPLORA CON SENTIDO DE LUGAR':'EXPLORE WITH A SENSE OF PLACE',
+    'Casas':'Homes',
+    'Casas guardadas':'Saved homes',
+    'Resumen de zona':'Area overview',
+    'Resumen de demostración':'Demo summary',
+    'Vista previa de Turbo':'Turbo preview',
+    'Mercado de ejemplo · Guardado en este dispositivo':'Sample market · Saved on this device',
+    'Perfil local':'Local profile',
+    'Guardado en este dispositivo':'Saved on this device',
+    'WILMINGTON, CAROLINA DEL NORTE · EXPLORADOR DE EJEMPLO':'WILMINGTON, NORTH CAROLINA · SAMPLE EXPLORER',
+    'Mira el lugar.':'See the place.',
+    'Imagina tu próximo capítulo.':'Picture your next chapter.',
+    'Explora barrios, guarda las casas de ejemplo que te interesen y arma tu propio':'Explore neighborhoods, save the sample homes that stand out, then shape your own',
+    'Busca una zona':'Find an area',
+    'Guarda una casa':'Save a home',
+    'Planifica un recorrido':'Plan a tour',
+    'EL EXPLORADOR / 01':'THE EXPLORER / 01',
+    'Encuentra tu rincón de la costa.':'Find your corner of the coast.',
+    'Comienza por un barrio y luego acota las casas visibles.':'Start with a neighborhood, then narrow the homes in view.',
+    'Una idea de la zona, no un informe del mercado en vivo. Precios y fotos ilustrativos.':'A feel for the area, not a live market report. Prices and photos are illustrative.',
+    'CASAS VISIBLES':'HOMES IN VIEW',
+    'Lugares para explorar':'Places to explore',
+    'Casas de ejemplo en Wilmington':'Sample homes around Wilmington',
+    '♡ Solo guardadas':'♡ Saved only',
+    '♥ Ver todas':'♥ Show all',
+    'VIDEO TOUR · PRÓXIMAMENTE':'VIDEO TOUR · COMING SOON',
+    'Todavía no hay video disponible para esta zona':'Video is not available for this area yet',
     'Categorías':'Categories',
     'Simbología del mapa':'Map symbols',
     // The dictionary always maps Spanish source text to US English.
@@ -231,8 +274,10 @@
     const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
     nodes.forEach(n=>{const raw=n.nodeValue,t=raw.trim();if(t&&map[t])n.nodeValue=raw.replace(t,map[t])});
     document.documentElement.lang=lang;
-    const search=document.getElementById('search');if(search)search.placeholder=lang==='en'?'Search areas, addresses, properties or opportunities...':'Buscar zonas, direcciones, propiedades u oportunidades...';
+    const search=document.getElementById('search');if(search){search.placeholder=lang==='en'?'Search sample homes, neighborhoods or ZIP...':'Buscar casas de ejemplo, barrios o ZIP...';search.setAttribute('aria-label',lang==='en'?'Search sample homes, areas, or ZIP codes':'Buscar casas de ejemplo, zonas o códigos ZIP')}
     const manual=document.getElementById('manualAddress');if(manual)manual.placeholder=lang==='en'?'Add address manually':'Agregar dirección manual';
+    document.querySelector('.pf-intro-steps')?.setAttribute('aria-label',lang==='en'?'How to explore':'Cómo explorar');
+    document.getElementById('profileAccessBtn')?.setAttribute('aria-label',lang==='en'?'Open local profile':'Abrir perfil local');
     renderLabels();translating=false;
   };
 
