@@ -704,3 +704,23 @@ body.pf-dark #app.profolio-premium .metric-context{background:#222a35;color:#d4c
 body.pf-dark #app.profolio-premium .area-video-inline{background:#24252b;border-color:#795d64}
 body.pf-dark #app.profolio-premium .area-video-cover{color:#f4dfd4}
 body.pf-dark #app.profolio-premium .area-video-cover small{color:#d5bfc7}
+
+/* The supplied ProFolio artwork replaces the former editorial introduction. */
+#app.profolio-premium .pf-visually-hidden{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+#app.profolio-premium .pf-brand-hero{
+  display:block;position:relative;aspect-ratio:1320 / 562;
+  margin:18px 18px 0;overflow:hidden;border-radius:18px;
+  background:#41020d;box-shadow:0 15px 35px #3b182226;
+}
+#app.profolio-premium .pf-brand-hero img{
+  display:block;width:100%;height:100%;object-fit:cover;object-position:center bottom;
+}
+@media(max-width:980px){
+  #app.profolio-premium .pf-brand-hero{margin:12px 12px 0}
+}
+@media(max-width:700px){
+  #app.profolio-premium .pf-brand-hero{margin:9px 9px 0;border-radius:12px}
+}
