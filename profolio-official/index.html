@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="./tour-panel.css?v=overlay-fix-20261011">
   <link rel="stylesheet" href="./etapa0-mapa.css?v=readable-layout-20261011">
   <link rel="stylesheet" href="./ux-consolidation.css?v=20261014-brand-banner">
+  <link rel="stylesheet" href="./profolio-refined.css?v=20261014-refined3">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -61,28 +62,38 @@
 
     <section class="pf-brand-hero" aria-labelledby="pfBrandTitle">
       <h1 id="pfBrandTitle" class="pf-visually-hidden" lang="en">ProFolio. We work in pro of your home, your price, and your future.</h1>
-      <img src="./profolio-brand-banner.jpeg" alt="" width="1320" height="605" fetchpriority="high" decoding="async">
+      <div class="pf-brand-art"><img src="./profolio-brand-banner.jpeg" alt="" width="1320" height="605" fetchpriority="high" decoding="async"></div>
+      <div class="pf-discovery-copy">
+        <span class="pf-market-eyebrow">WILMINGTON, NORTH CAROLINA</span>
+        <h2>Explore a different<br><em>side of Wilmington.</em></h2>
+        <p>Neighborhoods, sample homes and your next Open Tour, in one considered view.</p>
+        <div class="pf-discovery-steps" aria-label="Your property journey"><span><b>01</b> Explore</span><span><b>02</b> Save</span><span><b>03</b> Tour</span></div>
+      </div>
     </section>
 
     <p class="demo-label">Illustrative sample inventory. The properties and photographs are not verified listings.</p>
-    <div class="dashboard-grid">
-      <div class="pf-list-controls" role="status"><div><strong>Search results</strong><small>Browse sample homes and add favorites to your Open Tour.</small></div></div>
-      <div class="map-column">
-        <section class="map-card">
-          <div class="explore-heading"><div><span>THE EXPLORER / 01</span><h2>Find your corner of the coast.</h2><p>Start with a neighborhood, then narrow the homes in view.</p></div><span class="explore-heading-place">WILMINGTON · NC</span></div>
+    <section class="pf-search-panel" aria-label="Property search filters">
           <div class="map-toolbar">
             <div class="explore-toolbar">
               <label class="sector-select"><span>Area</span><select id="sectorSelect" aria-label="Filter by area"><option value="">Entire region</option></select></label><label class="budget-select"><span>Maximum price</span><select id="budgetSelect" aria-label="Maximum budget in USD"><option value="0">No maximum</option><option value="500000">$500,000</option><option value="600000">$600,000</option><option value="750000">$750,000</option><option value="1000000">$1,000,000</option><option value="1500000">$1,500,000</option><option value="2500000">$2,500,000</option></select></label>
               <button class="thin" id="homeBtn" aria-label="Show entire region">↺ Reset filters</button>
               <div class="view-switch"><button class="active" id="mapViewBtn" type="button" aria-pressed="true">Map</button><button id="listViewBtn" type="button" aria-pressed="false">List</button></div>
             </div>
+            <div class="filter-row"><span class="pf-filter-label" id="propertyCategoriesLabel">Categories</span><div class="controls" id="filters" role="group" aria-labelledby="propertyCategoriesLabel"></div><span class="results-summary" id="resultCount" role="status" aria-live="polite"></span></div>
+            <details class="pf-more-filters"><summary>More filters <span>Minimum price &amp; bedrooms</span></summary>
             <div class="pf-search-refinements" role="group" aria-label="Additional property filters">
               <label for="minPriceSelect"><span>Minimum price</span><select id="minPriceSelect" aria-label="Minimum price in USD"><option value="0">No minimum</option><option value="400000">$400,000</option><option value="500000">$500,000</option><option value="750000">$750,000</option><option value="1000000">$1,000,000</option></select></label>
               <label for="bedsSelect"><span>Bedrooms</span><select id="bedsSelect" aria-label="Minimum number of bedrooms"><option value="0">Any bedrooms</option><option value="3">3+ beds</option><option value="4">4+ beds</option><option value="5">5+ beds</option></select></label>
               <small class="pf-refinement-note">Sample for-sale homes · Wilmington, NC area</small>
             </div>
-            <div class="filter-row"><span class="pf-filter-label" id="propertyCategoriesLabel">Categories</span><div class="controls" id="filters" role="group" aria-labelledby="propertyCategoriesLabel"></div><span class="results-summary" id="resultCount" role="status" aria-live="polite"></span></div>
+            </details>
           </div>
+    </section>
+    <div class="dashboard-grid">
+      <div class="map-column">
+        <section class="map-card">
+          <div class="explore-heading"><div><span>THE COAST / IN VIEW</span><h2>A closer look at the coast.</h2><p>Select an area or a home to explore what is around it.</p></div><span class="explore-heading-place">WILMINGTON · NC</span></div>
+
 
           <section class="map-shell" id="market-section">
             <div class="map-wrap">
@@ -149,9 +160,9 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=20261014-controls"></script>
+<script src="./map-fix-v4.js?v=20261014-refined1"></script>
 <script src="./boundary-fix.js"></script>
-<script src="./ui-premium-v2.js?v=20261014-experience2"></script>
+<script src="./ui-premium-v2.js?v=20261014-refined1"></script>
 <script src="./amen-experience-v2.js?v=single-categories-mobile-nav-20261011"></script>
 <script src="./launch.js?v=private-backup-20261011"></script>
 <script src="./demo-polish.js?v=english-runtime-20261011"></script>
