@@ -83,11 +83,11 @@
     const fn=actionMap[e.currentTarget.dataset.premiumAction]; if(fn) fn();
   }));
 
-  // Highlight the destination the visitor actually chose, rather than leaving Home active.
+  // Highlight persistent views; dialogs do not become the current page.
   const mainNav=$('.premium-nav');
   mainNav?.addEventListener('click',e=>{
     const button=e.target.closest('button.nav-item');
-    if(!button||button.closest('.nav-future')||['navHelp','pfSettingsBtn','publishBtn'].includes(button.id)||['analysis','reports'].includes(button.dataset.premiumAction))return;
+    if(!button||button.closest('.nav-future')||['navTour','navPortfolio','navHelp','pfSettingsBtn','publishBtn'].includes(button.id)||['analysis','reports'].includes(button.dataset.premiumAction))return;
     $$('button.nav-item',mainNav).forEach(item=>{
       const active=item===button;
       item.classList.toggle('active',active);
