@@ -77,7 +77,7 @@ body #app.profolio-premium .pf-discovery-steps b{font-size:9px;font-weight:600;c
 body #app.profolio-premium .demo-label{margin:12px var(--pf-r-gutter) 0!important;padding:0 2px!important;background:transparent!important;border:0!important;border-radius:0!important;color:var(--pf-r-muted)!important;font-size:11px!important;line-height:1.55!important}
 body #app.profolio-premium .pf-search-panel{margin:24px var(--pf-r-gutter) 0;padding:18px 20px;background:var(--pf-r-surface);border:1px solid var(--pf-r-line);border-radius:var(--pf-r-radius);box-shadow:var(--pf-r-shadow)}
 body #app.profolio-premium .pf-search-panel .map-toolbar{padding:0!important;margin:0!important;gap:14px!important;border:0!important;color:var(--pf-r-ink)!important}
-body #app.profolio-premium .explore-toolbar{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto auto!important;gap:12px!important}
+body #app.profolio-premium .explore-toolbar{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto auto!important;gap:12px!important}
 body #app.profolio-premium .map-toolbar :is(.sector-select,.budget-select){min-height:58px!important;padding:8px 13px!important;border:1px solid var(--pf-r-line)!important;background:var(--pf-r-paper)!important;border-radius:10px!important;gap:4px!important}
 body #app.profolio-premium .map-toolbar :is(.sector-select,.budget-select) span{font-size:10px!important;font-weight:550!important;color:var(--pf-r-muted)!important}
 body #app.profolio-premium .map-toolbar :is(.sector-select,.budget-select) select{font-size:14px!important;font-weight:600!important;color:var(--pf-r-ink)!important}
@@ -119,13 +119,17 @@ body #app.profolio-premium .map-label{background:var(--pf-r-surface)!important;c
 body #app.profolio-premium :is(.location,.wilmington-focus){min-height:44px!important;background:var(--pf-r-surface)!important;color:var(--pf-r-ink)!important;border:1px solid var(--pf-r-line)!important;border-radius:9px!important;box-shadow:0 4px 14px #152c3112!important}
 body #app.profolio-premium .leaflet-control-zoom a{width:40px;height:40px;line-height:40px;color:#203238}
 body #app.profolio-premium .map-legend summary{min-height:44px;display:flex;align-items:center;color:var(--pf-r-muted);font-size:11px}
-body #app.profolio-premium .right-rail{margin-top:20px!important}
+body #app.profolio-premium .area-panel{background:var(--pf-r-surface)!important;color:var(--pf-r-ink)!important;border:1px solid var(--pf-r-line)!important;box-shadow:0 12px 35px #152c3120!important}
+body #app.profolio-premium .area-panel h3{font:400 25px/1.2 Georgia,serif;color:var(--pf-r-ink)!important}
+body #app.profolio-premium .area-panel-actions button{min-height:44px;background:var(--pf-r-paper)!important;color:var(--pf-r-wine)!important;border-color:var(--pf-r-line)!important}
+body #app.profolio-premium .area-panel-actions .tour-start{background:#5d293e!important;color:#fff!important}
+body #app.profolio-premium .dashboard-grid>.right-rail{margin:20px 0 0!important;width:100%!important;max-width:none!important;min-width:0}
 body #app.profolio-premium .properties-panel .panel-head-row{align-items:center;gap:14px;padding:0 0 18px!important;border-bottom:1px solid var(--pf-r-line);margin-bottom:18px}
 body #app.profolio-premium .properties-panel .panel-head-row .muted{font-size:12px!important;color:var(--pf-r-muted)!important}
 body #app.profolio-premium .properties-panel .mini-action{min-height:44px!important;background:var(--pf-r-soft)!important;border:1px solid var(--pf-r-line)!important;border-radius:9px!important;color:var(--pf-r-wine)!important;font-size:11px!important;font-weight:600!important;padding:8px 11px!important}
 body #app.profolio-premium .properties-panel .mini-action[aria-pressed="true"]{background:#5d293e!important;color:#fff!important;border-color:#5d293e!important}
-body #app.profolio-premium .right-rail .cards{gap:16px!important;scrollbar-color:#b9c0bb transparent}
-body #app.profolio-premium .right-rail .property{grid-template-columns:132px minmax(0,1fr)!important;min-height:210px!important;border:1px solid var(--pf-r-line)!important;border-radius:12px!important;background:var(--pf-r-surface)!important;box-shadow:none!important;transition:box-shadow .2s,border-color .2s}
+body #app.profolio-premium .right-rail .cards{display:grid!important;gap:16px!important;min-width:0;scroll-snap-type:none!important;scrollbar-color:#b9c0bb transparent}
+body #app.profolio-premium .right-rail .property{grid-template-columns:132px minmax(0,1fr)!important;min-width:0!important;width:100%!important;max-width:none!important;min-height:210px!important;border:1px solid var(--pf-r-line)!important;border-radius:12px!important;background:var(--pf-r-surface)!important;box-shadow:none!important;transition:box-shadow .2s,border-color .2s}
 body #app.profolio-premium .right-rail .property:hover{transform:none!important;border-color:var(--pf-r-brass)!important;box-shadow:0 8px 22px #2032380c!important}
 body #app.profolio-premium .right-rail .property-img{min-height:210px!important}
 body #app.profolio-premium .right-rail .property-body{padding:16px!important}
@@ -154,7 +158,16 @@ body #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .property-im
 body #app.profolio-premium .dashboard-grid.pf-list-mode .right-rail .property-img img{position:absolute;inset:0}
 body #app.profolio-premium .dashboard-grid.pf-list-mode .metric-strip{width:100%}
 body #modal .modal-card,body #modalCard{background:var(--pf-r-surface)!important;color:var(--pf-r-ink)!important;border:1px solid var(--pf-r-line)!important;border-radius:20px!important;box-shadow:0 28px 80px #10212640!important}
+body #modalCard{box-sizing:border-box;max-width:calc(100vw - 28px)!important;padding:clamp(16px,3vw,28px)!important}
+body #modal .pf-detail-grid,body #modal .pf-detail-grid>*{min-width:0}
+body #modal .pf-detail-photo{max-width:100%}
+body #modal .pf-detail-copy{overflow-wrap:anywhere}
 body #modal .pf-detail-copy h2{font:400 32px/1.15 Georgia,serif;color:var(--pf-r-ink)}
+body #modal .pf-detail-price{color:var(--pf-r-wine)}
+body #modal .pf-detail-notice{background:var(--pf-r-paper);color:var(--pf-r-muted);border-color:var(--pf-r-brass)}
+body #modal .pf-detail-pager{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;border-color:var(--pf-r-line)}
+body #modal .pf-detail-pager button{min-width:0;padding:10px 8px;white-space:normal;background:var(--pf-r-paper);color:var(--pf-r-wine);border-color:var(--pf-r-line);font-weight:550}
+body #modal .pf-detail-pager span{font-weight:500;color:var(--pf-r-muted)}
 body #modal .pf-detail-facts span{background:var(--pf-r-soft);color:var(--pf-r-ink);font-size:12px;padding:9px 12px}
 body #modal .pf-detail-actions button{min-height:44px;font-size:12px;background:var(--pf-r-surface);color:var(--pf-r-wine);border-color:var(--pf-r-line)}
 body #modal .pf-detail-actions .primary{background:#5d293e;color:#fff;border-color:#5d293e}
@@ -247,6 +260,7 @@ body.pf-dark #app.profolio-premium :is(.pf-filter-label,.filter-row .results-sum
   body #app.profolio-premium .right-rail .property-body h3{font-size:16px!important}
   body #app.profolio-premium .right-rail :is(.property-body .muted,.property-facts){font-size:12px!important}
   body #app.profolio-premium .right-rail .card-actions button{font-size:12px!important}
+  body #modal .pf-detail-copy h2{font-size:27px}
 }
 @media(max-width:360px){
   body #app.profolio-premium .pf-discovery-copy h2{font-size:27px}
