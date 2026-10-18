@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="./ux-consolidation.css?v=20261014-brand-banner">
   <link rel="stylesheet" href="./profolio-refined.css?v=20261014-refined3">
   <link rel="stylesheet" href="./profolio-brand-restore.css?v=20261018-wine-map-value">
-  <link rel="stylesheet" href="./profolio-clarity.css?v=20261018-brand-real-map-controls">
+  <link rel="stylesheet" href="./profolio-clarity.css?v=20261018-all-area-boundaries">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -112,9 +112,9 @@
               <button type="button" data-pf-map-style="light" aria-pressed="false">Light</button>
               <button type="button" data-pf-map-style="dark" aria-pressed="false">Dark</button>
             </div>
-            <label class="pf-map-border-switch"><input type="checkbox" id="pfBoundariesToggle"><span>Show selected area border</span></label>
+            <label class="pf-map-border-switch"><input type="checkbox" id="pfBoundariesToggle" checked><span>Show all sector boundaries</span></label>
           </div>
-          <p class="pf-map-help" id="pfMapBoundaryHint" role="status">Choose an area to see its official boundary. Property pins are illustrative.</p>
+          <p class="pf-map-help" id="pfMapBoundaryHint" role="status">Official city and Census-area outlines display automatically. Dashed reference areas are not official neighborhood borders.</p>
 
           <section class="map-shell" id="market-section">
             <div class="map-wrap">
@@ -137,7 +137,7 @@
                   <div class="legend-item"><span class="legend-icon pf-icon-feature">◇</span><div><strong>Opportunity</strong><small>Special-feature sample</small></div></div>
                   <div class="legend-item"><span class="legend-icon pf-icon-turbo">ϟ</span><div><strong>Turbo</strong><small>Featured demo home</small></div></div>
                 </div>
-                <p class="pf-legend-footer"><strong>Numbered pin</strong> = multiple homes nearby. <strong>Area border</strong> = optional official Census boundary, not a property boundary.</p>
+                <p class="pf-legend-footer"><strong>Numbered pin</strong> = multiple homes nearby. <strong>Solid gold border</strong> = official city or Census-designated area. <strong>Dashed border</strong> = nearby Census reference area; not a legal neighborhood boundary.</p>
               </aside>
             </details>
           </section>
@@ -204,7 +204,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=20261018-fix-keyless-map-borders"></script>
+<script src="./map-fix-v4.js?v=20261018-all-area-boundaries"></script>
 <!-- Legacy dense census mesh disabled: display selected official area only. -->
 <script src="./ui-premium-v2.js?v=20261014-refined1"></script>
 <script src="./amen-experience-v2.js?v=single-categories-mobile-nav-20261011"></script>

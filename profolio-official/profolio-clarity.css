@@ -158,3 +158,27 @@ body.pf-dark #app.profolio-premium .pf-brand-tagline{color:#f7dfdb!important}
   body #app.profolio-premium .pf-map-modes button{min-width:56px;padding:7px 9px}
   body #app.profolio-premium .pf-legend-grid{grid-template-columns:1fr}
 }
+
+
+/* Every named Wilmington area is outlined by default; avoid the old dense mesh. */
+#app.profolio-premium #market-map .pf-area-boundary-tip{
+  padding:7px 10px!important;
+  border-radius:8px!important;
+  border:1px solid #e8b65b!important;
+  color:#ffecc8!important;
+  background:#4e1231f0!important;
+  box-shadow:0 4px 12px #14040b85!important;
+  font:650 11px/1.4 system-ui,sans-serif!important;
+  white-space:normal!important;
+  max-width:240px!important;
+}
+#app.profolio-premium .pf-map-help{
+  color:#f8e0c5!important;
+  font-weight:600!important;
+}
+#app.profolio-premium #market-map .leaflet-pane.pfAreaBoundaries-pane path{
+  vector-effect:non-scaling-stroke;
+}
+#app.profolio-premium .pf-map-border-switch{
+  padding:4px 8px;border-radius:8px;background:#5c1d38;
+}

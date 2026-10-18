@@ -195,6 +195,10 @@
     'Todavía no hay video disponible para esta zona':'Video is not available for this area yet',
     'Categorías':'Categories',
     'Simbología del mapa':'Map symbols',
+    'Mostrar límites de todos los sectores':'Show all sector boundaries',
+    'Contornos oficiales de ciudades y zonas censales visibles automáticamente. Las áreas punteadas no son límites oficiales de barrios.':'Official city and Census-area outlines display automatically. Dashed reference areas are not official neighborhood borders.',
+    'Línea dorada continua':'Solid gold border',
+    'Línea discontinua':'Dashed border',
     // The dictionary always maps Spanish source text to US English.
     'Vista previa de IA':'AI Preview',
     'Mis borradores':'My Drafts',

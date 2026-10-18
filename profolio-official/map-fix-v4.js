@@ -89,38 +89,140 @@ function render(){
     m.addTo(props);
   });
   cards();drawRoute();tourUI();
-}function toggleTour(id){const p=P.find(x=>x.id===id),i=S.tour.findIndex(x=>x.id===id);if(i>=0){S.tour.splice(i,1)}else if(p){S.tour.push({id:p.id,title:p.title,address:p.address,lat:p.lat,lng:p.lng})}else{return notify(t('Esta parada ya no está disponible.','This stop is no longer available.'))}save();render()}function drawRoute(){if(route)map.removeLayer(route);const geo=S.tour.filter(x=>Number.isFinite(x.lat)&&Number.isFinite(x.lng));if(geo.length>1)route=L.polyline(geo.map(x=>[x.lat,x.lng]),{color:'#e0a92e',weight:5,opacity:.95,dashArray:'9 7'}).addTo(map)}const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>c==='&'?'&amp;':c==='<'?'&lt;':c==='>'?'&gt;':c==='"'?'&quot;':'&#39;');function tourUI(){if($('#navTourCount'))$('#navTourCount').textContent=S.tour.length;if($('#tourStops'))$('#tourStops').textContent=S.tour.length;const st=routeStats();if($('#tourKm'))$('#tourKm').textContent=(st.km*0.621371).toFixed(1)+' mi';if($('#tourTime'))$('#tourTime').textContent=st.minutes+' min';if($('#tourList'))$('#tourList').innerHTML=S.tour.map((x,i)=>`<div class="tour-stop"><span>${i+1}</span><div><b>${escapeHTML(x.title)}</b><small>${escapeHTML(x.address)}</small></div><button type="button" aria-label="${t('Quitar parada','Remove stop')}" data-rm="${escapeHTML(x.id)}">×</button></div>`).join('')||'<p class="muted">'+t('Tu recorrido aparecerá aquí.','Your tour will appear here.')+'</p>';$$('[data-rm]',$('#tourList')||document).forEach(b=>b.onclick=()=>toggleTour(b.dataset.rm));$('#tourBar')?.classList.toggle('show',S.tour.length>0);if($('#tourBarCount'))$('#tourBarCount').textContent=`${S.tour.length} ${t('seleccionadas','selected')}`}function areaPanel(name,source){const p=$('#areaPanel');if(!p)return;if(!name){p.hidden=true;return}const a=AREAS[name];$('#areaPanelName').textContent=a.d;$('#areaPanelZip').textContent='ZIP '+a.z;$('#areaPanelCount').textContent=`${P.filter(x=>x.zone===name).length} ${t('propiedades de ejemplo','sample properties')}`;$('#areaPanelSource').textContent=source==='city'?t('Límite municipal oficial · U.S. Census TIGERweb 2026.','Official city boundary · U.S. Census TIGERweb 2026.'):source==='cdp'?t('Límite censal oficial (CDP) · U.S. Census TIGERweb 2026.','Official census boundary (CDP) · U.S. Census TIGERweb 2026.'):t('Sector comercial de referencia · sin polígono inventado.','Reference area · no invented boundary.');p.hidden=false}let boundaryRequestId=0,boundaryEnabled=false;
-async function census(layer,name,requestId){
-  const area=AREAS[name];if(!area||!boundaryEnabled)return;
+}function toggleTour(id){const p=P.find(x=>x.id===id),i=S.tour.findIndex(x=>x.id===id);if(i>=0){S.tour.splice(i,1)}else if(p){S.tour.push({id:p.id,title:p.title,address:p.address,lat:p.lat,lng:p.lng})}else{return notify(t('Esta parada ya no está disponible.','This stop is no longer available.'))}save();render()}function drawRoute(){if(route)map.removeLayer(route);const geo=S.tour.filter(x=>Number.isFinite(x.lat)&&Number.isFinite(x.lng));if(geo.length>1)route=L.polyline(geo.map(x=>[x.lat,x.lng]),{color:'#e0a92e',weight:5,opacity:.95,dashArray:'9 7'}).addTo(map)}const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>c==='&'?'&amp;':c==='<'?'&lt;':c==='>'?'&gt;':c==='"'?'&quot;':'&#39;');function tourUI(){if($('#navTourCount'))$('#navTourCount').textContent=S.tour.length;if($('#tourStops'))$('#tourStops').textContent=S.tour.length;const st=routeStats();if($('#tourKm'))$('#tourKm').textContent=(st.km*0.621371).toFixed(1)+' mi';if($('#tourTime'))$('#tourTime').textContent=st.minutes+' min';if($('#tourList'))$('#tourList').innerHTML=S.tour.map((x,i)=>`<div class="tour-stop"><span>${i+1}</span><div><b>${escapeHTML(x.title)}</b><small>${escapeHTML(x.address)}</small></div><button type="button" aria-label="${t('Quitar parada','Remove stop')}" data-rm="${escapeHTML(x.id)}">×</button></div>`).join('')||'<p class="muted">'+t('Tu recorrido aparecerá aquí.','Your tour will appear here.')+'</p>';$$('[data-rm]',$('#tourList')||document).forEach(b=>b.onclick=()=>toggleTour(b.dataset.rm));$('#tourBar')?.classList.toggle('show',S.tour.length>0);if($('#tourBarCount'))$('#tourBarCount').textContent=`${S.tour.length} ${t('seleccionadas','selected')}`}function areaPanel(name,source){const p=$('#areaPanel');if(!p)return;if(!name){p.hidden=true;return}const a=AREAS[name];$('#areaPanelName').textContent=a.d;$('#areaPanelZip').textContent='ZIP '+a.z;$('#areaPanelCount').textContent=`${P.filter(x=>x.zone===name).length} ${t('propiedades de ejemplo','sample properties')}`;$('#areaPanelSource').textContent=source==='city'?t('Límite municipal oficial · U.S. Census TIGERweb 2026.','Official city boundary · U.S. Census TIGERweb 2026.'):source==='cdp'?t('Límite censal oficial (CDP) · U.S. Census TIGERweb 2026.','Official census boundary (CDP) · U.S. Census TIGERweb 2026.'):t('Sector de referencia. El contorno punteado es un grupo censal cercano, no el límite del barrio.','Reference area. Its dashed outline is a nearby census block group, not the neighborhood boundary.');p.hidden=false}/* All named ProFolio areas are visible by default.
+   Municipal/CDP lines come from Census TIGERweb; non-legal marketing areas use
+   the containing census block group as a clearly-labelled *reference*, never
+   a fabricated neighborhood boundary. No county-wide census mesh. */
+let boundaryEnabled=true;
+let boundaryLoad=null;
+let boundaryComplete=false;
+let boundaryErrors=0;
+const boundaryShapes=new Map();
+const TIGER_BOUNDARIES='https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer';
+async function boundaryQuery(layer,params){
+  const url=new URL(TIGER_BOUNDARIES+'/'+layer+'/query');
+  Object.entries(params).forEach(([key,value])=>url.searchParams.set(key,String(value)));
+  url.searchParams.set('f','geojson');
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),15000);
   try{
-    const where="STATE='37' AND BASENAME='"+name.replace(/'/g,"''")+"'";
-    const url='https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer/'+layer+'/query?where='+encodeURIComponent(where)+'&outFields=BASENAME,NAME,GEOID,STATE&returnGeometry=true&outSR=4326&f=geojson';
-    const response=await fetch(url);
-    if(!response.ok)throw new Error('Census boundary unavailable ('+response.status+')');
-    const geojson=await response.json();
-    if(requestId!==boundaryRequestId||!boundaryEnabled||S.a!==name)return;
-    if(!Array.isArray(geojson.features)||!geojson.features.length){
-      const hint=$('#pfMapBoundaryHint');if(hint)hint.textContent='No official area outline is available here; property locations remain visible.';
-      return;
-    }
-    L.geoJSON(geojson,{
-      style:{color:'#d38a16',weight:2.5,opacity:.96,fillColor:'#eab847',fillOpacity:.045,smoothFactor:2},
-      onEachFeature:(_feature,polygon)=>polygon.bindTooltip(area.d+' · official Census boundary',{sticky:true})
-    }).addTo(bounds);
-  }catch(error){
-    console.warn('Optional Census outline unavailable',error);
-    const hint=$('#pfMapBoundaryHint');if(hint)hint.textContent='Area border is unavailable right now. The map and homes still work.';
+    const response=await fetch(url.toString(),{signal:controller.signal});
+    if(!response.ok)throw new Error('TIGERweb HTTP '+response.status);
+    const collection=await response.json();
+    if(collection?.type!=='FeatureCollection'||!Array.isArray(collection.features))throw new Error('Invalid Census geometry');
+    return collection.features.filter(feature=>feature?.geometry);
+  }finally{clearTimeout(timeout)}
+}
+function borderStyle(name,type){
+  const active=S.a===name;
+  return {
+    color:active?'#fff0a2':type==='reference'?'#e5a96b':'#e7aa38',
+    weight:active?3.7:type==='reference'?1.75:2.15,
+    opacity:active?1:.90,
+    fillColor:active?'#ffe2a0':'#b48639',
+    fillOpacity:active?.095:.012,
+    dashArray:type==='reference'?'6 6':undefined,
+    lineCap:'round',lineJoin:'round',smoothFactor:1.5
   }
 }
-function updateBoundary(){
-  const requestId=++boundaryRequestId;
+function borderDescription(name,type){
+  if(type==='reference')return name+' · '+t('grupo censal cercano (no es límite oficial del barrio)','nearby census block group (not a neighborhood boundary)');
+  return name+' · '+t('límite oficial del censo','official Census boundary');
+}
+function addBoundaryShape(name,geometry,type){
+  if(!AREAS[name]||boundaryShapes.has(name)||!geometry)return;
+  const layer=L.geoJSON(geometry,{
+    pane:'pfAreaBoundaries',
+    style:()=>borderStyle(name,type),
+    onEachFeature:(_feature,polygon)=>{
+      polygon.bindTooltip(borderDescription(name,type),{sticky:true,className:'pf-area-boundary-tip'});
+      polygon.on('click',()=>selectArea(name,false));
+    }
+  });
+  if(layer.getLayers().length===0)return;
+  boundaryShapes.set(name,{layer,type});
+  drawAreaBoundaries();
+}
+function drawAreaBoundaries(){
   bounds.clearLayers();
-  const name=S.a,info=AREAS[name],hint=$('#pfMapBoundaryHint');
-  if(!name){if(hint)hint.textContent='Select an area above to view its official outline. Property pins are illustrative.';return}
-  if(!info||info.k==='anchor'){if(hint)hint.textContent='This location is a reference point, not an official neighborhood boundary.';return}
-  if(!boundaryEnabled){if(hint)hint.textContent='Enable “Show selected area border” to display the official '+(info.k==='city'?'city':'Census-designated area')+' outline.';return}
-  if(hint)hint.textContent='Showing only the selected '+name+' outline from U.S. Census data; coastline detail may be irregular.';
-  census(info.k==='city'?28:30,name,requestId);
+  if(!boundaryEnabled)return;
+  for(const [name,entry] of boundaryShapes){
+    entry.layer.setStyle(borderStyle(name,entry.type));
+    entry.layer.addTo(bounds);
+  }
+}
+function boundaryHint(){
+  const element=$('#pfMapBoundaryHint');if(!element)return;
+  if(!boundaryEnabled){element.textContent=t('Límites ocultos. Activa el control para volver a ver todos los sectores.','Boundaries hidden. Turn them on to see every area again.');return}
+  if(!boundaryComplete){element.textContent=t('Cargando los límites de los sectores de Wilmington…','Loading Wilmington area boundaries…');return}
+  const official=[...boundaryShapes.values()].filter(x=>x.type==='official').length;
+  const reference=[...boundaryShapes.values()].filter(x=>x.type==='reference').length;
+  const total=Object.keys(AREAS).length;
+  if(!official&&!reference){
+    element.textContent=t('No fue posible cargar los límites censales. Los nombres de sectores y las propiedades siguen disponibles.','Census outlines could not load. Area labels and properties are still available.');
+    return;
+  }
+  element.textContent=t(
+    `Sectores delimitados: ${official} oficiales y ${reference} de referencia, de ${total}. Los contornos punteados no son límites oficiales de barrios.`,
+    `Area outlines: ${official} official and ${reference} reference, of ${total}. Dashed areas are not official neighborhood boundaries.`
+  );
+}
+async function loadAllAreaBoundaries(){
+  const kindNames=k=>Object.entries(AREAS).filter(([,area])=>area.k===k).map(([name])=>name);
+  const officialGroups=[[28,kindNames('city')],[30,kindNames('cdp')]];
+  await Promise.all(officialGroups.map(async ([layer,names])=>{
+    const safeName=name=>"'"+name.replace(/'/g,"''")+"'";
+    try{
+      const features=await boundaryQuery(layer,{
+        where:"STATE='37' AND BASENAME IN ("+names.map(safeName).join(',')+")",
+        outFields:'BASENAME,NAME,GEOID,STATE',
+        returnGeometry:'true',outSR:'4326',
+        maxAllowableOffset:'0.00008'
+      });
+      for(const feature of features){
+        const name=feature?.properties?.BASENAME;
+        if(!name||!AREAS[name]||!names.includes(name))continue;
+        // Several disjoint Census shapes may share the same area name.
+        // Combine them rather than silently dropping the later features.
+        const existing=boundaryShapes.get(name);
+        if(existing){existing.layer.addData(feature);continue}
+        addBoundaryShape(name,feature,'official');
+      }
+    }catch(error){boundaryErrors++;console.warn('Official area boundaries unavailable',layer,error)}
+  }));
+  const lacking=Object.entries(AREAS).filter(([name])=>!boundaryShapes.has(name));
+  // Exact legal boundaries do not exist for the "anchor" areas in this demo.
+  // Restore the original nearby Census block-group references, marked dashed.
+  await Promise.all(lacking.map(async ([name,area])=>{
+    const [lat,lng]=area.c;
+    try{
+      const features=await boundaryQuery(10,{
+        where:"STATE='37'",
+        geometry:lng+','+lat,
+        geometryType:'esriGeometryPoint',
+        inSR:'4326',spatialRel:'esriSpatialRelIntersects',
+        outFields:'GEOID,TRACT,BLKGRP,COUNTY,STATE',
+        returnGeometry:'true',outSR:'4326',
+        maxAllowableOffset:'0.00008'
+      });
+      if(features.length)addBoundaryShape(name,features[0],'reference');
+    }catch(error){boundaryErrors++;console.warn('Reference area unavailable',name,error)}
+  }));
+  boundaryComplete=true;
+  drawAreaBoundaries();
+  boundaryHint();
+}
+function updateBoundary(){
+  drawAreaBoundaries();
+  boundaryHint();
+  if(boundaryEnabled&&!boundaryLoad){
+    boundaryLoad=loadAllAreaBoundaries().catch(error=>{
+      boundaryErrors++;
+      boundaryComplete=true;
+      console.warn('Area boundary loading failed',error);
+      boundaryHint();
+    });
+  }
 }
 function selectArea(n,fly=true){S.a=n||'';if($('#sectorSelect'))$('#sectorSelect').value=S.a;areaPanel(n,AREAS[n]?.k);updateBoundary();render();if(n&&fly)map.flyTo(AREAS[n].c,n==='Wilmington'?10:12)}/* Position floating property cards against the actual map, not a magic pixel offset.
    Filter labels wrap differently with display widths and text scaling. */
@@ -182,12 +284,12 @@ function init(){const el=$('#market-map');if(!el||!window.L)return;if(el._leafle
 let tileErrors=0;
 tiles.on('tileload',()=>{tileErrors=0;const note=$('#mapFallbackNote');if(note)note.hidden=true});
 tiles.on('tileerror',()=>{if(++tileErrors>=4){const note=$('#mapFallbackNote');if(note)note.hidden=false}});
-props.addTo(map);bounds.addTo(map);labels.addTo(map);Object.entries(AREAS).filter(([n])=>n!=='Wilmington').forEach(([n,a])=>{const m=L.marker(a.c,{icon:L.divIcon({className:'',html:`<button class="pfl"><span>${a.d}</span><small>${a.z}</small></button>`,iconSize:[1,1]})}).addTo(labels);m.on('click',()=>selectArea(n))});controls();initMapAppearance();
+map.createPane('pfAreaBoundaries');map.getPane('pfAreaBoundaries').style.zIndex='440';props.addTo(map);bounds.addTo(map);labels.addTo(map);Object.entries(AREAS).filter(([n])=>n!=='Wilmington').forEach(([n,a])=>{const m=L.marker(a.c,{icon:L.divIcon({className:'',html:`<button class="pfl"><span>${a.d}</span><small>${a.z}</small></button>`,iconSize:[1,1]})}).addTo(labels);m.on('click',()=>selectArea(n))});controls();initMapAppearance();
   // At regional zoom, long neighborhood labels obscure the geographic context.
   // Users can still choose every area from the select; labels return when zooming in.
   const syncMapDensity=()=>el.classList.toggle('pf-area-labels-visible',map.getZoom()>=11);
   syncMapDensity();render();openLinkedProperty();
-  map.on('zoomend',()=>{syncMapDensity();render()});$('#modal')?.addEventListener('click',e=>{if(e.target===$('#modal'))closeModal()});document.addEventListener('keydown',e=>{const opened=$('#modal')?.getAttribute('aria-hidden')==='false';if(e.key==='Escape'&&opened){closeModal();return}if(e.key==='Escape'&&!$('#tourPanel')?.hidden){closeTourPanel();return}if(!opened||!$('#modalCard [data-pf-property-id]')||!['ArrowLeft','ArrowRight'].includes(e.key)||e.target?.closest?.('input,textarea,select,[contenteditable]'))return;const selector=e.key==='ArrowLeft'?'[data-pf-prev]':'[data-pf-next]';const b=$('#modalCard')?.querySelector(selector);if(b&&!b.disabled){e.preventDefault();b.click()}});document.addEventListener('pf:language-changed',()=>{controls();render();if(S.a)areaPanel(S.a,AREAS[S.a]?.k)});setTimeout(()=>{map.invalidateSize(true);positionFloatingRail()},100);
+  map.on('zoomend',()=>{syncMapDensity();render()});$('#modal')?.addEventListener('click',e=>{if(e.target===$('#modal'))closeModal()});document.addEventListener('keydown',e=>{const opened=$('#modal')?.getAttribute('aria-hidden')==='false';if(e.key==='Escape'&&opened){closeModal();return}if(e.key==='Escape'&&!$('#tourPanel')?.hidden){closeTourPanel();return}if(!opened||!$('#modalCard [data-pf-property-id]')||!['ArrowLeft','ArrowRight'].includes(e.key)||e.target?.closest?.('input,textarea,select,[contenteditable]'))return;const selector=e.key==='ArrowLeft'?'[data-pf-prev]':'[data-pf-next]';const b=$('#modalCard')?.querySelector(selector);if(b&&!b.disabled){e.preventDefault();b.click()}});document.addEventListener('pf:language-changed',()=>{controls();render();drawAreaBoundaries();boundaryHint();if(S.a)areaPanel(S.a,AREAS[S.a]?.k)});setTimeout(()=>{map.invalidateSize(true);positionFloatingRail()},100);
 setTimeout(()=>{map.invalidateSize(true);positionFloatingRail()},800);
 if(typeof ResizeObserver!=='undefined'){
   const railObserver=new ResizeObserver(()=>positionFloatingRail());
