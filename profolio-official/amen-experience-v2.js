@@ -7,7 +7,7 @@
   const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
   let profile=read(PROFILE_KEY,null);
   let sound=localStorage.getItem(SOUND_KEY)!=='off';
-  let volume=Math.round(Math.max(.05,Math.min(1,Number(localStorage.getItem(VOLUME_KEY)||.3)))*20)/20;
+  let volume=Math.round(Math.max(.05,Math.min(1,Number(localStorage.getItem(VOLUME_KEY)||.55)))*20)/20;
   let ctx=null,timer=0,lastSoundAt=0;
 
   function audioContext(){
@@ -19,7 +19,7 @@
     }catch{return null}
   }
   function voice(ac,{freq,at=0,duration=.12,gain=.04,type='sine',endFreq=0}){
-    const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+at,peak=Math.max(.002,Math.min(.12,gain*volume));
+    const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+at,peak=Math.max(.002,Math.min(.15,gain*volume));
     o.type=type;o.frequency.setValueAtTime(freq,n);
     if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,n+duration);
     g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(peak,n+.012);g.gain.exponentialRampToValueAtTime(.0001,n+duration);
@@ -36,11 +36,13 @@
     const ac=audioContext();if(!ac)return false;lastSoundAt=now;
     try{
       if(kind==='door'){
-        bell(ac,659.25,0,.58,.062);bell(ac,493.88,.27,.66,.056);
+        bell(ac,659.25,0,.6,.10);bell(ac,493.88,.27,.68,.09);
       }else if(kind==='confirm'){
-        bell(ac,587.33,0,.32,.044);bell(ac,783.99,.105,.36,.038);bell(ac,987.77,.215,.42,.031);
+        bell(ac,587.33,0,.33,.085);bell(ac,783.99,.105,.36,.076);bell(ac,987.77,.215,.42,.06);
+      }else if(kind==='tour'){
+        bell(ac,440,0,.28,.075);bell(ac,659.25,.17,.36,.085);bell(ac,880,.34,.49,.08);
       }else{
-        voice(ac,{freq:520,at:0,duration:.055,gain:.032,type:'sine',endFreq:690});
+        voice(ac,{freq:520,at:0,duration:.10,gain:.085,type:'sine',endFreq:740});
       }
       document.dispatchEvent(new CustomEvent('pf:sound-play',{detail:{kind}}));
       return true;
@@ -95,7 +97,7 @@
           <label class="full"><span>${tr('Zona principal','Main area')}</span><input name="area" maxlength="80" placeholder="Wilmington, NC"></label>
         </form>
         <div class="amen-profile-actions"><button class="amen-save" type="submit" form="amenProfileForm">${tr('Guardar perfil','Save profile')}</button><button class="amen-secondary" type="button" data-amen-settings>${tr('Configuración general','General settings')}</button></div>
-        <section class="amen-sound"><div class="amen-sound-head"><div><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Timbre al abrir propiedades, confirmación moderna y señal breve de navegación.','Door chime for properties, modern confirmations and a brief navigation cue.')}</small></div><button class="amen-toggle" type="button" data-amen-sound-toggle></button></div><label class="amen-volume"><span>${tr('Volumen','Volume')}</span><input data-amen-volume type="range" min="5" max="100" step="5"><b data-amen-volume-value></b></label></section>
+        <section class="amen-sound"><div class="amen-sound-head"><div><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Timbre al abrir propiedades, señal de recorrido, confirmación y navegación.','Four distinctive cues for property details, tours, confirmations and navigation.')}</small></div><button class="amen-toggle" type="button" data-amen-sound-toggle></button></div><label class="amen-volume"><span>${tr('Volumen','Volume')}</span><input data-amen-volume type="range" min="5" max="100" step="5"><b data-amen-volume-value></b></label></section>
       </div></section>`;
     document.body.appendChild(o);
     o.addEventListener('click',e=>{
@@ -132,7 +134,7 @@
   function enhanceSettings(){
     const body=$('#pfSettingsBackdrop .pf-settings-body');if(!body||$('.pf-setting-sound-row',body))return;
     const row=document.createElement('div');row.className='pf-setting-row pf-setting-sound-row';
-    row.innerHTML=`<div class="pf-setting-copy"><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Controla los timbres y la señal breve de navegación.','Control door chimes and the brief navigation cue.')}</small></div><div class="amen-setting-sound"><button type="button" data-amen-sound-toggle></button></div>`;
+    row.innerHTML=`<div class="pf-setting-copy"><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Controla los timbres y la señal breve de navegación.','Control four cues: property, tour, confirmation and navigation.')}</small></div><div class="amen-setting-sound"><button type="button" data-amen-sound-toggle></button></div>`;
     body.insertBefore(row,$('.pf-settings-note',body));row.addEventListener('click',e=>{if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)playSound('nav')}});syncSound();
   }
 
@@ -140,7 +142,9 @@
   function soundForControl(b){
     if(!b||b.closest('#amenProfileOverlay,#amenBottomNav,#pfSettingsBackdrop'))return;
     if(b.matches('[data-focus]'))return playSound('door');
-    if(b.matches('[data-tour],[data-pf-tour],[data-poptour],[data-fav],[data-pf-fav]')&&isAdding(b))return playSound('confirm');
+    if(b.matches('[data-tour],[data-pf-tour],[data-poptour]')&&isAdding(b))return playSound('tour');
+    if(b.matches('[data-fav],[data-pf-fav]')&&isAdding(b))return playSound('confirm');
+    if(b.id==='publishBtn')return playSound('confirm');
     if(b.id==='saveTourBtn'&&Number(id('tourStops')?.textContent||0)>0)return playSound('confirm');
     if(b.matches('#filters button,#homeBtn,#mapViewBtn,#listViewBtn,#wilmingtonFocus,#favoritesBtn,.premium-nav button,.top-links button,[data-premium-action]'))return playSound('nav');
   }
