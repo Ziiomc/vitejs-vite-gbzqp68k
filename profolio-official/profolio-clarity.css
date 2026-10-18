@@ -239,3 +239,117 @@ body #app.profolio-premium .dashboard-grid .map-card .pf-map-help{
   padding:0!important;
 }
 /* The map tiles are deliberately left alone: Light remains a light map. */
+
+
+/* Accessible category buttons: symbol + category name + short explanation. */
+body #app.profolio-premium .pf-search-panel .filter-row .controls{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:stretch!important;
+  gap:9px!important;
+  min-width:0!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:10px!important;
+  min-width:132px!important;
+  min-height:60px!important;
+  padding:9px 12px!important;
+  border:1.5px solid #bc8754!important;
+  border-radius:13px!important;
+  background:#581631!important;
+  color:#fff2e4!important;
+  box-shadow:0 2px 8px rgba(20,2,12,.16)!important;
+  text-align:left!important;
+  white-space:normal!important;
+  text-decoration:none!important;
+  line-height:1.2!important;
+  transition:background-color .15s ease,border-color .15s ease,box-shadow .15s ease!important;
+  cursor:pointer;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice:hover{
+  background:#722044!important;
+  border-color:#ffce64!important;
+  box-shadow:0 3px 10px rgba(20,2,12,.25)!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice.active,
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice[aria-pressed="true"]{
+  background:#ffcb55!important;
+  color:#44102a!important;
+  border-color:#ffe08b!important;
+  box-shadow:0 0 0 1px #ffe08b,0 3px 12px #22091944!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls .pf-category-badge{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  flex:0 0 34px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1.5px solid #d7a666!important;
+  border-radius:10px!important;
+  background:#381022!important;
+  color:#ffd16c!important;
+  font:800 19px/1 system-ui,sans-serif!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls .pf-category-copy{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  gap:3px!important;
+  white-space:normal!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls .pf-category-copy strong{
+  font:750 13px/1.2 system-ui,sans-serif!important;
+  color:inherit!important;
+  letter-spacing:0!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls .pf-category-copy small{
+  display:block!important;
+  font:500 10.5px/1.25 system-ui,sans-serif!important;
+  color:#ead1cf!important;
+  letter-spacing:0!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice[aria-pressed="true"] .pf-category-badge{
+  background:#531531!important;
+  color:#fff0d7!important;
+  border-color:#631d39!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice[aria-pressed="true"] .pf-category-copy small{
+  color:#612a3c!important;
+}
+body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice:focus-visible{
+  outline:3px solid #ffe4a1!important;
+  outline-offset:3px!important;
+}
+body #app.profolio-premium .map-legend .pf-icon-premium,
+body #app.profolio-premium .map-legend .pf-icon-turbo{color:#ffe18d!important}
+@media(max-width:700px){
+  body #app.profolio-premium .pf-search-panel .filter-row .controls{
+    flex-wrap:nowrap!important;
+    max-width:100%!important;
+    overflow-x:auto!important;
+    padding:4px 2px 10px!important;
+    scrollbar-width:thin;
+    scrollbar-color:#b78659 #421126;
+    scroll-snap-type:x proximity;
+  }
+  body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice{
+    flex:0 0 auto!important;
+    width:148px!important;
+    min-width:148px!important;
+    min-height:59px!important;
+    padding:8px 10px!important;
+    scroll-snap-align:start;
+  }
+  body #app.profolio-premium .pf-search-panel .filter-row .controls .pf-category-badge{
+    width:30px!important;height:30px!important;min-width:30px!important;flex-basis:30px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body #app.profolio-premium .pf-search-panel .filter-row .controls button.pf-category-choice{transition:none!important}
+}
