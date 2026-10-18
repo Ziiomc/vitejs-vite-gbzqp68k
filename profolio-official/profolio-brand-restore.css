@@ -70,3 +70,208 @@ body.pf-dark #app.profolio-premium .view-switch button.active{background:#ffd16b
  body:not(.pf-dark) #app.profolio-premium .pf-market-eyebrow{color:#ffd66f!important}
  body:not(.pf-dark) #app.profolio-premium .pf-search-panel{border:2px solid #efbc43!important;box-shadow:0 10px 32px rgba(40,4,21,.26)!important}
 }
+
+/* 18 October 2026: approved burgundy/gold identity, legibility and visual hierarchy. */
+:root{--pf-brand-gold:#ffca49;--pf-brand-deep:#4b0d27}
+body:not(.pf-dark),
+body:not(.pf-dark) #app.profolio-premium,
+body:not(.pf-dark) #app.profolio-premium .main-workspace{
+  background:#530d2b!important;color:#fff1dc!important;
+}
+body:not(.pf-dark) #app.profolio-premium .main-workspace{
+  background:linear-gradient(150deg,#681133,#4d0b27 70%,#350a20)!important;
+}
+body:not(.pf-dark) #app.profolio-premium .pf-brand-hero{
+  background:#460820!important;border:2px solid #ffca49!important;
+  box-shadow:0 14px 32px #21051666!important;
+}
+body #app.profolio-premium .pf-brand-art{
+  background:#460820!important;position:relative;isolation:isolate;
+  border:1px solid #bb8542!important;
+}
+body #app.profolio-premium .pf-brand-art img{
+  display:block!important;object-fit:contain!important;background:#460820!important;
+}
+body #app.profolio-premium .pf-brand-art::after{
+  content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 22px 8px #460820;
+}
+body:not(.pf-dark) #app.profolio-premium .pf-discovery-copy h2{
+  color:#fff0dc!important;text-shadow:0 1px 4px #210516;
+}
+body:not(.pf-dark) #app.profolio-premium .pf-discovery-copy h2 em{color:#ffd06a!important}
+body #app.profolio-premium .pf-discovery-copy p,
+body #app.profolio-premium .pf-discovery-steps span{color:#f2d8d5!important}
+body #app.profolio-premium .pf-discovery-steps{border-top-color:#a96b60!important}
+body #app.profolio-premium .pf-discovery-steps b,
+body #app.profolio-premium .pf-market-eyebrow{color:#ffcf67!important}
+body:not(.pf-dark) #app.profolio-premium .pf-search-panel{
+  background:#fff0ca!important;border:2px solid #f1bb3e!important;
+  box-shadow:0 12px 30px #25061744!important;color:#50132b!important;
+}
+body:not(.pf-dark) #app.profolio-premium :is(.sector-select,.budget-select){
+  background:#ffdea0!important;border-color:#b47a34!important;
+}
+body:not(.pf-dark) #app.profolio-premium .pf-search-refinements{
+  background:#ffe5b4!important;border:1px solid #bb843c!important;
+}
+body:not(.pf-dark) #app.profolio-premium .filter-row .controls button{
+  min-height:44px!important;padding:9px 14px!important;border:2px solid #bc842c!important;
+  border-radius:999px!important;background:#fff0cb!important;color:#57122d!important;
+  font-size:13px!important;font-weight:800!important;
+  box-shadow:0 2px 6px #3f13221a!important;
+}
+body:not(.pf-dark) #app.profolio-premium .filter-row .controls button.active,
+body:not(.pf-dark) #app.profolio-premium .filter-row .controls button[aria-pressed="true"]{
+  background:#ffca49!important;border-color:#9d6b17!important;color:#48102a!important;
+  box-shadow:0 3px 0 #b77b24,0 5px 14px #4a142934!important;
+}
+body #app.profolio-premium .filter-row .controls button:focus-visible{
+  outline:3px solid #ffd65c!important;outline-offset:3px!important;
+}
+body:not(.pf-dark) #app.profolio-premium .map-card{
+  background:#59102e!important;border:2px solid #e9b53c!important;
+  box-shadow:0 15px 32px #26071b55!important;
+}
+body:not(.pf-dark) #app.profolio-premium .explore-heading{
+  background:linear-gradient(115deg,#681331,#401021)!important;
+  border:2px solid #f1bc42!important;border-radius:13px!important;
+  padding:16px 18px!important;margin:0 0 14px!important;
+  box-shadow:0 6px 17px #24091755!important;
+}
+body #app.profolio-premium .explore-heading h2{
+  color:#fff3df!important;font-weight:600!important;
+}
+body #app.profolio-premium .explore-heading div>span{color:#ffd577!important}
+body #app.profolio-premium .explore-heading p{color:#f3d2ce!important}
+body #app.profolio-premium .map-wrap,
+body #app.profolio-premium #market-map,
+body #app.profolio-premium .leaflet-container{
+  background:#071d1a!important;border-color:#f2be43!important;
+}
+body #app.profolio-premium .map-wrap{
+  border:2px solid #f2be43!important;
+  box-shadow:0 0 0 3px #2f0a23a8!important;
+}
+body #app.profolio-premium .leaflet-tile-pane{
+  filter:sepia(.13) hue-rotate(32deg) saturate(1.18) contrast(1.07)!important;
+}
+body #app.profolio-premium #market-map .pfm{
+  background:#641432;border:3px solid #ffcd51;
+  box-shadow:0 4px 0 #1f0e14,0 6px 18px #0009;
+}
+body #app.profolio-premium #market-map .pfm span{
+  color:#ffe49b!important;font-size:20px;font-weight:900;text-shadow:0 1px 2px #210517;
+}
+body #app.profolio-premium #market-map .pfm.premium{
+  background:#ffd157!important;border-color:#7e2240!important;
+}
+body #app.profolio-premium #market-map .pfm.premium span{color:#4e102c!important}
+body #app.profolio-premium #market-map .pfm.feature{background:#165d45!important;border-color:#ffce54!important}
+body #app.profolio-premium #market-map .pfm.turbo{background:#991640!important;border-color:#ffe09a!important}
+body #app.profolio-premium #market-map .pfl{
+  background:#3c102adf!important;border:1px solid #ffcb4d!important;
+  color:#ffefc8!important;font-size:10px!important;
+  box-shadow:0 5px 14px #0009!important;
+}
+body #app.profolio-premium #market-map .pfl small{color:#ffcf68!important}
+body #app.profolio-premium #market-map .pf-cluster-icon{
+  background:#641633!important;border:3px solid #ffce4e!important;
+  color:#fff1ce!important;box-shadow:0 6px 20px #0009!important;
+}
+body #app.profolio-premium :is(.map-label,.location,.wilmington-focus){
+  background:#4d1028!important;color:#ffe2a4!important;
+  border:1px solid #eab439!important;box-shadow:0 4px 13px #0007!important;
+}
+body:not(.pf-dark) #app.profolio-premium .map-legend summary{
+  color:#ffdc8b!important;font-weight:750!important;
+}
+body #app.profolio-premium .legend-icon{
+  color:#ffce56!important;font-size:20px!important;font-weight:900!important;
+}
+body:not(.pf-dark) #app.profolio-premium .right-rail>.detail-grid{
+  background:#fff0d1!important;border:2px solid #e8b240!important;
+  box-shadow:0 12px 28px #24071655!important;
+}
+body:not(.pf-dark) #app.profolio-premium .right-rail .property{
+  background:#fffae9!important;border:1px solid #deb55a!important;
+}
+body #app.profolio-premium :is(.nav-glyph,.metric-icon){
+  font-size:19px!important;font-weight:850!important;
+}
+body:not(.pf-dark) #app.profolio-premium .metric-strip{
+  background:#4a0c28!important;border:2px solid #e5b13d!important;
+}
+body:not(.pf-dark) #app.profolio-premium .metric-strip strong,
+body:not(.pf-dark) #app.profolio-premium .metric-strip small{color:#fff0db!important}
+body:not(.pf-dark) #app.profolio-premium .metric-strip em{color:#ffd069!important}
+body:not(.pf-dark) #app.profolio-premium .metric-context{
+  background:#ffe1a1!important;color:#592138!important;
+}
+body:not(.pf-dark) #app.profolio-premium .area-panel{
+  background:#3d1027!important;border:2px solid #ffd064!important;color:#ffefd9!important;
+}
+body:not(.pf-dark) #app.profolio-premium .area-panel :is(h3,p,small,span){color:#ffe7d3!important}
+body:not(.pf-dark) #app.profolio-premium .area-panel-actions button{
+  background:#ffd16b!important;border-color:#bc863e!important;color:#491028!important;
+}
+body #app.profolio-premium .pf-value-core{
+  margin:24px var(--pf-r-gutter,20px) 38px;padding:22px 24px;
+  border:2px solid #f0c14a;border-radius:18px;
+  background:linear-gradient(125deg,#681630,#390b22);color:#fff1dc;
+  box-shadow:0 12px 30px #23051566;
+}
+body #app.profolio-premium .pf-value-core-head{
+  display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;
+}
+body #app.profolio-premium .pf-value-core-eyebrow{
+  color:#ffd371;font-size:10px;letter-spacing:.18em;font-weight:800;
+}
+body #app.profolio-premium .pf-value-core h2{
+  font:600 clamp(24px,3vw,32px)/1.13 Georgia,serif;color:#fff2df;margin:7px 0 0;
+}
+body #app.profolio-premium .pf-value-core-note{color:#f3cecd;font-size:12px}
+body #app.profolio-premium .pf-value-core-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;
+}
+body #app.profolio-premium .pf-value-core article{
+  padding:16px;min-width:0;border-radius:12px;border:1px solid #be8650;background:#781b3b88;
+}
+body #app.profolio-premium .pf-value-core-number{
+  display:block;color:#ffd15e;font-size:11px;letter-spacing:.08em;font-weight:800;
+}
+body #app.profolio-premium .pf-value-core h3{font-size:16px;color:#ffdf9e;margin:7px 0;line-height:1.3}
+body #app.profolio-premium .pf-value-core p{font-size:13px;line-height:1.55;color:#f1d9d4;margin:0}
+body.pf-dark #app.profolio-premium .pf-brand-hero,
+body.pf-dark #app.profolio-premium .map-card{
+  background:#351024!important;border:2px solid #cda047!important;
+}
+body.pf-dark #app.profolio-premium .explore-heading{
+  background:#47112b!important;border:2px solid #cfa246!important;border-radius:13px;
+  padding:16px 18px!important;margin-bottom:14px!important;
+}
+body.pf-dark #app.profolio-premium .explore-heading h2,
+body.pf-dark #app.profolio-premium .pf-discovery-copy h2{color:#fff2dd!important}
+body.pf-dark #app.profolio-premium .explore-heading p,
+body.pf-dark #app.profolio-premium .pf-discovery-copy p{color:#eed7d1!important}
+body.pf-dark #app.profolio-premium .pf-discovery-copy h2 em{color:#ffd16c!important}
+body.pf-dark #app.profolio-premium .filter-row .controls button{
+  background:#431a30!important;border:2px solid #c39b56!important;
+  min-height:44px!important;color:#fff1dc!important;font-size:13px!important;font-weight:800!important;
+}
+body.pf-dark #app.profolio-premium .filter-row .controls button.active,
+body.pf-dark #app.profolio-premium .filter-row .controls button[aria-pressed="true"]{
+  background:#ffca49!important;color:#48122c!important;
+}
+@media(max-width:700px){
+  body #app.profolio-premium .pf-value-core{margin:16px 12px 95px;padding:18px 14px}
+  body #app.profolio-premium .pf-value-core-grid{grid-template-columns:1fr;gap:10px}
+  body #app.profolio-premium .pf-brand-hero{padding:12px!important;gap:14px!important}
+  body #app.profolio-premium .explore-heading{padding:13px 14px!important}
+  body #app.profolio-premium .explore-heading h2{font-size:23px!important}
+  body:not(.pf-dark) #app.profolio-premium .filter-row .controls button{
+    font-size:12px!important;padding:8px 12px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body #app.profolio-premium .filter-row .controls button{transition:none!important}
+}
