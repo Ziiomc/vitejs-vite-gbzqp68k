@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="./ux-consolidation.css?v=20261014-brand-banner">
   <link rel="stylesheet" href="./profolio-refined.css?v=20261014-refined3">
   <link rel="stylesheet" href="./profolio-brand-restore.css?v=20261018-wine-map-value">
+  <link rel="stylesheet" href="./profolio-clarity.css?v=20261018-brand-real-map-controls">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -62,8 +63,16 @@
     </header>
 
     <section class="pf-brand-hero" aria-labelledby="pfBrandTitle">
-      <h1 id="pfBrandTitle" class="pf-visually-hidden" lang="en">ProFolio. We work in pro of your home, your price, and your future.</h1>
-      <div class="pf-brand-art"><img src="./profolio-brand-banner.jpeg" alt="" width="1320" height="605" fetchpriority="high" decoding="async"></div>
+      <div class="pf-brand-art">
+        <div class="pf-brand-lockup-real">
+          <span class="pf-brand-symbol" aria-hidden="true"><span class="pf-roof"></span><span class="pf-monogram">P</span></span>
+          <div class="pf-brand-nameplate">
+            <h1 id="pfBrandTitle">PRO<span>FOLIO</span></h1>
+            <p class="pf-brand-tagline">WE WORK IN <strong>PRO</strong> OF YOUR HOME.<br>WE WORK IN <strong>PRO</strong> OF YOUR PRICE.<br>WE WORK IN <strong>PRO</strong> OF YOUR FUTURE.</p>
+          </div>
+        </div>
+        <p class="pf-brand-signature"><span>PRO</span>FOLIO. <small>YOUR HOME · YOUR PRICE · YOUR FUTURE</small></p>
+      </div>
       <div class="pf-discovery-copy">
         <span class="pf-market-eyebrow">WILMINGTON, NORTH CAROLINA</span>
         <h2>Explore a different<br><em>side of Wilmington.</em></h2>
@@ -96,6 +105,17 @@
           <div class="explore-heading"><div><span>THE COAST / IN VIEW</span><h2>A closer look at the coast.</h2><p>Select an area or a home to explore what is around it.</p></div><span class="explore-heading-place">WILMINGTON · NC</span></div>
 
 
+          <div class="pf-map-controls">
+            <div class="pf-map-modes" role="group" aria-label="Choose the map color">
+              <span class="pf-map-control-title">Map colors</span>
+              <button type="button" data-pf-map-style="brand" aria-pressed="true">Brand</button>
+              <button type="button" data-pf-map-style="light" aria-pressed="false">Light</button>
+              <button type="button" data-pf-map-style="dark" aria-pressed="false">Dark</button>
+            </div>
+            <label class="pf-map-border-switch"><input type="checkbox" id="pfBoundariesToggle"><span>Show selected area border</span></label>
+          </div>
+          <p class="pf-map-help" id="pfMapBoundaryHint" role="status">Choose an area to see its official boundary. Property pins are illustrative.</p>
+
           <section class="map-shell" id="market-section">
             <div class="map-wrap">
               <div id="market-map" class="map"></div>
@@ -107,7 +127,19 @@
               <aside id="areaPanel" class="area-panel" hidden aria-live="polite"><button id="areaPanelClose" class="area-panel-close" type="button" aria-label="Close area details">×</button><small id="areaPanelEyebrow">AREA · MARKET MAP</small><h3 id="areaPanelName"></h3><div class="area-meta"><span id="areaPanelZip"></span><span id="areaPanelCount"></span></div><p id="areaPanelSource"></p><div id="areaVideoInline" class="area-video-inline"><div class="area-video-cover pending"><span class="play">▷</span><span><strong>VIDEO TOUR · COMING SOON</strong><small id="areaVideoInlineStatus">Video is not available for this area yet</small></span></div></div><div class="area-panel-actions"><button id="areaExploreBtn" type="button">Explore properties</button><button id="areaOpenTourBtn" class="tour-start" type="button">↝ Start Open Tour</button><button id="areaOverviewBtn" type="button">Back to region</button></div></aside>
             </div>
 
-            <details class="map-legend"><summary>Map symbols</summary><aside class="legend"><h2>Map legend</h2><p>Select a sample home to view details or add it to your Open Tour.</p><div class="legend-item"><span class="legend-icon">●</span><div><strong>Regular</strong><small>Residential inventory.</small></div></div><div class="legend-item"><span class="legend-icon">▲</span><div><strong>Premium</strong><small>Premium category.</small></div></div><div class="legend-item"><span class="legend-icon">◇</span><div><strong>Opportunity</strong><small>Special attribute.</small></div></div><div class="legend-item"><span class="legend-icon">ϟ</span><div><strong>Turbo</strong><small>Priority demo category.</small></div></div><div class="legend-item"><span class="legend-icon">◆</span><div><strong>Off-market</strong><small>Off-market features are not yet connected.</small></div></div><div class="coverage"><b>PROFOLIO coverage</b><div class="zip-cloud" id="zipCloud"></div><div class="territory-key"><i></i> real city and CDP boundaries</div><div class="territory-key"><i class="anchor"></i> reference area without legal boundaries</div></div></aside></details>
+            <details class="map-legend"><summary>How to read the map</summary>
+              <aside class="legend">
+                <h2>Map symbols</h2>
+                <p>Tap a property pin to see the home. Tap a numbered group to zoom in. Use the area menu to explore locations.</p>
+                <div class="pf-legend-grid">
+                  <div class="legend-item"><span class="legend-icon pf-icon-regular">●</span><div><strong>Regular</strong><small>Standard sample home</small></div></div>
+                  <div class="legend-item"><span class="legend-icon pf-icon-premium">▲</span><div><strong>Premium</strong><small>Higher-end sample home</small></div></div>
+                  <div class="legend-item"><span class="legend-icon pf-icon-feature">◇</span><div><strong>Opportunity</strong><small>Special-feature sample</small></div></div>
+                  <div class="legend-item"><span class="legend-icon pf-icon-turbo">ϟ</span><div><strong>Turbo</strong><small>Featured demo home</small></div></div>
+                </div>
+                <p class="pf-legend-footer"><strong>Numbered pin</strong> = multiple homes nearby. <strong>Area border</strong> = optional official Census boundary, not a property boundary.</p>
+              </aside>
+            </details>
           </section>
         </section>
 
@@ -172,8 +204,8 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=20261014-refined1"></script>
-<script src="./boundary-fix.js"></script>
+<script src="./map-fix-v4.js?v=20261018-fix-keyless-map-borders"></script>
+<!-- Legacy dense census mesh disabled: display selected official area only. -->
 <script src="./ui-premium-v2.js?v=20261014-refined1"></script>
 <script src="./amen-experience-v2.js?v=single-categories-mobile-nav-20261011"></script>
 <script src="./launch.js?v=private-backup-20261011"></script>
