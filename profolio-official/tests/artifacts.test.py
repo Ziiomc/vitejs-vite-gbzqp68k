@@ -33,9 +33,10 @@ class ProFolioArtifacts(unittest.TestCase):
                 if not ref.startswith(('http:','https:','#')):
                     target=ref.split('?')[0]
                     self.assertTrue((ROOT/target).exists(),page+': missing '+ref)
-    def test_legend_precedes_map_and_preview_disclosures(self):
+    def test_single_category_control_and_preview_disclosures(self):
         index=(ROOT/'index.html').read_text(encoding='utf-8')
-        self.assertLess(index.index('roadmap-legend'),index.index('id="market-map"'))
+        self.assertNotIn('roadmap-legend',index)
+        self.assertEqual(index.count('id="filters"'),1)
         self.assertIn('target="_blank" rel="noopener"',index)
         gps=(ROOT/'gps.html').read_text(encoding='utf-8')
         self.assertIn('No live listings',gps);self.assertIn('nothing is recorded',gps)
