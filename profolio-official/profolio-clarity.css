@@ -186,3 +186,56 @@ body.pf-dark #app.profolio-premium .pf-brand-tagline{color:#f7dfdb!important}
 #app.profolio-premium .pf-map-border-switch{
   padding:4px 8px;border-radius:8px;background:#5c1d38;
 }
+
+
+/* 2026-10-18: remove pale gaps around the market map without tinting the Light basemap. */
+body #app.profolio-premium .dashboard-grid,
+body #app.profolio-premium .dashboard-grid > .map-column,
+body #app.profolio-premium .dashboard-grid > .map-column > .map-card,
+body #app.profolio-premium .dashboard-grid .map-card .map-shell{
+  background:#4b102a!important;
+}
+body #app.profolio-premium .dashboard-grid > .map-column > .map-card,
+body.pf-dark #app.profolio-premium .dashboard-grid > .map-column > .map-card{
+  background:#4b102a!important;
+  border:2px solid #d39a43!important;
+  box-shadow:0 10px 26px rgba(20,4,11,.3)!important;
+}
+body #app.profolio-premium .dashboard-grid .map-card .map-shell,
+body #app.profolio-premium .dashboard-grid .map-card .map-wrap{
+  background:#4b102a!important;
+}
+body #app.profolio-premium .dashboard-grid .map-card .map-wrap{
+  border:2px solid #d39a43!important;
+}
+/* Heading contrast overrides older light-theme rules with higher specificity. */
+body:not(.pf-dark) #app.profolio-premium .dashboard-grid .map-card .explore-heading,
+body.pf-dark #app.profolio-premium .dashboard-grid .map-card .explore-heading{
+  background:#5a132f!important;
+  border:2px solid #d39a43!important;
+}
+body:not(.pf-dark) #app.profolio-premium .dashboard-grid .map-card .explore-heading h2,
+body.pf-dark #app.profolio-premium .dashboard-grid .map-card .explore-heading h2{
+  color:#fff4e8!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+body:not(.pf-dark) #app.profolio-premium .dashboard-grid .map-card .explore-heading p,
+body.pf-dark #app.profolio-premium .dashboard-grid .map-card .explore-heading p{
+  color:#ffe4d1!important;
+}
+body #app.profolio-premium .dashboard-grid .map-card .explore-heading div > span{
+  color:#ffd26a!important;
+}
+body #app.profolio-premium .dashboard-grid .map-card .pf-map-controls{
+  background:#3c0e24!important;
+  border-color:#b97c46!important;
+}
+body #app.profolio-premium .dashboard-grid .map-card .pf-map-help{
+  background:transparent!important;
+  color:#ffdfc2!important;
+  opacity:1!important;
+  margin:8px 0 12px!important;
+  padding:0!important;
+}
+/* The map tiles are deliberately left alone: Light remains a light map. */
