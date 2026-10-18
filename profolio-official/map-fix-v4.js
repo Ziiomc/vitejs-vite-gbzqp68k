@@ -116,11 +116,11 @@ async function boundaryQuery(layer,params){
 function borderStyle(name,type){
   const active=S.a===name;
   return {
-    color:active?'#fff0a2':type==='reference'?'#e5a96b':'#e7aa38',
-    weight:active?3.7:type==='reference'?1.75:2.15,
-    opacity:active?1:.90,
-    fillColor:active?'#ffe2a0':'#b48639',
-    fillOpacity:active?.095:.012,
+    color:active?'#8a1d45':type==='reference'?'#4a1028':'#6b1534',
+    weight:active?4:type==='reference'?2.2:2.8,
+    opacity:active?1:.96,
+    fillColor:'#6b1534',
+    fillOpacity:active?.09:.022,
     dashArray:type==='reference'?'6 6':undefined,
     lineCap:'round',lineJoin:'round',smoothFactor:1.5
   }

@@ -164,9 +164,9 @@ body.pf-dark #app.profolio-premium .pf-brand-tagline{color:#f7dfdb!important}
 #app.profolio-premium #market-map .pf-area-boundary-tip{
   padding:7px 10px!important;
   border-radius:8px!important;
-  border:1px solid #e8b65b!important;
-  color:#ffecc8!important;
-  background:#4e1231f0!important;
+  border:1px solid #8a1d45!important;
+  color:#fff2e4!important;
+  background:#4a1028f0!important;
   box-shadow:0 4px 12px #14040b85!important;
   font:650 11px/1.4 system-ui,sans-serif!important;
   white-space:normal!important;
@@ -178,6 +178,10 @@ body.pf-dark #app.profolio-premium .pf-brand-tagline{color:#f7dfdb!important}
 }
 #app.profolio-premium #market-map .leaflet-pane.pfAreaBoundaries-pane path{
   vector-effect:non-scaling-stroke;
+}
+/* Keep the burgundy territory borders legible on the darker tile appearance. */
+#app.profolio-premium #market-map[data-pf-map-style="dark"] .leaflet-pane.pfAreaBoundaries-pane{
+  filter:brightness(1.65) saturate(1.2);
 }
 #app.profolio-premium .pf-map-border-switch{
   padding:4px 8px;border-radius:8px;background:#5c1d38;
