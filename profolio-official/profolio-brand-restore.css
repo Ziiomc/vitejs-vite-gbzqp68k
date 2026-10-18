@@ -1,0 +1,72 @@
+/* ProFolio wine + gold restoration. Visual-only overrides loaded last. */
+:root{
+ --pf-r-paper:#f9ebd8;--pf-r-surface:#fffaf0;--pf-r-ink:#42172a;
+ --pf-r-muted:#72475a;--pf-r-line:#dfbb80;--pf-r-wine:#811535;
+ --pf-r-brass:#93600c;--pf-r-soft:#ffe4ad;--pf-r-nav:#431027;
+ --pf-r-shadow:0 10px 30px rgba(86,13,42,.12);
+ --pf-brand-gold:#ffca45;--pf-brand-deep:#510d29;
+}
+body.pf-dark{
+ --pf-r-paper:#170c17;--pf-r-surface:#26121f;--pf-r-ink:#fff4e5;
+ --pf-r-muted:#e1bbcb;--pf-r-line:#865574;--pf-r-wine:#ffd175;
+ --pf-r-brass:#ffd175;--pf-r-soft:#422238;--pf-r-nav:#2a0b1d;
+}
+body:not(.pf-dark),body:not(.pf-dark) #app.profolio-premium,
+body:not(.pf-dark) #app.profolio-premium .main-workspace{background:#f9ebd8!important}
+body #app.profolio-premium .sidebar{background:linear-gradient(180deg,#52122d,#310a1e)!important;border-right:1px solid #b27b48!important}
+body #app.profolio-premium .brand-lockup strong em,
+body #app.profolio-premium .workspace-avatar,
+body #app.profolio-premium .nav-section-label{color:var(--pf-brand-gold)!important}
+body #app.profolio-premium .nav-item.active{background:var(--pf-brand-gold)!important;color:var(--pf-brand-deep)!important;box-shadow:inset 3px 0 #fff0bf!important}
+body #app.profolio-premium .nav-item.active .nav-glyph{color:var(--pf-brand-deep)!important}
+body:not(.pf-dark) #app.profolio-premium .global-topbar{background:linear-gradient(105deg,#4d0b26,#7d1334)!important;color:#fff5e6!important;border-bottom:2px solid #f0b633!important}
+body:not(.pf-dark) #app.profolio-premium .global-search{background:#fff4df!important;border:1px solid #e5b757!important}
+body:not(.pf-dark) #app.profolio-premium .global-search input{color:#4e102a!important}
+body:not(.pf-dark) #app.profolio-premium .global-search input::placeholder,
+body:not(.pf-dark) #app.profolio-premium .global-search>span{color:#855267!important}
+body:not(.pf-dark) #app.profolio-premium .profile-chip{background:#65112e!important;color:#fff4e5!important;border-color:#f2c35f!important}
+body #app.profolio-premium .pf-brand-hero{background:#4b061f!important;border:2px solid #f4c044!important;box-shadow:0 12px 32px rgba(82,11,38,.24)!important}
+body #app.profolio-premium .pf-market-eyebrow,
+body #app.profolio-premium :is(.panel-kicker,.explore-heading div>span){color:#ae6d10!important}
+body:not(.pf-dark) #app.profolio-premium .pf-discovery-copy h2,
+body:not(.pf-dark) #app.profolio-premium :is(.explore-heading h2,.properties-panel .panel-head-row h2,.right-rail .price){color:#63132d!important}
+body:not(.pf-dark) #app.profolio-premium .pf-discovery-copy h2 em{color:#a31b46!important}
+body:not(.pf-dark) #app.profolio-premium .demo-label{background:#fff0c2!important;color:#6b2a35!important;border:1px solid #e7b64f!important;border-left:5px solid var(--pf-brand-gold)!important;border-radius:12px!important;padding:11px 14px!important;font-weight:600!important}
+body:not(.pf-dark) #app.profolio-premium :is(.pf-search-panel,.map-card,.right-rail>.detail-grid,.metric-strip){background:#fff8e9!important;border:1px solid #dca94b!important;box-shadow:0 8px 25px rgba(87,15,42,.11)!important}
+body:not(.pf-dark) #app.profolio-premium .map-toolbar :is(.sector-select,.budget-select),
+body:not(.pf-dark) #app.profolio-premium .pf-search-refinements{background:#ffedc8!important;border-color:#e5b866!important}
+body:not(.pf-dark) #app.profolio-premium .map-toolbar :is(.sector-select,.budget-select) span,
+body:not(.pf-dark) #app.profolio-premium .pf-search-refinements label,
+body:not(.pf-dark) #app.profolio-premium .pf-filter-label{color:#713047!important;font-weight:700!important}
+body:not(.pf-dark) #app.profolio-premium .map-toolbar :is(.sector-select,.budget-select) select,
+body:not(.pf-dark) #app.profolio-premium .pf-search-refinements select{color:#55122d!important;font-weight:700!important}
+body:not(.pf-dark) #app.profolio-premium .pf-search-refinements select{background:#fff9ee!important;border-color:#d5a551!important}
+body:not(.pf-dark) #app.profolio-premium .explore-toolbar .thin{background:#fff0c6!important;color:#5d132f!important;border:1px solid #dda63d!important;border-radius:10px!important}
+body:not(.pf-dark) #app.profolio-premium .view-switch{background:#ffedc5!important;border-color:#e2ad4b!important}
+body:not(.pf-dark) #app.profolio-premium .view-switch button{color:#65172f!important}
+body:not(.pf-dark) #app.profolio-premium .view-switch button.active{background:#741331!important;color:#fff9e9!important;box-shadow:0 3px 9px rgba(103,10,43,.18)!important}
+body:not(.pf-dark) #app.profolio-premium .filter-row .controls button{background:#fff6e3!important;color:#641731!important;border:1px solid #d6a449!important;font-weight:650!important}
+body:not(.pf-dark) #app.profolio-premium .filter-row .controls button.active,
+body:not(.pf-dark) #app.profolio-premium .filter-row .controls button[aria-pressed="true"]{background:var(--pf-brand-gold)!important;border-color:#c88a18!important;color:#441022!important;box-shadow:0 2px 7px rgba(105,35,12,.16)!important}
+body:not(.pf-dark) #app.profolio-premium .filter-row .results-summary{color:#6c2944!important;font-weight:650!important}
+body:not(.pf-dark) #app.profolio-premium .right-rail .property{background:#fffdf6!important;border-color:#e0b66c!important}
+body:not(.pf-dark) #app.profolio-premium .right-rail .tag{background:#ffdf92!important;color:#611633!important}
+body:not(.pf-dark) #app.profolio-premium .right-rail .card-actions button:first-child,
+body:not(.pf-dark) #app.profolio-premium .area-panel-actions .tour-start{background:#7b1234!important;color:#fff7e9!important;border-color:#7b1234!important}
+body:not(.pf-dark) #app.profolio-premium .right-rail .card-actions button:last-child{background:#ffe6ab!important;color:#5c112d!important;border-color:#d9a245!important}
+body:not(.pf-dark) #app.profolio-premium .metric-context{background:#ffebc1!important;color:#663248!important;border-color:#e0b66c!important}
+body #tourPanel .tour-panel-header,body .amen-profile-head{background:linear-gradient(115deg,#480d27,#811837)!important}
+body:not(.pf-dark) .amen-bottom-nav{background:linear-gradient(180deg,#ffda64,#f8bc2e)!important;border:1px solid #bd8220!important;box-shadow:0 10px 28px rgba(64,11,33,.26)!important}
+body:not(.pf-dark) .amen-bottom-nav button{color:#56102a!important;font-weight:700!important}
+body:not(.pf-dark) .amen-bottom-nav button.active,
+body:not(.pf-dark) .amen-bottom-nav button[aria-current="page"]{background:#761333!important;color:#fff8e8!important}
+body.pf-dark #app.profolio-premium .pf-search-panel{background:#271020!important;border:1px solid #aa783b!important}
+body.pf-dark #app.profolio-premium .filter-row .controls button.active,
+body.pf-dark #app.profolio-premium .view-switch button.active{background:#ffd16b!important;color:#4b102b!important;border-color:#d7a64e!important}
+@media(max-width:700px){
+ body:not(.pf-dark),body:not(.pf-dark) #app.profolio-premium,
+ body:not(.pf-dark) #app.profolio-premium .main-workspace{background:linear-gradient(180deg,#630c2b 0%,#7b1133 47%,#4e0b25 100%)!important}
+ body:not(.pf-dark) #app.profolio-premium .pf-discovery-copy h2{color:#fff7e7!important}
+ body:not(.pf-dark) #app.profolio-premium .pf-market-eyebrow{color:#ffd66f!important}
+ body:not(.pf-dark) #app.profolio-premium .pf-search-panel{border:2px solid #efbc43!important;box-shadow:0 10px 32px rgba(40,4,21,.26)!important}
+}
