@@ -6,8 +6,15 @@
   const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}};
   const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
   let profile=read(PROFILE_KEY,null);
-  let sound=localStorage.getItem(SOUND_KEY)!=='off';
-  let volume=Math.round(Math.max(.05,Math.min(1,Number(localStorage.getItem(VOLUME_KEY)||.55)))*20)/20;
+  const stored=k=>{try{return localStorage.getItem(k)}catch{return null}};
+  let sound=stored(SOUND_KEY)==='on';
+  let haptics=stored('pf_haptics_v1')==='on';
+  let lastGesture=-Infinity;
+  const gesture=e=>{if(e.isTrusted)lastGesture=performance.now()};
+  document.addEventListener('pointerdown',gesture,true);
+  document.addEventListener('keydown',gesture,true);
+  document.addEventListener('click',gesture,true);
+  let volume=Math.round(Math.max(0,Math.min(1,Number(stored(VOLUME_KEY)??.55)))*20)/20;
   let ctx=null,timer=0,lastSoundAt=0;
 
   function audioContext(){
@@ -31,9 +38,12 @@
     voice(ac,{freq:freq*3.02,at,duration:duration*.38,gain:gain*.09,type:'sine'});
   }
   function playSound(kind='nav'){
-    if(!sound)return false;
-    const now=performance.now();if(now-lastSoundAt<55)return false;
-    const ac=audioContext();if(!ac)return false;lastSoundAt=now;
+    const now=performance.now();
+    if(document.hidden||now-lastGesture>1000||now-lastSoundAt<80)return false;
+    lastSoundAt=now;
+    if(haptics&&navigator.vibrate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){try{navigator.vibrate(kind==='confirm'?[12,25,12]:12)}catch{}}
+    if(!sound||volume===0)return false;
+    const ac=audioContext();if(!ac)return false;
     try{
       if(kind==='door'){
         bell(ac,659.25,0,.6,.10);bell(ac,493.88,.27,.68,.09);
@@ -48,7 +58,17 @@
       return true;
     }catch{return false}
   }
-  window.__pfSound={play:playSound,get enabled(){return sound},get volume(){return volume}};
+  const stopAudio=()=>{if(ctx){ctx.close().catch(()=>{});ctx=null}try{navigator.vibrate?.(0)}catch{}};
+  const configure=values=>{
+    if(typeof values.enabled==='boolean')sound=values.enabled;
+    if(typeof values.haptics==='boolean')haptics=values.haptics;
+    if(Number.isFinite(values.volume))volume=Math.max(0,Math.min(1,values.volume));
+    if(!sound||volume===0)stopAudio();
+    try{localStorage.setItem('pf_haptics_v1',haptics?'on':'off')}catch{}
+    syncSound();
+  };
+  window.__pfSound={play:playSound,configure,get enabled(){return sound},get volume(){return volume},get haptics(){return haptics}};
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAudio()});
   function toast(msg){
     let e=id('amenToast');
     if(!e){e=document.createElement('div');e.id='amenToast';e.className='amen-toast';e.setAttribute('role','status');document.body.appendChild(e)}
@@ -71,6 +91,8 @@
     $$('[data-amen-sound-toggle]').forEach(b=>{b.textContent=sound?tr('Activado','On'):tr('Desactivado','Off');b.classList.toggle('on',sound);b.classList.toggle('active',sound);b.setAttribute('aria-pressed',String(sound))});
     $$('[data-amen-volume]').forEach(r=>r.value=String(Math.round(volume*100)));
     $$('[data-amen-volume-value]').forEach(e=>e.textContent=Math.round(volume*100)+'%');
+    if(!sound||volume===0){if(ctx){ctx.close().catch(()=>{});ctx=null}}
+    document.dispatchEvent(new CustomEvent('pf:preferences-changed'));
   }
 
   function profileData(){
@@ -97,7 +119,7 @@
           <label class="full"><span>${tr('Zona principal','Main area')}</span><input name="area" maxlength="80" placeholder="Wilmington, NC"></label>
         </form>
         <div class="amen-profile-actions"><button class="amen-save" type="submit" form="amenProfileForm">${tr('Guardar perfil','Save profile')}</button><button class="amen-secondary" type="button" data-amen-settings>${tr('Configuración general','General settings')}</button></div>
-        <section class="amen-sound"><div class="amen-sound-head"><div><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Timbre al abrir propiedades, señal de recorrido, confirmación y navegación.','Four distinctive cues for property details, tours, confirmations and navigation.')}</small></div><button class="amen-toggle" type="button" data-amen-sound-toggle></button></div><label class="amen-volume"><span>${tr('Volumen','Volume')}</span><input data-amen-volume type="range" min="5" max="100" step="5"><b data-amen-volume-value></b></label></section>
+        <section class="amen-sound"><div class="amen-sound-head"><div><strong>${tr('Sonido de interacción','Interaction sound')}</strong><small>${tr('Timbre al abrir propiedades, señal de recorrido, confirmación y navegación.','Four distinctive cues for property details, tours, confirmations and navigation.')}</small></div><button class="amen-toggle" type="button" data-amen-sound-toggle></button></div><label class="amen-volume"><span>${tr('Volumen','Volume')}</span><input data-amen-volume aria-label="Interaction volume" type="range" min="0" max="100" step="5"><b data-amen-volume-value></b></label></section>
       </div></section>`;
     document.body.appendChild(o);
     o.addEventListener('click',e=>{
@@ -105,7 +127,7 @@
       if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)playSound('nav')}
       if(e.target.closest('[data-amen-settings]')){o.classList.remove('open');document.body.style.overflow='';setTimeout(()=>id('pfSettingsBtn')?.click(),60)}
     });
-    o.addEventListener('input',e=>{if(e.target.matches('[data-amen-volume]')){volume=Math.max(.05,Math.min(1,Number(e.target.value)/100));syncSound()}});
+    o.addEventListener('input',e=>{if(e.target.matches('[data-amen-volume]')){volume=Math.max(0,Math.min(1,Number(e.target.value)/100));syncSound()}});
     id('amenProfileForm').addEventListener('submit',e=>{
       e.preventDefault();const d=new FormData(e.currentTarget);
       profile={name:String(d.get('name')||'').trim(),email:String(d.get('email')||'').trim(),phone:String(d.get('phone')||'').trim(),role:String(d.get('role')||'buyer'),area:String(d.get('area')||'').trim(),updatedAt:Date.now()};
@@ -128,7 +150,7 @@
       if(a==='tour')id('navTour')?.click();
       if(a==='drafts')id('navPortfolio')?.click();
       if(a==='profile')openProfile();
-      $$('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});playSound('nav');
+      $$('#amenBottomNav button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-current',active?'page':'false')});playSound(a==='tour'?'tour':'nav');
     });
   }
   function enhanceSettings(){
@@ -144,7 +166,8 @@
     if(b.matches('[data-focus]'))return playSound('door');
     if(b.matches('[data-tour],[data-pf-tour],[data-poptour]')&&isAdding(b))return playSound('tour');
     if(b.matches('[data-fav],[data-pf-fav]')&&isAdding(b))return playSound('confirm');
-    if(b.id==='publishBtn')return playSound('confirm');
+    if(b.id==='navTour'||b.id==='openHouseAction'||b.id==='browseOpenHouse')return playSound('tour');
+    if(b.id==='valueCoreAction'||b.id==='createAction')return playSound('nav');
     if(b.id==='saveTourBtn'&&Number(id('tourStops')?.textContent||0)>0)return playSound('confirm');
     if(b.matches('#filters button,#homeBtn,#mapViewBtn,#listViewBtn,#wilmingtonFocus,#favoritesBtn,.premium-nav button,.top-links button,[data-premium-action]'))return playSound('nav');
   }

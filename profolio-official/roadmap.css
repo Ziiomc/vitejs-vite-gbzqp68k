@@ -1,0 +1,72 @@
+/* Final theme tokens for the existing ProFolio presentation. */
+body{--road-bg:#180b0e;--road-panel:#301017;--road-raised:#46151f;--road-text:#faedda;--road-muted:#dfbfc0;--road-gold:#efc35e;--road-line:#946d35;background:var(--road-bg)!important;color:var(--road-text)!important}
+body:not(.pf-dark){--road-bg:#e8d4ae;--road-panel:#f5e4c3;--road-raised:#ecd3a6;--road-text:#4d1422;--road-muted:#6e3541;--road-gold:#7f2037;--road-line:#a47334}
+html body #app#app.profolio-premium :is(.main-workspace,.sidebar,.global-topbar){background:var(--road-bg)!important;color:var(--road-text)!important}
+html body #app#app.profolio-premium :is(.pf-brand-hero,.pf-brand-art,.demo-label,.pf-search-panel,.map-card,.explore-heading,.pf-map-controls,.right-rail>.detail-grid,.properties-panel,.metric-strip article,.pf-value-core,.pf-value-core-grid article){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important;box-shadow:none!important}
+html body #app#app.profolio-premium :is(h1,h2,h3,.pf-discovery-copy h2,.pf-brand-tagline,.explore-heading h2,.panel-head-row h2,.property-body .price,.property-body h3,.metric-strip strong,.pf-more-filters summary,.pf-filter-label,.results-summary){color:var(--road-text)!important;text-shadow:none!important}
+html body #app#app.profolio-premium :is(.pf-discovery-copy p,.muted,.property-facts,.pf-map-help,.pf-value-core p,.pf-value-core-note,.pf-legend-footer,.metric-context,.pf-brand-signature small,.pf-more-filters summary span){color:var(--road-muted)!important}
+html body #app#app.profolio-premium :is(.pf-brand-tagline strong,.pf-brand-signature>span,.pf-discovery-copy h2 em,.pf-market-eyebrow,.panel-kicker,.pf-map-control-title,.pf-value-core-eyebrow,.pf-value-core-number){color:var(--road-gold)!important}
+html body #app#app.profolio-premium :is(.property,.pf-search-refinements,.sector-select,.budget-select){background:var(--road-raised)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}
+html body #app#app.profolio-premium :is(input,select){background:var(--road-raised)!important;color:var(--road-text)!important}
+html body #app#app.profolio-premium :is(input,select)::placeholder{color:var(--road-muted)!important}
+html body #app#app.profolio-premium .pf-brand-symbol{background:#4d1422!important}
+html body #app#app.profolio-premium .pf-brand-nameplate h1 button{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;color:inherit;cursor:pointer;text-align:left}
+html body #app#app.profolio-premium .pf-brand-nameplate h1 button span{color:inherit}
+html body #app#app.profolio-premium .pf-brand-tagline{font-size:clamp(14px,1.25vw,19px)!important;line-height:1.6!important}
+html body #app#app.profolio-premium .global-topbar{flex-wrap:wrap;gap:10px;position:relative!important}
+#themeToggle,.story-entry{min-height:44px;border:1px solid var(--road-line);border-radius:8px;padding:8px 13px;background:var(--road-raised);color:var(--road-text);font:600 13px system-ui;cursor:pointer;white-space:nowrap}
+html body #app#app.profolio-premium .global-search{flex:1;min-width:170px;background:var(--road-panel)!important}
+#brandStory{width:min(520px,calc(100% - 36px));max-height:85dvh;box-sizing:border-box;overflow:auto;background:var(--road-panel);color:var(--road-text);border:2px solid #efc35e;border-radius:18px;padding:30px;font:16px/1.55 system-ui}
+#brandStory::backdrop{background:#10090bd9}
+#brandStory h2{font:32px/1.15 Georgia,serif;margin:12px 0 22px}
+#brandStory small{color:var(--road-gold);font-weight:700}
+#brandStory [data-close-story]{float:right;background:var(--road-raised);color:var(--road-text);border:1px solid var(--road-line);border-radius:8px;width:44px;height:44px;font-size:24px;cursor:pointer}
+body :is(button,a,input,select,summary):focus-visible{outline:3px solid #da9e29!important;outline-offset:4px!important}
+@media(max-width:700px){html body #app#app.profolio-premium .global-topbar{padding:10px 14px!important}html body #app#app.profolio-premium .global-search{order:2;flex-basis:100%}#themeToggle{margin-left:auto}html body #app#app.profolio-premium .pf-brand-hero{margin-top:14px!important}html body #app#app.profolio-premium .pf-discovery-copy h2{font-size:32px!important}.pf-brand-signature small{line-height:1.6}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+html body #app#app.profolio-premium .global-topbar{height:auto!important;min-height:70px!important;display:flex!important;align-items:center!important}
+html body #app#app.profolio-premium .profile-chip{flex:0 0 auto!important;width:auto!important;max-width:200px;background:var(--road-raised)!important;color:var(--road-text)!important}
+html body #app#app.profolio-premium :is(.nav-item,.brand-lockup strong,.workspace-badge strong,.pf-discovery-steps span,.pf-brand-signature){color:var(--road-text)!important}
+html body #app#app.profolio-premium :is(.brand-lockup small,.workspace-badge small,.pf-discovery-steps b){color:var(--road-muted)!important}
+html body #app#app.profolio-premium .nav-item.active{background:#efc35e!important;color:#4d1422!important}
+@media(max-width:700px){html body #app#app.profolio-premium .global-topbar{min-height:116px!important}html body #app#app.profolio-premium .profile-chip{display:none!important}}
+html body #app#app.profolio-premium .roadmap-legend{display:block!important;width:min(100%,520px);box-sizing:border-box;margin:16px 0;padding:18px;border:1px solid var(--road-line);border-radius:14px;background:var(--road-panel)!important;color:var(--road-text)!important}
+html body #app#app.profolio-premium .roadmap-legend .legend{display:block!important;padding:0!important;background:transparent!important;color:inherit!important;border:0!important}
+html body #app#app.profolio-premium .roadmap-legend .pf-legend-grid{display:grid!important;grid-template-columns:1fr 1fr;gap:14px}
+html body #app#app.profolio-premium .roadmap-legend :is(h2,strong){color:var(--road-text)!important}
+html body #app#app.profolio-premium .roadmap-legend :is(p,small){color:var(--road-muted)!important}
+html body #app#app.profolio-premium .map-shell{border:3px solid #efc35e!important;background:var(--road-panel)!important}
+html body #app#app.profolio-premium :is(.pfl,.pfm,.leaflet-control-zoom a,.map-label,.wilmington-focus,.location,.pf-area-boundary-tip){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:#b86979!important}
+html body #app#app.profolio-premium .pfm span{color:var(--road-gold)!important}
+html body #app#app.profolio-premium .leaflet-container{background:#b9a785!important}
+html body #app#app.profolio-premium .leaflet-control-attribution{background:var(--road-panel)!important;color:var(--road-text)!important}
+html body #app#app.profolio-premium .leaflet-control-attribution a{color:var(--road-gold)!important}
+html body #app#app.profolio-premium .roadmap-legend,html body #app#app.profolio-premium .roadmap-legend .legend{position:static!important;inset:auto!important;transform:none!important;max-height:none!important}
+html body #app#app.profolio-premium .metric-strip{background:var(--road-panel)!important;border-color:var(--road-line)!important}
+html body #app#app.profolio-premium .metric-strip :is(small,em){color:var(--road-muted)!important}
+.roadmap-actions{display:grid;grid-template-columns:1fr 1fr .65fr;gap:12px;margin:18px 0}
+.roadmap-actions button{display:grid;grid-template-columns:32px 1fr;gap:5px 12px;align-items:center;text-align:left;min-height:94px;padding:18px;border:1px solid var(--road-line);border-radius:14px;background:var(--road-panel);color:var(--road-text);cursor:pointer}
+.roadmap-actions button>span{grid-row:span 2;font:30px Georgia;color:var(--road-gold)}
+.roadmap-actions strong{font:600 18px system-ui}.roadmap-actions small{font:12px/1.5 system-ui;color:var(--road-muted)}
+.roadmap-actions button:hover{border-color:#efc35e;background:var(--road-raised)}
+#openHouseIntro{width:min(520px,calc(100% - 36px));box-sizing:border-box;max-height:85dvh;overflow:auto;background:var(--road-panel);color:var(--road-text);border:2px solid #efc35e;border-radius:18px;padding:28px;font:16px/1.6 system-ui}
+#openHouseIntro::backdrop{background:#10090bd9}
+#openHouseIntro button{min-height:44px;padding:10px;border:1px solid var(--road-line);border-radius:8px;background:var(--road-raised);color:var(--road-text);cursor:pointer}
+#openHouseIntro [data-close-open-house]{float:right;width:44px;font-size:24px}
+@media(max-width:700px){.roadmap-actions{grid-template-columns:1fr 1fr;gap:8px}.roadmap-actions button{padding:13px;grid-template-columns:1fr;min-height:100px}.roadmap-actions button>span{grid-row:auto}.roadmap-actions button:last-child{grid-column:span 2;grid-template-columns:30px 1fr;min-height:65px}.roadmap-actions button:last-child>span{grid-row:span 2}.roadmap-actions strong{font-size:16px}}
+#sensoryToggle{min-height:44px;padding:8px 12px;border:1px solid var(--road-line);border-radius:8px;background:var(--road-panel);color:var(--road-text);cursor:pointer}
+#sensoryDialog{width:min(520px,calc(100% - 36px));box-sizing:border-box;max-height:85dvh;overflow:auto;border:2px solid #efc35e;border-radius:18px;background:var(--road-panel);color:var(--road-text);padding:26px;font:15px/1.6 system-ui}
+#sensoryDialog::backdrop{background:#10090bd9}#sensoryDialog label{display:block;margin:16px 0 8px}#sensoryDialog input[type=range]{width:100%}#sensoryDialog input[type=checkbox]{width:20px;height:20px;vertical-align:middle;accent-color:#a52b49}
+#sensoryDialog button{min-height:44px;border:1px solid var(--road-line);background:var(--road-raised);color:var(--road-text);padding:8px 13px;border-radius:8px;cursor:pointer}#sensoryDialog [data-close-sensory]{float:right;font-size:24px}.sound-samples{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.gps-preview-entry{margin:18px 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px}.gps-preview-entry a{padding:12px 16px;min-height:44px;display:inline-flex;align-items:center;border:1px solid var(--road-line);border-radius:9px;color:var(--road-gold);font:650 14px system-ui;text-decoration:none;background:var(--road-raised)}.gps-preview-entry small{color:var(--road-muted);font:12px system-ui}
+html body #app#app.profolio-premium :is(.workspace-badge,.workspace-avatar,.view-switch){background:var(--road-panel)!important;border-color:var(--road-line)!important;color:var(--road-text)!important}
+html body #app#app.profolio-premium :is(.nav-section-label,.nav-future summary){color:var(--road-gold)!important}
+html body #app#app.profolio-premium .roadmap-actions{margin:18px 30px}
+html body :is(#modal#modal .modal-card,#tourPanel#tourPanel,.amen-profile-card,.pf-settings-card){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}
+html body :is(#modal#modal,#tourPanel#tourPanel,#amenProfileOverlay,#pfSettingsBackdrop) :is(h2,h3,label,strong,.pf-detail-price,.pf-detail-facts span){color:var(--road-text)!important}
+html body :is(#modal#modal,#tourPanel#tourPanel,#amenProfileOverlay,#pfSettingsBackdrop) :is(p,small,.muted,.pf-detail-notice,.pf-contact-status){color:var(--road-muted)!important}
+html body :is(#modal#modal,#tourPanel#tourPanel,#amenProfileOverlay,#pfSettingsBackdrop) :is(input,select,textarea,button,.pf-detail-facts span,.pf-draft-disclaimer,.pf-draft-summary,.pf-draft-row,.premium-kpi,.tour-stop,.tour-panel-header){background:var(--road-raised)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}
+@media(max-width:700px){html body #app#app.profolio-premium .roadmap-actions{margin:14px}}
+html body #modal#modal :is(.pf-draft-backup,.pf-draft-preview,.pf-draft-preview-image,.pf-draft-preview-facts,.pf-draft-preview-notes,.premium-answer,.pf-detail-notice){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}
+html body #modal#modal :is(.pf-draft-row span:not(.pf-draft-status),.pf-draft-backup p,.pf-draft-preview-address){color:var(--road-muted)!important}
+html body :is(.toast,.amen-toast,.tour-bar){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}

@@ -114,7 +114,7 @@
   const LANG_KEY='pf_language';
   const THEME_KEY='pf_theme';
   let lang=localStorage.getItem(LANG_KEY)||'en';
-  let theme=localStorage.getItem(THEME_KEY)||'light';
+  let theme=localStorage.getItem(THEME_KEY)||'dark';
   let translating=false;
   let settingsTrigger=null;
 
@@ -309,9 +309,11 @@
     document.documentElement.style.colorScheme=theme==='dark'?'dark':'light';
     const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=theme==='dark'?'#0b1119':'#111925';
     renderLabels();
+    document.dispatchEvent(new CustomEvent('pf:theme-changed',{detail:{theme}}));
   };
   const setLanguage=v=>{lang=v;localStorage.setItem(LANG_KEY,v);translateTree(document);document.dispatchEvent(new CustomEvent('pf:language-changed'))};
-  const setTheme=v=>{theme=v;localStorage.setItem(THEME_KEY,v);applyTheme()};
+  const setTheme=v=>{theme=v;try{localStorage.setItem(THEME_KEY,v)}catch{}applyTheme()};
+  document.addEventListener('pf:set-theme',e=>{if(['light','dark'].includes(e.detail?.theme))setTheme(e.detail.theme)});
 
   const closeSettings=()=>{document.getElementById('pfSettingsBackdrop')?.classList.remove('open');document.body.style.overflow='';settingsTrigger?.focus?.()};
   const openSettings=()=>{

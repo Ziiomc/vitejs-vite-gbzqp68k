@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="./profolio-refined.css?v=20261014-refined3">
   <link rel="stylesheet" href="./profolio-brand-restore.css?v=20261018-wine-map-value">
   <link rel="stylesheet" href="./profolio-clarity.css?v=20261018-clear-category-controls">
+  <link rel="stylesheet" href="./roadmap.css?v=20261018-1">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -59,6 +60,8 @@
     <header class="global-topbar">
       <span class="topbar-brand" aria-hidden="true">ProFolio</span>
       <label class="global-search search"><span aria-hidden="true">⌕</span><input id="search" aria-label="Search sample homes, areas, or ZIP codes" placeholder="Search sample homes, neighborhoods or ZIP..."></label>
+      <button type="button" id="sensoryToggle" aria-haspopup="dialog">Sound &amp; touch</button>
+      <button type="button" id="themeToggle" aria-pressed="true">☀ Day mode</button>
       <div class="profile-chip" id="profileAccessBtn" role="button" tabindex="0" aria-label="Open local profile"><span class="profile-avatar">PF</span><div><strong>Local profile</strong><small>Saved on this device</small></div><span>⌄</span></div>
     </header>
 
@@ -67,20 +70,26 @@
         <div class="pf-brand-lockup-real">
           <span class="pf-brand-symbol" aria-hidden="true"><span class="pf-roof"></span><span class="pf-monogram">P</span></span>
           <div class="pf-brand-nameplate">
-            <h1 id="pfBrandTitle">PRO<span>FOLIO</span></h1>
-            <p class="pf-brand-tagline">WE WORK IN <strong>PRO</strong> OF YOUR HOME.<br>WE WORK IN <strong>PRO</strong> OF YOUR PRICE.<br>WE WORK IN <strong>PRO</strong> OF YOUR FUTURE.</p>
+            <h1 id="pfBrandTitle"><button type="button" data-brand-story aria-haspopup="dialog">PRO<span>FOLIO</span></button></h1>
+            <p class="pf-brand-tagline">We're <strong>Pro</strong> of Your Home.<br>We're <strong>Pro</strong> of Your Price.<br>We're <strong>Pro</strong> of Your Future.</p>
           </div>
         </div>
         <p class="pf-brand-signature"><span>PRO</span>FOLIO. <small>YOUR HOME · YOUR PRICE · YOUR FUTURE</small></p>
       </div>
       <div class="pf-discovery-copy">
         <span class="pf-market-eyebrow">WILMINGTON, NORTH CAROLINA</span>
-        <h2>Explore a different<br><em>side of Wilmington.</em></h2>
-        <p>Neighborhoods, sample homes and your next Open Tour, in one considered view.</p>
+        <h2>Explore a Different<br><em>Side of Wilmington</em></h2>
+        <p>We are local. Built around your home, your budget and your future.</p>
+        <button type="button" class="story-entry" data-brand-story>We are local · Our story ↗</button>
         <div class="pf-discovery-steps" aria-label="Your property journey"><span><b>01</b> Explore</span><span><b>02</b> Save</span><span><b>03</b> Tour</span></div>
       </div>
     </section>
 
+    <nav class="roadmap-actions" aria-label="Start with ProFolio">
+      <button type="button" id="openHouseAction"><span aria-hidden="true">⌂</span><strong>Open House</strong><small>Explore homes &amp; plan a sample visit</small></button>
+      <button type="button" id="valueCoreAction"><span aria-hidden="true">▥</span><strong>Value Core</strong><small>Understand place, budget &amp; potential</small></button>
+      <button type="button" id="createAction" aria-label="Create a local listing draft"><span aria-hidden="true">＋</span><strong>Create</strong><small>A draft saved on this device</small></button>
+    </nav>
     <p class="demo-label">Illustrative sample inventory. The properties and photographs are not verified listings.</p>
     <section class="pf-search-panel" aria-label="Property search filters">
           <div class="map-toolbar">
@@ -105,6 +114,20 @@
           <div class="explore-heading"><div><span>THE COAST / IN VIEW</span><h2>A closer look at the coast.</h2><p>Select an area or a home to explore what is around it.</p></div><span class="explore-heading-place">WILMINGTON · NC</span></div>
 
 
+          <div class="gps-preview-entry"><a href="./gps.html" target="_blank" rel="noopener">Try Our Real Estate GPS ↗</a><small>Preview · Demo data · Opens a separate view</small></div>
+            <section class="map-legend roadmap-legend" aria-label="Map symbols explained">
+              <aside class="legend">
+                <h2>Map symbols</h2>
+                <p>Tap a property pin to see the home. Tap a numbered group to zoom in. Use the area menu to explore locations.</p>
+                <div class="pf-legend-grid">
+                  <div class="legend-item"><span class="legend-icon pf-icon-regular">●</span><div><strong>Regular</strong><small>Standard sample home</small></div></div>
+                  <div class="legend-item"><span class="legend-icon pf-icon-premium">★</span><div><strong>Premium</strong><small>Higher-end sample home</small></div></div>
+                  <div class="legend-item"><span class="legend-icon pf-icon-feature">◆</span><div><strong>Opportunity</strong><small>Special-feature sample</small></div></div>
+                  <div class="legend-item"><span class="legend-icon pf-icon-turbo">⚡</span><div><strong>Turbo</strong><small>Featured demo home</small></div></div>
+                </div>
+                <p class="pf-legend-footer"><strong>Numbered pin</strong> = multiple homes nearby. <strong>Solid wine-colored border</strong> = official city or Census-designated area. <strong>Dashed border</strong> = nearby Census reference area; not a legal neighborhood boundary.</p>
+              </aside>
+            </section>
           <div class="pf-map-controls">
             <div class="pf-map-modes" role="group" aria-label="Choose the map color">
               <span class="pf-map-control-title">Map colors</span>
@@ -127,19 +150,7 @@
               <aside id="areaPanel" class="area-panel" hidden aria-live="polite"><button id="areaPanelClose" class="area-panel-close" type="button" aria-label="Close area details">×</button><small id="areaPanelEyebrow">AREA · MARKET MAP</small><h3 id="areaPanelName"></h3><div class="area-meta"><span id="areaPanelZip"></span><span id="areaPanelCount"></span></div><p id="areaPanelSource"></p><div id="areaVideoInline" class="area-video-inline"><div class="area-video-cover pending"><span class="play">▷</span><span><strong>VIDEO TOUR · COMING SOON</strong><small id="areaVideoInlineStatus">Video is not available for this area yet</small></span></div></div><div class="area-panel-actions"><button id="areaExploreBtn" type="button">Explore properties</button><button id="areaOpenTourBtn" class="tour-start" type="button">↝ Start Open Tour</button><button id="areaOverviewBtn" type="button">Back to region</button></div></aside>
             </div>
 
-            <details class="map-legend"><summary>How to read the map</summary>
-              <aside class="legend">
-                <h2>Map symbols</h2>
-                <p>Tap a property pin to see the home. Tap a numbered group to zoom in. Use the area menu to explore locations.</p>
-                <div class="pf-legend-grid">
-                  <div class="legend-item"><span class="legend-icon pf-icon-regular">●</span><div><strong>Regular</strong><small>Standard sample home</small></div></div>
-                  <div class="legend-item"><span class="legend-icon pf-icon-premium">★</span><div><strong>Premium</strong><small>Higher-end sample home</small></div></div>
-                  <div class="legend-item"><span class="legend-icon pf-icon-feature">◆</span><div><strong>Opportunity</strong><small>Special-feature sample</small></div></div>
-                  <div class="legend-item"><span class="legend-icon pf-icon-turbo">⚡</span><div><strong>Turbo</strong><small>Featured demo home</small></div></div>
-                </div>
-                <p class="pf-legend-footer"><strong>Numbered pin</strong> = multiple homes nearby. <strong>Solid wine-colored border</strong> = official city or Census-designated area. <strong>Dashed border</strong> = nearby Census reference area; not a legal neighborhood boundary.</p>
-              </aside>
-            </details>
+
           </section>
         </section>
 
@@ -158,12 +169,12 @@
     </div>
     <section class="pf-value-core" aria-labelledby="pfValueCoreTitle">
       <div class="pf-value-core-head">
-        <div><span class="pf-value-core-eyebrow">PROFOLIO / VALUE CORE</span><h2 id="pfValueCoreTitle">The value of seeing the whole picture.</h2></div>
+        <div><span class="pf-value-core-eyebrow">PROFOLIO / VALUE CORE</span><h2 id="pfValueCoreTitle" tabindex="-1">The value of seeing the whole picture.</h2></div>
         <span class="pf-value-core-note">Explore with perspective. Plan with clarity.</span>
       </div>
       <div class="pf-value-core-grid">
-        <article><span class="pf-value-core-number">01 / PLACE</span><h3>Understand the area</h3><p>Explore neighborhoods and sample homes together on the Market Map.</p></article>
-        <article><span class="pf-value-core-number">02 / PRIORITIES</span><h3>Find what matters</h3><p>Narrow the sample homes by area, budget and category. Save the ones worth comparing.</p></article>
+        <article><span class="pf-value-core-number">01 / PLACE</span><h3>Understand the area</h3><p>Compare area context and access on the Market Map. School, flood and market data still require verified sources.</p></article>
+        <article><span class="pf-value-core-number">02 / PRIORITIES</span><h3>Find what matters</h3><p>Compare sample asking prices, size and your budget. Future value depends on local conditions; returns are never guaranteed.</p></article>
         <article><span class="pf-value-core-number">03 / EXPERIENCE</span><h3>Plan your next visit</h3><p>Build a personal Open Tour from your selected sample homes, saved on this device.</p></article>
       </div>
     </section>
@@ -205,10 +216,39 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="./map-fix-v4.js?v=20261018-clear-category-controls"></script>
-<!-- Legacy dense census mesh disabled: display selected official area only. -->
+<!-- Verified original area outlines; no dense county mesh. -->
 <script src="./ui-premium-v2.js?v=20261014-refined1"></script>
 <script src="./amen-experience-v2.js?v=single-categories-mobile-nav-20261011"></script>
 <script src="./launch.js?v=private-backup-20261011"></script>
 <script src="./demo-polish.js?v=english-runtime-20261011"></script>
+<dialog id="sensoryDialog" aria-labelledby="sensoryTitle">
+  <button type="button" data-close-sensory aria-label="Close sound and touch">×</button>
+  <h2 id="sensoryTitle">Sound &amp; touch</h2>
+  <p>Optional feedback, only after your actions. Your preferences stay on this device.</p>
+  <label><input type="checkbox" id="sensorySound"> Enable interaction sounds</label>
+  <label for="sensoryVolume">Volume <output id="sensoryVolumeValue">55%</output></label><input id="sensoryVolume" type="range" min="0" max="100" step="5" value="55">
+  <label><input type="checkbox" id="sensoryHaptics"> Enable short vibration</label>
+  <p id="hapticsSupport"></p>
+  <p>Reduced motion disables vibration. Device or browser silence and volume controls may also affect sound; the web cannot reliably detect every system silent switch.</p>
+  <div class="sound-samples" aria-label="Try the four interaction sounds"><button type="button" data-sound-preview="door">Property</button><button type="button" data-sound-preview="tour">Open House / tour</button><button type="button" data-sound-preview="nav">Selection</button><button type="button" data-sound-preview="confirm">Confirmation</button></div>
+  <button type="button" id="muteAll">Mute sound &amp; vibration</button>
+</dialog>
+<dialog id="openHouseIntro" aria-labelledby="openHouseTitle">
+  <button type="button" data-close-open-house aria-label="Close Open House">×</button>
+  <small>OPEN HOUSE / GUIDED DEMO</small><h2 id="openHouseTitle">Your next visit starts here.</h2>
+  <p>Explore sample homes, open a property card and add it to Open Tour to build a local itinerary.</p>
+  <p>No live Open House schedules or appointments are connected. This preview does not book a visit.</p>
+  <button type="button" id="browseOpenHouse">Explore sample homes →</button>
+</dialog>
+<dialog id="brandStory" aria-labelledby="storyTitle">
+  <button type="button" data-close-story aria-label="Close our story">×</button>
+  <small>PROFOLIO / WE ARE LOCAL</small><h2 id="storyTitle">A different side of home.</h2>
+  <p>ProFolio starts with Wilmington and the places that make it home.</p>
+  <p>Our mission: make exploring homes, budgets and neighborhoods easier to understand.</p>
+  <p>Our vision: connect local property discovery with the life of the city.</p>
+  <p>Behind the concept: Andrés and Ignacio, shaping a locally focused experience.</p>
+  <p>Today, explore our sample homes. Tomorrow's services depend on verified data and partners.</p>
+</dialog>
+<script src="./roadmap.js?v=20261018-1"></script>
 </body>
 </html>

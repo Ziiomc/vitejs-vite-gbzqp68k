@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#301017"><meta name="description" content="A clearly labeled preview of ProFolio's Wilmington real estate GPS concept. Sample data only.">
+  <title>ProFolio · Real Estate GPS Preview</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="./gps.css?v=20261018-1">
+</head>
+<body>
+  <header class="gps-header"><a href="./" class="gps-brand">ProFolio <span>/ Real Estate GPS</span></a><div><span class="preview-badge">PREVIEW</span><button type="button" id="gpsTheme">☀ Day mode</button></div></header>
+  <main>
+    <section class="gps-intro"><div><small>WILMINGTON, NORTH CAROLINA</small><h1>Find your next local stop.</h1></div><p>Illustrative homes and activities. No live listings, scheduled events or road navigation.</p></section>
+    <form id="gpsSearchForm" class="gps-search" role="search"><label for="destination">Where to?</label><div><input id="destination" placeholder="Where to? Try Downtown or Mayfaire" autocomplete="off"><button id="voiceExample" type="button" aria-label="Try a scripted voice example">🎙 <span>Voice example</span></button><button type="submit">Explore</button></div></form>
+    <div class="gps-filters" role="group" aria-label="Demo map layers"><button type="button" data-layer="sale" aria-pressed="true">⌂ For sale</button><button type="button" data-layer="rent" aria-pressed="true">▤ For rent</button><button type="button" data-layer="open" aria-pressed="true">★ Open Houses</button><button type="button" data-layer="event" aria-pressed="true">◆ Local events</button><button type="button" id="resetGPS">Reset</button></div>
+    <p id="gpsStatus" role="status" aria-live="polite">Choose a sample stop or search a Wilmington area.</p>
+    <div class="gps-layout"><section class="gps-map-frame" aria-label="Wilmington preview map"><div id="gpsMap" tabindex="0" aria-label="Interactive sample map of Wilmington"></div><p class="gps-map-note">DEMO PINS · Approximate area locations · Dashed line = concept only</p><p id="gpsMapFallback" hidden>Basemap unavailable. Explore every sample stop in the list.</p></section><aside class="gps-results" aria-label="Sample stops"><h2>Explore the layers</h2><p id="gpsResultCount"></p><div id="gpsResults"></div></aside></div>
+    <section id="gpsDetail" class="gps-detail" aria-labelledby="gpsDetailTitle" hidden><div><small id="gpsDetailType"></small><h2 id="gpsDetailTitle" tabindex="-1"></h2><p id="gpsDetailCopy"></p><p id="gpsDetailLocation"></p><p class="gps-disclosure">Fictional demo data. The map pin is an approximate area reference, not a verified street address.</p></div><div class="gps-detail-actions"><button type="button" id="showConcept">Show route concept</button><a id="openSample" href="./">Open sample property</a><button type="button" id="closeGPSDetail">Close details</button></div><p id="routeStatus" role="status"></p></section>
+    <footer><strong>What this preview does</strong><p>Search the supplied examples, filter four layers, inspect a stop and draw a straight line from a fixed demo start in Downtown Wilmington. No road directions, ETA, traffic, bookings or live availability.</p><p>Real GPS requires verified inventory and events, routing services, provider agreements, cost controls and explicit location/microphone permissions. This preview never requests those permissions.</p><a href="./">← Back to ProFolio</a></footer>
+  </main>
+  <dialog id="voiceDialog" aria-labelledby="voiceTitle"><button id="closeVoice" type="button" aria-label="Close voice example">×</button><small>SCRIPTED VOICE PREVIEW</small><h2 id="voiceTitle">“Show me homes in Downtown Wilmington.”</h2><p>This is a prepared example, not speech recognition. Your microphone is not activated and nothing is recorded.</p><button id="useVoiceExample" type="button">Use this example search</button></dialog>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="./gps.js?v=20261018-1"></script>
+</body>
+</html>

@@ -164,10 +164,24 @@ function boundaryHint(){
   }
   element.textContent=t(
     `Sectores delimitados: ${official} oficiales y ${reference} de referencia, de ${total}. Los contornos punteados no son límites oficiales de barrios.`,
-    `Area outlines: ${official} official and ${reference} reference, of ${total}. Dashed areas are not official neighborhood boundaries.`
+    `Area outlines: ${official} official and ${reference} reference, of ${total}. Census snapshot verified Oct 18, 2026. Dashed areas are not official neighborhood boundaries.`
   );
 }
 async function loadAllAreaBoundaries(){
+  // Reviewed Census snapshot: 16 official areas + 4 explicitly marked references.
+  try{
+    const response=await fetch('./wilmington-boundaries.geojson');
+    if(!response.ok)throw new Error('Snapshot HTTP '+response.status);
+    const snapshot=await response.json();
+    if(snapshot.type!=='FeatureCollection'||new Set(snapshot.features.map(f=>f.properties.pfName)).size!==20)throw new Error('Incomplete snapshot');
+    for(const feature of snapshot.features){
+      const {pfName,pfType}=feature.properties;
+      const existing=boundaryShapes.get(pfName);
+      if(existing)existing.layer.addData(feature);else addBoundaryShape(pfName,feature,pfType);
+    }
+    boundaryComplete=true;drawAreaBoundaries();boundaryHint();return;
+  }catch(error){console.warn('Census snapshot unavailable; trying live source',error)}
+
   const kindNames=k=>Object.entries(AREAS).filter(([,area])=>area.k===k).map(([name])=>name);
   const officialGroups=[[28,kindNames('city')],[30,kindNames('cdp')]];
   await Promise.all(officialGroups.map(async ([layer,names])=>{
@@ -313,6 +327,7 @@ const beds=$('#bedsSelect');if(beds)beds.onchange=()=>{S.minBeds=Number(beds.val
     try{localStorage.setItem('pf_map_style_v1',choice)}catch{}
   };
   updateStyle(choice);
+  document.addEventListener('pf:theme-changed',e=>updateStyle(e.detail.theme==='dark'?'brand':'light'));
   $$('[data-pf-map-style]').forEach(b=>b.addEventListener('click',()=>{updateStyle(b.dataset.pfMapStyle);window.__pfSound?.play('nav')}));
   const border=$('#pfBoundariesToggle');
   if(border){boundaryEnabled=border.checked===true;border.addEventListener('change',()=>{boundaryEnabled=border.checked;updateBoundary()})}
