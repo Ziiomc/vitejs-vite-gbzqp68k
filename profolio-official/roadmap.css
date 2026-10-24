@@ -1,6 +1,12 @@
 /* Final theme tokens for the existing ProFolio presentation. */
 body{--road-bg:#180b0e;--road-panel:#301017;--road-raised:#46151f;--road-text:#faedda;--road-muted:#dfbfc0;--road-gold:#efc35e;--road-line:#946d35;background:var(--road-bg)!important;color:var(--road-text)!important}
-body:not(.pf-dark){--road-bg:#e8d4ae;--road-panel:#f5e4c3;--road-raised:#ecd3a6;--road-text:#4d1422;--road-muted:#6e3541;--road-gold:#7f2037;--road-line:#a47334}
+/* Day mode increases the wine tones without bringing back the rejected beige. */
+body:not(.pf-dark){--road-bg:#3c1023;--road-panel:#58182f;--road-raised:#70223d;--road-text:#fff1d5;--road-muted:#f1cfca;--road-gold:#ffd16c;--road-line:#d6a653}
+html body #app#app.profolio-premium .pf-brand-hero{border:2px solid var(--road-gold)!important}
+html body :is(.pf-setting-row,.pf-setting-control,.amen-profile-status,.amen-sound,.amen-local-note){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}
+html body #app#app.profolio-premium .profile-chip small{color:var(--road-muted)!important}
+html body #app#app.profolio-premium :is(.sector-select>span,.budget-select>span){color:var(--road-muted)!important}
+html body #app#app.profolio-premium :is(#homeBtn,.card-favorite){background:var(--road-gold)!important;color:#4d1422!important;border-color:var(--road-line)!important}
 html body #app#app.profolio-premium :is(.main-workspace,.sidebar,.global-topbar){background:var(--road-bg)!important;color:var(--road-text)!important}
 html body #app#app.profolio-premium :is(.pf-brand-hero,.pf-brand-art,.demo-label,.pf-search-panel,.map-card,.explore-heading,.pf-map-controls,.right-rail>.detail-grid,.properties-panel,.metric-strip article,.pf-value-core,.pf-value-core-grid article){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important;box-shadow:none!important}
 html body #app#app.profolio-premium :is(h1,h2,h3,.pf-discovery-copy h2,.pf-brand-tagline,.explore-heading h2,.panel-head-row h2,.property-body .price,.property-body h3,.metric-strip strong,.pf-more-filters summary,.pf-filter-label,.results-summary){color:var(--road-text)!important;text-shadow:none!important}
@@ -38,7 +44,7 @@ html body #app#app.profolio-premium .roadmap-legend :is(p,small){color:var(--roa
 html body #app#app.profolio-premium .map-shell{border:3px solid #efc35e!important;background:var(--road-panel)!important}
 html body #app#app.profolio-premium :is(.pfl,.pfm,.leaflet-control-zoom a,.map-label,.wilmington-focus,.location,.pf-area-boundary-tip){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:#b86979!important}
 html body #app#app.profolio-premium .pfm span{color:var(--road-gold)!important}
-html body #app#app.profolio-premium .leaflet-container{background:#b9a785!important}
+html body #app#app.profolio-premium .leaflet-container{background:#13372d!important}
 html body #app#app.profolio-premium .leaflet-control-attribution{background:var(--road-panel)!important;color:var(--road-text)!important}
 html body #app#app.profolio-premium .leaflet-control-attribution a{color:var(--road-gold)!important}
 html body #app#app.profolio-premium .roadmap-legend,html body #app#app.profolio-premium .roadmap-legend .legend{position:static!important;inset:auto!important;transform:none!important;max-height:none!important}

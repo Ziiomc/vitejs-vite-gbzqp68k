@@ -21,11 +21,16 @@
   $('#createAction').addEventListener('click', () => $('#publishBtn').click());
   const syncSensory=()=>{
     const prefs=window.__pfSound;if(!prefs)return;
+    const en=document.documentElement.lang==='en',tr=(es,english)=>en?english:es;
+    $('#sensoryToggle').textContent=prefs.enabled||prefs.haptics?tr('Sonido y vibración · Configurar','Sound & touch · Settings'):tr('Activar sonido y vibración','Activate sound & touch');
     $('#sensorySound').checked=prefs.enabled;
     $('#sensoryHaptics').checked=prefs.haptics;
     $('#sensoryVolume').value=String(Math.round(prefs.volume*100));
     $('#sensoryVolumeValue').textContent=Math.round(prefs.volume*100)+'%';
     $('#hapticsSupport').textContent=typeof navigator.vibrate==='function'?'Vibration is available where your device permits it.':'Vibration is not supported by this browser; visual feedback remains available.';
+    $('#enableSensory').textContent=tr('Activar sonido y vibración','Enable sound & vibration');
+    $('#testHaptics').textContent=tr('Probar vibración','Test vibration');
+    $('#testHaptics').disabled=typeof navigator.vibrate!=='function';
   };
   $('#sensoryToggle').addEventListener('click',()=>{syncSensory();$('#sensoryDialog').showModal();});
   $('[data-close-sensory]').addEventListener('click',()=>$('#sensoryDialog').close());
@@ -33,6 +38,10 @@
   $('#sensoryHaptics').addEventListener('change',e=>window.__pfSound.configure({haptics:e.target.checked}));
   $('#sensoryVolume').addEventListener('input',e=>window.__pfSound.configure({volume:Number(e.target.value)/100}));
   $('#muteAll').addEventListener('click',()=>window.__pfSound.configure({enabled:false,haptics:false}));
-  document.querySelectorAll('[data-sound-preview]').forEach(b=>b.addEventListener('click',()=>window.__pfSound.play(b.dataset.soundPreview)));
+  $('#enableSensory').addEventListener('click',()=>{window.__pfSound.configure({enabled:true,haptics:true,volume:window.__pfSound.volume||.7});window.__pfSound.play('confirm');});
+  $('#testHaptics').addEventListener('click',()=>{window.__pfSound.configure({haptics:true});window.__pfSound.touch('confirm');});
+  document.querySelectorAll('[data-sound-preview]').forEach(b=>b.addEventListener('click',()=>{window.__pfSound.configure({enabled:true,volume:window.__pfSound.volume||.7});window.__pfSound.play(b.dataset.soundPreview);}));
   document.addEventListener('pf:preferences-changed',syncSensory);
+  document.addEventListener('pf:language-changed',syncSensory);
+  syncSensory();
 })();

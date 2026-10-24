@@ -17,8 +17,8 @@
   <link rel="stylesheet" href="./ux-consolidation.css?v=20261014-brand-banner">
   <link rel="stylesheet" href="./profolio-refined.css?v=20261014-refined3">
   <link rel="stylesheet" href="./profolio-brand-restore.css?v=20261018-wine-map-value">
-  <link rel="stylesheet" href="./profolio-clarity.css?v=20261018-clear-category-controls">
-  <link rel="stylesheet" href="./roadmap.css?v=20261018-1">
+  <link rel="stylesheet" href="./profolio-clarity.css?v=20261023-green-map">
+  <link rel="stylesheet" href="./roadmap.css?v=20261023-wine-modes">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -202,20 +202,22 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=20261018-clear-category-controls"></script>
+<script src="./map-fix-v4.js?v=20261023-map-preference"></script>
 <!-- Verified original area outlines; no dense county mesh. -->
 <script src="./ui-premium-v2.js?v=20261014-refined1"></script>
-<script src="./amen-experience-v2.js?v=single-categories-mobile-nav-20261011"></script>
+<script src="./amen-experience-v2.js?v=20261023-all-control-touch"></script>
 <script src="./launch.js?v=private-backup-20261011"></script>
 <script src="./demo-polish.js?v=english-runtime-20261011"></script>
 <dialog id="sensoryDialog" aria-labelledby="sensoryTitle">
   <button type="button" data-close-sensory aria-label="Close sound and touch">×</button>
   <h2 id="sensoryTitle">Sound &amp; touch</h2>
   <p>Optional feedback, only after your actions. Your preferences stay on this device.</p>
+  <button type="button" id="enableSensory">Enable sound &amp; vibration</button>
   <label><input type="checkbox" id="sensorySound"> Enable interaction sounds</label>
-  <label for="sensoryVolume">Volume <output id="sensoryVolumeValue">55%</output></label><input id="sensoryVolume" type="range" min="0" max="100" step="5" value="55">
+  <label for="sensoryVolume">Volume <output id="sensoryVolumeValue">70%</output></label><input id="sensoryVolume" type="range" min="0" max="100" step="5" value="70">
   <label><input type="checkbox" id="sensoryHaptics"> Enable short vibration</label>
   <p id="hapticsSupport"></p>
+  <button type="button" id="testHaptics">Test vibration</button>
   <p>Reduced motion disables vibration. Device or browser silence and volume controls may also affect sound; the web cannot reliably detect every system silent switch.</p>
   <div class="sound-samples" aria-label="Try the four interaction sounds"><button type="button" data-sound-preview="door">Property</button><button type="button" data-sound-preview="tour">Open House / tour</button><button type="button" data-sound-preview="nav">Selection</button><button type="button" data-sound-preview="confirm">Confirmation</button></div>
   <button type="button" id="muteAll">Mute sound &amp; vibration</button>
@@ -236,6 +238,6 @@
   <p>Behind the concept: Andrés and Ignacio, shaping a locally focused experience.</p>
   <p>Today, explore our sample homes. Tomorrow's services depend on verified data and partners.</p>
 </dialog>
-<script src="./roadmap.js?v=20261018-1"></script>
+<script src="./roadmap.js?v=20261023-sensory-activation"></script>
 </body>
 </html>

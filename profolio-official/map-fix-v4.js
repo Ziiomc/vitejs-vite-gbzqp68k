@@ -315,7 +315,9 @@ const beds=$('#bedsSelect');if(beds)beds.onchange=()=>{S.minBeds=Number(beds.val
   const el=$('#market-map');if(!el)return;
   const modes=['brand','light','dark'];
   let choice='brand';
-  try{const saved=localStorage.getItem('pf_map_style_v1');if(modes.includes(saved))choice=saved}catch{}
+  // Older preferences were overwritten by page theme changes. Start the fixed
+  // preference at Brand, then remember only explicit map choices independently.
+  try{const saved=localStorage.getItem('pf_map_style_v2');if(modes.includes(saved))choice=saved}catch{}
   const updateStyle=(value)=>{
     choice=modes.includes(value)?value:'brand';
     el.dataset.pfMapStyle=choice;
@@ -324,10 +326,10 @@ const beds=$('#bedsSelect');if(beds)beds.onchange=()=>{S.minBeds=Number(beds.val
       button.classList.toggle('active',active);
       button.setAttribute('aria-pressed',String(active));
     });
-    try{localStorage.setItem('pf_map_style_v1',choice)}catch{}
+    try{localStorage.setItem('pf_map_style_v2',choice)}catch{}
   };
   updateStyle(choice);
-  document.addEventListener('pf:theme-changed',e=>updateStyle(e.detail.theme==='dark'?'brand':'light'));
+  // Page brightness must not silently replace the user's chosen map style.
   $$('[data-pf-map-style]').forEach(b=>b.addEventListener('click',()=>{updateStyle(b.dataset.pfMapStyle);window.__pfSound?.play('nav')}));
   const border=$('#pfBoundariesToggle');
   if(border){boundaryEnabled=border.checked===true;border.addEventListener('change',()=>{boundaryEnabled=border.checked;updateBoundary()})}

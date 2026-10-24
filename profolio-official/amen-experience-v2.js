@@ -14,8 +14,22 @@
   document.addEventListener('pointerdown',gesture,true);
   document.addEventListener('keydown',gesture,true);
   document.addEventListener('click',gesture,true);
-  let volume=Math.round(Math.max(0,Math.min(1,Number(stored(VOLUME_KEY)??.55)))*20)/20;
-  let ctx=null,timer=0,lastSoundAt=0;
+  let volume=Math.round(Math.max(0,Math.min(1,Number(stored(VOLUME_KEY)??.70)))*20)/20;
+  let ctx=null,timer=0,lastSoundAt=0,lastHapticAt=-Infinity;
+
+  function touchFeedback(kind='nav'){
+    const now=performance.now();
+    if(document.hidden||now-lastGesture>1000||now-lastHapticAt<80||!haptics||
+      typeof navigator.vibrate!=='function'||matchMedia('(prefers-reduced-motion: reduce)').matches)return false;
+    try{lastHapticAt=now;return navigator.vibrate(kind==='confirm'?[18,30,18]:18)!==false}catch{return false}
+  }
+  // Every enabled control receives touch feedback, including dialogs, map zoom
+  // and controls added after load. Sound remains mapped to four useful actions.
+  document.addEventListener('click',e=>{
+    if(!e.isTrusted)return;
+    const control=e.target.closest?.('button,[role="button"],a[href],summary,input[type="checkbox"],input[type="radio"]');
+    if(control&&!control.disabled&&control.getAttribute('aria-disabled')!=='true'&&control.id!=='muteAll')touchFeedback();
+  },true);
 
   function audioContext(){
     if(!sound)return null;
@@ -41,7 +55,7 @@
     const now=performance.now();
     if(document.hidden||now-lastGesture>1000||now-lastSoundAt<80)return false;
     lastSoundAt=now;
-    if(haptics&&navigator.vibrate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){try{navigator.vibrate(kind==='confirm'?[12,25,12]:12)}catch{}}
+    touchFeedback(kind);
     if(!sound||volume===0)return false;
     const ac=audioContext();if(!ac)return false;
     try{
@@ -52,7 +66,9 @@
       }else if(kind==='tour'){
         bell(ac,440,0,.28,.075);bell(ac,659.25,.17,.36,.085);bell(ac,880,.34,.49,.08);
       }else{
-        voice(ac,{freq:520,at:0,duration:.10,gain:.085,type:'sine',endFreq:740});
+        // Two dry, fixed-pitch strikes instead of the rejected bubble sweep.
+        voice(ac,{freq:392,at:0,duration:.13,gain:.12,type:'triangle'});
+        voice(ac,{freq:523.25,at:.07,duration:.16,gain:.10,type:'triangle'});
       }
       document.dispatchEvent(new CustomEvent('pf:sound-play',{detail:{kind}}));
       return true;
@@ -67,7 +83,7 @@
     try{localStorage.setItem('pf_haptics_v1',haptics?'on':'off')}catch{}
     syncSound();
   };
-  window.__pfSound={play:playSound,configure,get enabled(){return sound},get volume(){return volume},get haptics(){return haptics}};
+  window.__pfSound={play:playSound,touch:touchFeedback,configure,get enabled(){return sound},get volume(){return volume},get haptics(){return haptics}};
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAudio()});
   function toast(msg){
     let e=id('amenToast');
