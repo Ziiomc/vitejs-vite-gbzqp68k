@@ -117,9 +117,9 @@ body #app.profolio-premium .pf-map-help{
 body #app.profolio-premium #market-map{background:#e1e7d7!important}
 body #app.profolio-premium #market-map .leaflet-tile-pane{filter:none!important}
 body #app.profolio-premium #market-map[data-pf-map-style="brand"] .leaflet-tile-pane{
-  filter:invert(.92) hue-rotate(180deg) saturate(1.15) brightness(.9) contrast(1.12)!important;
+  filter:saturate(1.05) brightness(1.04) contrast(1.08)!important;
 }
-body #app.profolio-premium #market-map[data-pf-map-style="brand"]{background:#13372d!important}
+body #app.profolio-premium #market-map[data-pf-map-style="brand"]{background:#e1e7d7!important}
 body #app.profolio-premium #market-map[data-pf-map-style="light"] .leaflet-tile-pane{filter:none!important}
 body #app.profolio-premium #market-map[data-pf-map-style="dark"] .leaflet-tile-pane{
   filter:invert(.90) hue-rotate(155deg) saturate(.54) brightness(.83) contrast(1.12)!important;

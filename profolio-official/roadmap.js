@@ -32,6 +32,7 @@
     $('#hapticsSupport').textContent=typeof navigator.vibrate==='function'?'Vibration is available where your device permits it.':'Vibration is not supported by this browser; visual feedback remains available.';
     $('#enableSensory').textContent=tr('Activar sonido y vibración','Enable sound & vibration');
     $('#testHaptics').textContent=tr('Probar vibración','Test vibration');
+    $('#strongSound').textContent=tr('Sonido fuerte · 100%','Strong sound · 100%');
     $('#testHaptics').disabled=typeof navigator.vibrate!=='function';
   };
   $('#sensoryToggle').addEventListener('click',()=>{syncSensory();$('#sensoryDialog').showModal();});
@@ -40,6 +41,7 @@
   $('#sensoryHaptics').addEventListener('change',e=>window.__pfSound.configure({haptics:e.target.checked}));
   $('#sensoryVolume').addEventListener('input',e=>window.__pfSound.configure({volume:Number(e.target.value)/100}));
   $('#muteAll').addEventListener('click',()=>window.__pfSound.configure({enabled:false,haptics:false}));
+  $('#strongSound').addEventListener('click',()=>{window.__pfSound.configure({enabled:true,volume:1});window.__pfSound.play('confirm');});
   $('#enableSensory').addEventListener('click',()=>{window.__pfSound.configure({enabled:true,haptics:true,volume:window.__pfSound.volume||.7});window.__pfSound.play('confirm');});
   $('#testHaptics').addEventListener('click',()=>{window.__pfSound.configure({haptics:true});window.__pfSound.touch('confirm');});
   document.querySelectorAll('[data-sound-preview]').forEach(b=>b.addEventListener('click',()=>{window.__pfSound.configure({enabled:true,volume:window.__pfSound.volume||.7});window.__pfSound.play(b.dataset.soundPreview);}));

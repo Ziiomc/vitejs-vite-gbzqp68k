@@ -14,7 +14,7 @@
   document.addEventListener('pointerdown',gesture,true);
   document.addEventListener('keydown',gesture,true);
   document.addEventListener('click',gesture,true);
-  let volume=Math.round(Math.max(0,Math.min(1,Number(stored(VOLUME_KEY)??.70)))*20)/20;
+  let volume=Math.round(Math.max(0,Math.min(1,Number(stored(VOLUME_KEY)??.85)))*20)/20;
   let ctx=null,timer=0,lastSoundAt=0,lastHapticAt=-Infinity;
 
   function touchFeedback(kind='nav'){
@@ -23,12 +23,21 @@
       typeof navigator.vibrate!=='function'||matchMedia('(prefers-reduced-motion: reduce)').matches)return false;
     try{lastHapticAt=now;return navigator.vibrate(kind==='confirm'?[18,30,18]:18)!==false}catch{return false}
   }
-  // Every enabled control receives touch feedback, including dialogs, map zoom
-  // and controls added after load. Sound remains mapped to four useful actions.
+  function controlSound(b){
+    if(b.matches('[data-sound-preview]'))return b.dataset.soundPreview;
+    if(b.matches('[data-focus],[data-pf-property-id]'))return 'door';
+    if(b.matches('[data-tour],[data-pf-tour],[data-poptour],#navTour,#openHouseAction,#browseOpenHouse,[data-amen-nav="tour"]'))return 'tour';
+    if(b.matches('[data-fav],[data-pf-fav],#saveTourBtn,[type="submit"],#enableSensory'))return 'confirm';
+    return 'nav';
+  }
+  // Capture trusted clicks so even stopped propagation and dynamically added
+  // controls receive one cue. Explicit activation/preview handlers own their cue.
   document.addEventListener('click',e=>{
     if(!e.isTrusted)return;
     const control=e.target.closest?.('button,[role="button"],a[href],summary,input[type="checkbox"],input[type="radio"]');
-    if(control&&!control.disabled&&control.getAttribute('aria-disabled')!=='true'&&control.id!=='muteAll')touchFeedback();
+    if(!control||control.disabled||control.getAttribute('aria-disabled')==='true'||control.id==='muteAll')return;
+    touchFeedback();
+    if(!control.matches('[data-sound-preview],[data-amen-sound-toggle],#enableSensory,#strongSound,#sensorySound'))playSound(controlSound(control));
   },true);
 
   function audioContext(){
@@ -40,7 +49,7 @@
     }catch{return null}
   }
   function voice(ac,{freq,at=0,duration=.12,gain=.04,type='sine',endFreq=0}){
-    const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+at,peak=Math.max(.002,Math.min(.15,gain*volume));
+    const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+at,peak=Math.max(.002,Math.min(.30,gain*volume*2));
     o.type=type;o.frequency.setValueAtTime(freq,n);
     if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,n+duration);
     g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(peak,n+.012);g.gain.exponentialRampToValueAtTime(.0001,n+duration);
@@ -176,22 +185,9 @@
     body.insertBefore(row,$('.pf-settings-note',body));row.addEventListener('click',e=>{if(e.target.closest('[data-amen-sound-toggle]')){sound=!sound;syncSound();if(sound)playSound('nav')}});syncSound();
   }
 
-  const isAdding=b=>/^\s*(\+|♡|Guardar|Save)/i.test((b?.textContent||'').trim());
-  function soundForControl(b){
-    if(!b||b.closest('#amenProfileOverlay,#amenBottomNav,#pfSettingsBackdrop'))return;
-    if(b.matches('[data-focus]'))return playSound('door');
-    if(b.matches('[data-tour],[data-pf-tour],[data-poptour]')&&isAdding(b))return playSound('tour');
-    if(b.matches('[data-fav],[data-pf-fav]')&&isAdding(b))return playSound('confirm');
-    if(b.id==='navTour'||b.id==='openHouseAction'||b.id==='browseOpenHouse')return playSound('tour');
-    if(b.id==='valueCoreAction'||b.id==='createAction')return playSound('nav');
-    if(b.id==='saveTourBtn'&&Number(id('tourStops')?.textContent||0)>0)return playSound('confirm');
-    if(b.matches('#filters button,#homeBtn,#mapViewBtn,#listViewBtn,#wilmingtonFocus,#favoritesBtn,.premium-nav button,.top-links button,[data-premium-action]'))return playSound('nav');
-  }
-
   document.addEventListener('click',e=>{
     if(e.target.closest('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();playSound('nav');openProfile();return}
     if(e.target.closest('#pfSettingsBtn'))setTimeout(enhanceSettings,50);
-    soundForControl(e.target.closest('button,[role="button"],a'));
   },true);
   document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.profile-chip')){e.preventDefault();e.stopImmediatePropagation();playSound('nav');openProfile()}if(e.key==='Escape'&&id('amenProfileOverlay')?.classList.contains('open')){id('amenProfileOverlay').classList.remove('open');document.body.style.overflow=''}},true);
 
