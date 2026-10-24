@@ -80,3 +80,18 @@ html body #modal#modal :is(.pf-draft-row span:not(.pf-draft-status),.pf-draft-ba
 html body :is(.toast,.amen-toast,.tour-bar){background:var(--road-panel)!important;color:var(--road-text)!important;border-color:var(--road-line)!important}
 @media(max-width:700px){html body #app#app.profolio-premium .pf-brand-art{min-height:180px!important;gap:14px!important;padding:16px!important}html body #app#app.profolio-premium .pf-discovery-steps{display:none!important}html body #app#app.profolio-premium .pf-brand-hero{gap:18px!important}html body #app#app.profolio-premium .roadmap-actions button{grid-template-columns:24px 1fr;gap:5px 8px;min-height:96px;padding:12px}html body #app#app.profolio-premium .roadmap-actions button>span{grid-row:span 2;font-size:25px}html body #app#app.profolio-premium .roadmap-actions button:last-child{min-height:62px}html body #app#app.profolio-premium .roadmap-actions small{font-size:11px}}
 @media(max-width:700px){html body #app#app.profolio-premium .pf-brand-signature{display:none!important}html body #app#app.profolio-premium .pf-brand-art{min-height:160px!important}}
+/* Restore the supplied logo image at its natural proportions. */
+html body #app#app.profolio-premium .pf-brand-art{display:block!important;min-height:0!important;padding:0!important;border:0!important;aspect-ratio:auto!important;height:auto!important;gap:0!important}
+html body #app#app.profolio-premium .pf-brand-image-heading{margin:0!important;padding:0!important;font-size:0!important;line-height:0!important}
+html body #app#app.profolio-premium .pf-brand-image-heading button{display:block;width:100%;padding:0;border:0;background:transparent;cursor:pointer}
+html body #app#app.profolio-premium .pf-brand-image-heading img{display:block;width:100%!important;height:auto!important;object-fit:contain!important;aspect-ratio:1320/605}
+@media(max-width:700px){
+  html body #app#app.profolio-premium .global-topbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto auto;gap:8px!important;padding:10px 14px!important;height:auto!important;min-height:0!important;align-items:stretch!important}
+  html body #app#app.profolio-premium :is(.topbar-brand,.profile-chip){display:none!important}
+  html body #app#app.profolio-premium #sensoryToggle{grid-column:1;grid-row:1}
+  html body #app#app.profolio-premium #themeToggle{grid-column:2;grid-row:1;margin:0!important}
+  html body #app#app.profolio-premium :is(#sensoryToggle,#themeToggle){min-width:0;min-height:44px;width:100%;box-sizing:border-box;padding:8px 6px;font:600 12px/1.2 system-ui;white-space:nowrap}
+  html body #app#app.profolio-premium .global-search{grid-column:1/-1;grid-row:2;order:initial;flex-basis:auto;min-width:0!important;width:auto!important;height:42px!important;margin:0!important;box-sizing:border-box}
+  html body #app#app.profolio-premium .pf-brand-hero{margin:12px 14px 0!important;padding:12px!important;gap:16px!important;border-radius:16px!important}
+  html body #app#app.profolio-premium .pf-discovery-copy h2{font-size:27px!important;line-height:1.12!important;margin:10px 0!important}
+}

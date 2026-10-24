@@ -3,7 +3,8 @@
   const $ = q => document.querySelector(q);
   const syncTheme = () => {
     const dark = document.body.classList.contains('pf-dark');
-    $('#themeToggle').textContent = dark ? '☀ Day mode' : '☾ Night mode';
+    const en=document.documentElement.lang==='en';
+    $('#themeToggle').textContent = dark ? (en?'☀ Day mode':'☀ Modo día') : (en?'☾ Night mode':'☾ Modo noche');
     $('#themeToggle').setAttribute('aria-pressed', String(dark));
   };
   $('#themeToggle').addEventListener('click', () => document.dispatchEvent(new CustomEvent('pf:set-theme', {detail:{theme:document.body.classList.contains('pf-dark') ? 'light' : 'dark'}})));
@@ -22,7 +23,8 @@
   const syncSensory=()=>{
     const prefs=window.__pfSound;if(!prefs)return;
     const en=document.documentElement.lang==='en',tr=(es,english)=>en?english:es;
-    $('#sensoryToggle').textContent=prefs.enabled||prefs.haptics?tr('Sonido y vibración · Configurar','Sound & touch · Settings'):tr('Activar sonido y vibración','Activate sound & touch');
+    $('#sensoryToggle').textContent=tr('Sonido y vibración','Sound & touch');
+    $('#sensoryToggle').setAttribute('aria-label',prefs.enabled||prefs.haptics?tr('Configurar sonido y vibración','Sound and touch settings'):tr('Activar sonido y vibración','Activate sound and touch'));
     $('#sensorySound').checked=prefs.enabled;
     $('#sensoryHaptics').checked=prefs.haptics;
     $('#sensoryVolume').value=String(Math.round(prefs.volume*100));
@@ -42,6 +44,6 @@
   $('#testHaptics').addEventListener('click',()=>{window.__pfSound.configure({haptics:true});window.__pfSound.touch('confirm');});
   document.querySelectorAll('[data-sound-preview]').forEach(b=>b.addEventListener('click',()=>{window.__pfSound.configure({enabled:true,volume:window.__pfSound.volume||.7});window.__pfSound.play(b.dataset.soundPreview);}));
   document.addEventListener('pf:preferences-changed',syncSensory);
-  document.addEventListener('pf:language-changed',syncSensory);
+  document.addEventListener('pf:language-changed',()=>{syncTheme();syncSensory();});
   syncSensory();
 })();
