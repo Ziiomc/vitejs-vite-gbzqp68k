@@ -59,7 +59,7 @@
   <main class="main-workspace">
     <header class="global-topbar">
       <span class="topbar-brand" aria-hidden="true">ProFolio</span>
-      <label class="global-search search"><span aria-hidden="true">⌕</span><input id="search" aria-label="Search sample homes, areas, or ZIP codes" placeholder="Search sample homes, neighborhoods or ZIP..."></label>
+      <form id="mapSearchForm" class="global-search search" role="search"><button id="mapSearchSubmit" type="submit" aria-label="Search location on map" title="Search location on map">⌕</button><input id="search" type="search" aria-label="Search address, area or ZIP code" placeholder="Search address, area or ZIP..." autocomplete="off"></form>
       <button type="button" id="sensoryToggle" aria-haspopup="dialog">Sound &amp; touch</button>
       <button type="button" id="themeToggle" aria-pressed="true">☀ Day mode</button>
       <div class="profile-chip" id="profileAccessBtn" role="button" tabindex="0" aria-label="Open local profile"><span class="profile-avatar">PF</span><div><strong>Local profile</strong><small>Saved on this device</small></div><span>⌄</span></div>
@@ -195,7 +195,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./map-fix-v4.js?v=20261023-map-preference"></script>
+<script src="./map-fix-v4.js?v=20261029-location-search"></script>
 <!-- Verified original area outlines; no dense county mesh. -->
 <script src="./ui-premium-v2.js?v=20261014-refined1"></script>
 <script src="./amen-experience-v2.js?v=20261024-all-control-sound"></script>
