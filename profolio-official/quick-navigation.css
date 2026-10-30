@@ -1,0 +1,12 @@
+/* ProFolio direct-navigation shortcut from the interactive property map. */
+#app.profolio-premium .gps-preview-entry{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:14px;border-radius:14px}
+#app.profolio-premium .pf-quick-navigation{flex:1 1 300px;min-width:0;max-width:680px}
+#app.profolio-premium .pf-quick-navigation label{display:block;margin-bottom:7px;font-weight:750;font-size:13px}
+#app.profolio-premium .pf-quick-navigation-row{display:flex;gap:9px;align-items:stretch}
+#app.profolio-premium .pf-quick-navigation-row input{min-width:0;flex:1;min-height:48px;border:1px solid #cabac1;border-radius:10px;background:#fff;color:#331b26;padding:10px 13px;font:500 16px system-ui}
+#app.profolio-premium .pf-quick-navigation-row button{flex:none;min-width:90px;min-height:48px;border:1px solid #8c1939;border-radius:10px;background:#8c1939;color:#fff;font:750 16px system-ui;padding:9px 16px;cursor:pointer}
+#app.profolio-premium .pf-quick-navigation-row button:hover{background:#64122d}
+#app.profolio-premium .pf-quick-navigation-row :is(input,button):focus-visible{outline:3px solid #deb74e;outline-offset:2px}
+#app.profolio-premium #quickNavigationStatus{font-size:12px;margin:7px 0 0;opacity:.78}
+body.pf-dark #app.profolio-premium .pf-quick-navigation-row input{background:#242b35;color:#fff;border-color:#66707a}
+@media(max-width:480px){#app.profolio-premium .gps-preview-entry{padding:12px;gap:10px}#app.profolio-premium .pf-quick-navigation-row button{min-width:72px;padding:9px 12px}}

@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="./profolio-brand-restore.css?v=20261018-wine-map-value">
   <link rel="stylesheet" href="./profolio-clarity.css?v=20261024-clear-map">
   <link rel="stylesheet" href="./roadmap.css?v=20261023-mobile-original-logo">
+  <link rel="stylesheet" href="./quick-navigation.css?v=20261030-one-tap-go">
 </head>
 <body>
 <div id="app" class="profolio-premium">
@@ -107,7 +108,14 @@
           <div class="explore-heading"><div><span>THE COAST / IN VIEW</span><h2>A closer look at the coast.</h2><p>Select an area or a home to explore what is around it.</p></div><span class="explore-heading-place">WILMINGTON · NC</span></div>
 
 
-          <div class="gps-preview-entry"><a href="./gps.html" target="_blank" rel="noopener">Open GPS &amp; road reports ↗</a><small>Navigation opens in Google Maps · Reports stay on this device</small></div>
+          <div class="gps-preview-entry">
+            <form id="quickNavigationForm" class="pf-quick-navigation" role="search" aria-label="Navigate to an address">
+              <label for="quickDestination">Go to an address</label>
+              <div class="pf-quick-navigation-row"><input id="quickDestination" type="search" required maxlength="200" autocomplete="street-address" enterkeyhint="go" placeholder="Street address or place" aria-label="Destination address"><button type="submit" id="quickGoButton">Go</button></div>
+              <p id="quickNavigationStatus" role="status" aria-live="polite">Opens Google Maps directions. Your location stays under your control.</p>
+            </form>
+            <a href="./gps.html">GPS &amp; road reports ↗</a>
+          </div>
           <div class="pf-map-controls">
             <div class="pf-map-modes" role="group" aria-label="Choose the map color">
               <span class="pf-map-control-title">Map colors</span>
@@ -233,5 +241,7 @@
   <p>Today, explore our sample homes. Tomorrow's services depend on verified data and partners.</p>
 </dialog>
 <script src="./roadmap.js?v=20261024-strong-sound"></script>
+<script src="./gps-navigation-core.js?v=20261030-one-tap-go"></script>
+<script src="./gps-quick-go.js?v=20261030-one-tap-go"></script>
 </body>
 </html>

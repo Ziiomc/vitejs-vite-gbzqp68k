@@ -5,21 +5,20 @@
   <meta name="theme-color" content="#301017"><meta name="description" content="Plan a real destination in Google Maps and keep local road reports with ProFolio. Property inventory remains illustrative.">
   <title>ProFolio · GPS & Road Reports</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="./gps.css?v=20261027-navigation">
+  <link rel="stylesheet" href="./gps.css?v=20261030-one-tap-go">
 </head>
 <body>
   <header class="gps-header"><a href="./" class="gps-brand">ProFolio <span>/ GPS & Road Reports</span></a><div><a href="#roadReport">Report an issue</a><button type="button" id="gpsTheme">☀ Day mode</button></div></header>
   <main>
     <section class="gps-live" aria-labelledby="navigationTitle">
       <small>YOUR NEXT DESTINATION</small><h1 id="navigationTitle">Where do you want to go?</h1>
-      <p>Enter a real street address or place. Street directions and navigation open in Google Maps; review the destination before starting.</p>
+      <p>Type a real address or place and tap Go. Google Maps opens directions from your current location, with your permission.</p>
       <form id="roadNavigationForm">
-        <label for="roadDestination">Destination</label><input id="roadDestination" name="destination" required maxlength="200" autocomplete="off" placeholder="Street address, city or place name">
-        <label for="roadTravelMode">Travel by</label><select id="roadTravelMode"><option value="driving">Car</option><option value="walking">Walking</option><option value="bicycling">Bicycle</option></select>
-        <button type="submit">Prepare directions</button>
+        <label for="roadDestination">Address or place</label>
+        <div class="gps-go-row"><input id="roadDestination" name="destination" type="search" required maxlength="200" autocomplete="street-address" enterkeyhint="go" placeholder="Street, city or place name"><button id="roadGoButton" type="submit" aria-label="Go to destination">Go</button></div>
+        <details class="gps-travel-options"><summary>Travel options</summary><label for="roadTravelMode">Travel by</label><select id="roadTravelMode"><option value="driving">Car</option><option value="walking">Walking</option><option value="bicycling">Bicycle</option></select></details>
       </form>
-      <p id="roadNavigationStatus" role="status" aria-live="polite">ProFolio does not track your location. Google Maps handles navigation and its location permissions.</p>
-      <a id="startNavigation" class="gps-primary" target="_blank" rel="noopener noreferrer" hidden>Open navigation in Google Maps ↗</a>
+      <p id="roadNavigationStatus" role="status" aria-live="polite">One tap opens Google Maps. ProFolio does not track your location; Google Maps handles location permissions.</p>
     </section>
     <section id="roadReport" class="gps-live" aria-labelledby="roadReportTitle">
       <small>ROAD REPORTS · LOCAL ONLY</small><h2 id="roadReportTitle">Record a road or map issue</h2>
@@ -49,6 +48,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="./gps.js?v=20261018-1"></script>
   <script src="./gps-navigation-core.js?v=20261027-1"></script>
-  <script src="./gps-navigation.js?v=20261027-1"></script>
+  <script src="./gps-navigation.js?v=20261030-one-tap-go"></script>
 </body>
 </html>

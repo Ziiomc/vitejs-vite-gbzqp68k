@@ -27,9 +27,14 @@ console.log('PASS: encoded navigation destinations, supported modes, no origin d
 // Exercise failure boundaries without requesting physical location or touching user storage.
 const handlers={},elements=new Map();
 function element(selector){if(!elements.has(selector))elements.set(selector,{value:'',textContent:'',disabled:false,hidden:false,addEventListener:(name,fn)=>handlers[selector+name]=fn,replaceChildren(){},append(){},removeAttribute(){},focus(){}});return elements.get(selector);}
-const ui={document:{querySelector:element,createElement:()=>({append(){},click(){}})},ProFolioGPS:core,localStorage:{getItem:()=>null,setItem(){throw Object.assign(Error('full'),{name:'QuotaExceededError'});}},crypto:{randomUUID:()=> 'test'},navigator:{geolocation:{getCurrentPosition:(success,failure)=>failure({code:1})}},URL,Blob,Date,setTimeout,Event};ui.window=ui;
+const openedDirections=[];
+const ui={location:{assign:(url)=>openedDirections.push(url)},document:{querySelector:element,createElement:()=>({append(){},click(){}})},ProFolioGPS:core,localStorage:{getItem:()=>null,setItem(){throw Object.assign(Error('full'),{name:'QuotaExceededError'});}},crypto:{randomUUID:()=> 'test'},navigator:{geolocation:{getCurrentPosition:(success,failure)=>failure({code:1})}},URL,Blob,Date,setTimeout,Event};ui.window=ui;
 vm.runInNewContext(readFileSync(new URL('../gps-navigation.js',import.meta.url),'utf8'),ui);
 element('#roadReportType').value='hazard';element('#roadReportLocation').value='Test location';element('#roadReportDescription').value='Unsaved report';
+element('#roadDestination').value='200 Water St, Wilmington';element('#roadTravelMode').value='driving';
+handlers['#roadNavigationFormsubmit']({preventDefault(){}});
+assert.equal(openedDirections.length,1,'Go must open directions on the first submit');
+assert.equal(openedDirections[0],core.navigationURL('200 Water St, Wilmington','driving'));
 handlers['#roadReportFormsubmit']({preventDefault(){}});
 assert.match(element('#roadReportStatus').textContent,/not saved/);assert.equal(element('#roadReportDescription').value,'Unsaved report','keep form content on storage failure');assert.equal(element('#exportRoadReports').disabled,true);
 handlers['#reportLocationButtonclick']();assert.match(element('#reportLocationStatus').textContent,/denied/);assert.equal(element('#reportLocationButton').disabled,false,'manual entry remains available after denial');
