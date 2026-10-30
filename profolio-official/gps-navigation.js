@@ -12,13 +12,18 @@
       heading.textContent=core.TYPES[report.type]+' · Not sent';place.textContent=report.location;copy.textContent=report.description;date.textContent=new Date(report.createdAt).toLocaleString();item.append(heading,place,copy,date);list.append(item);
     }
   }
-  const navigation=$('#startNavigation');
-  function resetNavigation(){navigation.hidden=true;navigation.removeAttribute('href');$('#roadNavigationStatus').textContent='Prepare directions for your destination. Navigation opens separately in Google Maps.';}
-  $('#roadDestination').addEventListener('input',resetNavigation);$('#roadTravelMode').addEventListener('change',resetNavigation);
+  const destination=$('#roadDestination'),navigationStatus=$('#roadNavigationStatus'),goButton=$('#roadGoButton');
+  if(goButton&&/^es(?:-|$)/i.test(navigator.language||'')){goButton.textContent='Ir';goButton.setAttribute('aria-label','Ir al destino');}
   $('#roadNavigationForm').addEventListener('submit',event=>{
     event.preventDefault();
-    try{navigation.href=core.navigationURL($('#roadDestination').value,$('#roadTravelMode').value);navigation.hidden=false;$('#roadNavigationStatus').textContent='Ready for '+$('#roadDestination').value.trim()+'. Your destination will be shared with Google Maps when you open navigation. Google Maps may show a route preview if live navigation is unavailable.';navigation.focus();}
-    catch(error){resetNavigation();$('#roadNavigationStatus').textContent=error.message;}
+    try{
+      const url=core.navigationURL(destination.value,$('#roadTravelMode').value);
+      navigationStatus.textContent='Opening directions in Google Maps…';
+      window.location.assign(url);
+    }catch(error){
+      navigationStatus.textContent=error.message||'Unable to open directions. Check the address and try again.';
+      destination.focus();
+    }
   });
   $('#roadReportForm').addEventListener('submit',event=>{
     event.preventDefault();
